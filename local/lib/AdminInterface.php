@@ -33,11 +33,11 @@ class AdminInterface
 			"parent_menu" => "global_menu_content",
 			"sort" => 100,
 			'text' => 'Квартиры',
-			'icon' => 'flats',
+			'icon' => 'apartments',
 			'items' => array(
 				array(
 					'text' => 'Список квартир',
-					'url' => '/bitrix/admin/flats_list.php',
+					'url' => '/bitrix/admin/apartments_list.php',
 				)
 			)
 		);
