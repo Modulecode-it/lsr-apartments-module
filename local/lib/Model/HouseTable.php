@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Lsr\Model;
 
-use Bitrix\Main\Entity\DataManager;
 use Bitrix\Main\Entity;
+use Bitrix\Main\Entity\DataManager;
 
 if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
 	die();
@@ -18,7 +18,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
  * Time: 11:25
  */
 //class HouseTable extends DataManager
-class HouseTable extends \Bitrix\Main\ORM\Data\DataManager
+class HouseTable extends DataManager
 {
 	public static function getTableName(): string
 	{
@@ -28,7 +28,7 @@ class HouseTable extends \Bitrix\Main\ORM\Data\DataManager
 	public static function getMap(): array
 	{
 		return [
-			(new Entity\IntegerField('ID'))->configurePrimary(),
+			(new Entity\IntegerField('ID'))->configurePrimary()->configureAutocomplete(),
 			new Entity\StringField('ADDRESS'),
 		];
 	}
