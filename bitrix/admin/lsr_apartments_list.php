@@ -5,4 +5,4 @@
  * Date: 22.10.2024
  * Time: 11:30
  */
-require($_SERVER["DOCUMENT_ROOT"]."/local/admin/houses_list.php");
+require($_SERVER["DOCUMENT_ROOT"]."/local/admin/apartments_list.php");
