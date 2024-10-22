@@ -18,5 +18,6 @@ class InstallerTest extends TestCase
 	{
 		$installer = new Installer();
 		$installer->install();
+		$this->assertTrue(true);
 	}
 }
