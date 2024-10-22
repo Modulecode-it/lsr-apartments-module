@@ -7,3 +7,10 @@
 .vscode
 .sass-cache
 /local/vendor
+
+#подключение кастомнных страниц в админке битрикса - Квартиры
+!/bitrix/
+/bitrix/*
+!/bitrix/admin/
+/bitrix/admin/*
+!/bitrix/admin/custom_apartments_list.php
