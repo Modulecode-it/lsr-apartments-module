@@ -29,6 +29,12 @@ class HouseTable extends DataManager
 	{
 		return [
 			(new Entity\IntegerField('ID'))->configurePrimary()->configureAutocomplete(),
+			new Entity\BooleanField('ACTIVE',
+				[
+					'values' => ['N', 'Y'],
+					'default_value' => 'Y',
+				]
+			),
 			new Entity\StringField('ADDRESS'),
 		];
 	}
