@@ -30,6 +30,7 @@ class ApartmentTable extends DataManager
 	const SALE_PRICE = 'SALE_PRICE';
 	const HOUSE = 'HOUSE';
 	const ACTIVE = 'ACTIVE';
+	const HOUSE_ID = 'HOUSE_ID';
 
 	public static function getTableName(): string
 	{
@@ -55,7 +56,7 @@ class ApartmentTable extends DataManager
 			]),
 			new Entity\FloatField(self::PRICE, ['required' => true]),
 			new Entity\FloatField(self::SALE_PRICE, ['nullable' => true]),
-			new Entity\IntegerField('HOUSE_ID'),
+			new Entity\IntegerField(self::HOUSE_ID),
 			new Reference(
 				self::HOUSE,
 				HouseTable::class,
