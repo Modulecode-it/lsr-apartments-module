@@ -15,5 +15,8 @@ class Bootstrap
 	public function bootstrap(): void
 	{
 		//todo загрузка приложения
+
+		//добавимся в админку
+		\Lsr\AdminInterface::init();
 	}
 }
