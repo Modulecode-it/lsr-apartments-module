@@ -1,0 +1,27 @@
+{
+  "name": "modulecode/lsr-apartments-module",
+  "description": "lsr apartments module",
+  "autoload": {
+    "psr-4": {
+      "Lsr\\": "lib/"
+    }
+  },
+  "require": {
+    "wikimedia/composer-merge-plugin": "dev-master"
+  },
+  "extra": {
+    "merge-plugin": {
+      "require": [
+        "../bitrix/composer-bx.json"
+      ]
+    }
+  },
+  "config": {
+    "platform": {
+      "php": "8.2"
+    },
+    "allow-plugins": {
+      "wikimedia/composer-merge-plugin": true
+    }
+  }
+}
