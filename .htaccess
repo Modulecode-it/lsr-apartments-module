@@ -35,4 +35,6 @@ ErrorDocument 404 /404.php
 # Альтернативный способ запрета доступа к папке vendor (если не поддерживается <Directory>)
 RewriteEngine On
 RewriteRule ^local/vendor/ - [F,L]
+RewriteRule ^local/lib/ - [F,L]
+RewriteRule ^local/tests/ - [F,L]
 RewriteRule ^.git/ - [F,L]

@@ -10,7 +10,6 @@
 namespace Lsr;
 
 
-use Bitrix\Main\Application;
 use PHPUnit\Framework\TestCase;
 
 class InstallerTest extends TestCase
