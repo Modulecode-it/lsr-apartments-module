@@ -20,7 +20,7 @@ class AdminInterface
 {
 	public static function init(): void
 	{
-		AddEventHandler("main", "OnBuildGlobalMenu", array('\Lsr\AdminInterface', 'addToAdminList'));
+		AddEventHandler("main", "OnBuildGlobalMenu", array(\Lsr\AdminInterface::class, 'addToAdminList'));
 	}
 
 	public static function addToAdminList(&$aGlobalMenu, &$aModuleMenu) {
@@ -33,11 +33,11 @@ class AdminInterface
 			"parent_menu" => "global_menu_content",
 			"sort" => 100,
 			'text' => 'Квартиры',
-			'icon' => 'flats',
+			'icon' => 'apartments',
 			'items' => array(
 				array(
 					'text' => 'Список квартир',
-					'url' => '/bitrix/admin/flats_list.php',
+					'url' => '/bitrix/admin/custom_apartments_list.php',
 				)
 			)
 		);
