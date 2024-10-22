@@ -29,18 +29,22 @@ class AdminInterface
 		}
 
 		$GLOBALS['APPLICATION']->SetAdditionalCSS('/local/templates/apartments/AdminInterface/admin_icons.css');
-		$aMenu = array(
+		$aMenu = [
 			"parent_menu" => "global_menu_content",
 			"sort" => 100,
 			'text' => 'Квартиры',
 			'icon' => 'apartments',
-			'items' => array(
-				array(
-					'text' => 'Список квартир',
-					'url' => '/bitrix/admin/custom_apartments_list.php',
-				)
-			)
-		);
+			'items' => [
+				[
+					'text' => 'Квартиры',
+					'url' => '/bitrix/admin/lsr_apartments_list.php',
+				],
+				[
+					'text' => 'Дома',
+					'url' => '/bitrix/admin/lsr_houses_list.php',
+				],
+			]
+		];
 
 		$aModuleMenu[] = $aMenu;
 	}
