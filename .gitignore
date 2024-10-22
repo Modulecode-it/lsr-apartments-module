@@ -13,4 +13,5 @@
 /bitrix/*
 !/bitrix/admin/
 /bitrix/admin/*
-!/bitrix/admin/custom_apartments_list.php
+!/bitrix/admin/lsr_apartments_list.php
+!/bitrix/admin/lsr_houses_list.php
