@@ -24,6 +24,12 @@ class ApartmentTable extends DataManager
 {
 	const STATUS_SALE = 'S';
 	const STATUS_NOT_SALE = 'N';
+	const NUMBER = 'NUMBER';
+	const STATUS = 'STATUS';
+	const PRICE = 'PRICE';
+	const SALE_PRICE = 'SALE_PRICE';
+	const HOUSE = 'HOUSE';
+	const ACTIVE = 'ACTIVE';
 
 	public static function getTableName(): string
 	{
@@ -34,19 +40,24 @@ class ApartmentTable extends DataManager
 	{
 		return [
 			(new Entity\IntegerField('ID'))->configurePrimary()->configureAutocomplete(),
-			new Entity\BooleanField('ACTIVE',
+			new Entity\BooleanField(
+				self::ACTIVE,
 				[
 					'values' => ['N', 'Y'],
 					'default_value' => 'Y',
 				]
 			),
-			new Entity\IntegerField('NUMBER', ['required' => true]),
-			new Entity\EnumField('STATUS', ['values' => [self::STATUS_SALE, self::STATUS_NOT_SALE], 'required' => true]),
-			new Entity\FloatField('PRICE', ['required' => true]),
-			new Entity\FloatField('SALE_PRICE'),
+			new Entity\IntegerField(self::NUMBER, ['required' => true]),
+			new Entity\EnumField(self::STATUS, [
+				'values' => [self::STATUS_SALE, self::STATUS_NOT_SALE],
+				'required' => true,
+				'default_value' => self::STATUS_SALE
+			]),
+			new Entity\FloatField(self::PRICE, ['required' => true]),
+			new Entity\FloatField(self::SALE_PRICE, ['nullable' => true]),
 			new Entity\IntegerField('HOUSE_ID'),
 			new Reference(
-				'HOUSE',
+				self::HOUSE,
 				HouseTable::class,
 				Join::on('this.HOUSE_ID', 'ref.ID')
 			),

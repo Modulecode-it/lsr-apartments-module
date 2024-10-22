@@ -10,6 +10,7 @@
 namespace Lsr;
 
 
+use Bitrix\Main\Application;
 use PHPUnit\Framework\TestCase;
 
 class InstallerTest extends TestCase
@@ -18,6 +19,13 @@ class InstallerTest extends TestCase
 	{
 		$installer = new Installer();
 		$installer->install();
+		$this->assertTrue(true);
+	}
+
+	public function testInsertExampleData()
+	{
+		$installer = new Installer();
+		$installer->insertExampleData();
 		$this->assertTrue(true);
 	}
 }

@@ -20,6 +20,8 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
 //class HouseTable extends DataManager
 class HouseTable extends DataManager
 {
+	const ADDRESS = 'ADDRESS';
+
 	public static function getTableName(): string
 	{
 		return 'lsr_houses';
@@ -35,7 +37,7 @@ class HouseTable extends DataManager
 					'default_value' => 'Y',
 				]
 			),
-			new Entity\StringField('ADDRESS'),
+			new Entity\StringField(self::ADDRESS),
 		];
 	}
 }
