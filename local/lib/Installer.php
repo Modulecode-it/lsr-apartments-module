@@ -132,7 +132,7 @@ class Installer
 		for ($i = 1; $i <= 2; $i++) {
 			for ($j = 1; $j <= 3; $j++) {
 				$image = ApartmentImageTable::getEntity()->createObject();
-				$image->set(ApartmentImageTable::APARTMENT, $apartment);
+				$image->set(ApartmentImageTable::ENTITY, $apartment);
 
 				$filePath = $imagesPath . "/apartment_{$i}_{$j}.png";
 				$fileId = $imageService->saveExistingFileToBFile($filePath, "lsr_apartments");
@@ -152,7 +152,7 @@ class Installer
 		$imageService = new FileService();
 		for ($i = 1; $i <= 4; $i++) {
 			$image = HouseImageTable::getEntity()->createObject();
-			$image->set(HouseImageTable::HOUSE, $house);
+			$image->set(HouseImageTable::ENTITY, $house);
 
 			$filePath = $imagesPath . "/house_{$i}.webp";
 			$fileId = $imageService->saveExistingFileToBFile($filePath, "lsr_houses");
