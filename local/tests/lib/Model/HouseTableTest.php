@@ -42,4 +42,13 @@ class HouseTableTest extends TestCaseDbRollback
 		$nowImagesCount = HouseImageTable::getList(['filter' => [HouseImageTable::ENTITY_ID => $house['ID']]])->getSelectedRowsCount();
 		$this->assertEquals(0, $nowImagesCount);
 	}
+
+	public function testGetApartments()
+	{
+		$item = HouseTable::getByPrimary(1, [
+			'select' => ['*', HouseTable::APARTMENTS]
+		])->fetchObject();
+
+		$this->assertGreaterThan(0, count($item->getApartments()));
+	}
 }

@@ -9,6 +9,7 @@ use Bitrix\Main\Entity;
 use Bitrix\Main\ORM\Data\DataManager;
 use Bitrix\Main\ORM\Event;
 use Bitrix\Main\ORM\EventResult;
+use Bitrix\Main\ORM\Fields\Relations\OneToMany;
 use Bitrix\Main\ORM\Fields\Relations\Reference;
 use Bitrix\Main\ORM\Query\Join;
 
@@ -35,6 +36,7 @@ class ApartmentTable extends DataManager
 	const HOUSE = 'HOUSE';
 	const ACTIVE = 'ACTIVE';
 	const HOUSE_ID = 'HOUSE_ID';
+	const IMAGES = 'IMAGES';
 
 	public static function getTableName(): string
 	{
@@ -66,6 +68,7 @@ class ApartmentTable extends DataManager
 				HouseTable::class,
 				Join::on('this.'.self::HOUSE_ID, 'ref.ID')
 			),
+			(new OneToMany(self::IMAGES, ApartmentTable::class, 'ENTITY'))->configureJoinType('inner'),
 		];
 	}
 

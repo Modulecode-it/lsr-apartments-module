@@ -8,6 +8,7 @@ use Bitrix\Main\Entity;
 use Bitrix\Main\Entity\DataManager;
 use Bitrix\Main\ORM\Event;
 use Bitrix\Main\ORM\EventResult;
+use Bitrix\Main\ORM\Fields\Relations\OneToMany;
 
 if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
 	die();
@@ -22,6 +23,8 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
 class HouseTable extends DataManager
 {
 	const ADDRESS = 'ADDRESS';
+	const APARTMENTS = 'APARTMENTS';
+	const IMAGES = 'IMAGES';
 
 	public static function getTableName(): string
 	{
@@ -39,6 +42,8 @@ class HouseTable extends DataManager
 				]
 			),
 			new Entity\StringField(self::ADDRESS),
+			(new OneToMany(self::APARTMENTS, ApartmentTable::class, 'HOUSE'))->configureJoinType('inner'),
+			(new OneToMany(self::IMAGES, ApartmentTable::class, 'ENTITY'))->configureJoinType('inner'),
 		];
 	}
 
