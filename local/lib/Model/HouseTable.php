@@ -19,7 +19,6 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
  * Date: 22.10.2024
  * Time: 11:25
  */
-//class HouseTable extends DataManager
 class HouseTable extends DataManager
 {
 	const ADDRESS = 'ADDRESS';
@@ -32,7 +31,7 @@ class HouseTable extends DataManager
 	public static function getMap(): array
 	{
 		return [
-			(new Entity\IntegerField('ID'))->configurePrimary()->configureAutocomplete(),
+			new Entity\IntegerField('ID', ['primary' => true, 'autocomplete' => true]),
 			new Entity\BooleanField('ACTIVE',
 				[
 					'values' => ['N', 'Y'],

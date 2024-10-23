@@ -40,7 +40,7 @@ class ApartmentTable extends DataManager
 	public static function getMap(): array
 	{
 		return [
-			(new Entity\IntegerField('ID'))->configurePrimary()->configureAutocomplete(),
+			new Entity\IntegerField('ID', ['primary' => true, 'autocomplete' => true]),
 			new Entity\BooleanField(
 				self::ACTIVE,
 				[
@@ -56,11 +56,11 @@ class ApartmentTable extends DataManager
 			]),
 			new Entity\FloatField(self::PRICE, ['required' => true]),
 			new Entity\FloatField(self::SALE_PRICE, ['nullable' => true]),
-			new Entity\IntegerField(self::HOUSE_ID),
+			new Entity\IntegerField(self::HOUSE_ID, ['required' => true]),
 			new Reference(
 				self::HOUSE,
 				HouseTable::class,
-				Join::on('this.HOUSE_ID', 'ref.ID')
+				Join::on('this.'.self::HOUSE_ID, 'ref.ID')
 			),
 		];
 	}

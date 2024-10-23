@@ -7,7 +7,8 @@
     }
   },
   "require": {
-    "wikimedia/composer-merge-plugin": "dev-master"
+    "wikimedia/composer-merge-plugin": "dev-master",
+    "beberlei/assert": "^3.3.2"
   },
   "extra": {
     "merge-plugin": {
@@ -23,5 +24,8 @@
     "allow-plugins": {
       "wikimedia/composer-merge-plugin": true
     }
+  },
+  "require-dev": {
+    "kint-php/kint": "*"
   }
 }
