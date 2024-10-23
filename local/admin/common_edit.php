@@ -40,6 +40,9 @@ if ($server->getRequestMethod() == "POST"
 ){
 	$elementToEdit = [];
 	foreach ($structureToEdit as $structureElement) {
+		if ($structureElement['CODE'] == 'ID' && !$id) {
+			continue;
+		}
 		$elementToEdit[$structureElement['CODE']] = $request->getPost($structureElement['CODE']);
 	}
 
@@ -50,6 +53,7 @@ if ($server->getRequestMethod() == "POST"
 	} else {
 		$result = $classToEdit::add($elementToEdit);
 		$id = $result->getId();
+		$elementToEdit['ID'] = $id;
 	}
 
 	if (!$result->isSuccess()) {
