@@ -24,6 +24,9 @@ $id = (int)$request->get('ID');
 $elementToEdit = array();
 $structureToEdit = [];
 foreach ($classToEdit::getMap() as $tableField) {
+	if ($tableField::class == 'Bitrix\Main\ORM\Fields\Relations\Reference') {
+		continue;
+	}
 	$structureToEdit[] = [
 		'CODE' => $tableField->getColumnName(),
 		'IS_PRIMARY' => $tableField->isPrimary(),
@@ -114,11 +117,20 @@ foreach ($structureToEdit as $structureElement) {
 		$tabControl->AddViewField($structureElement['CODE'], $structureElement['CODE'].':', $elementValue);
 	} else {
 		switch ($structureElement['TYPE']) {
-			case 'Bitrix\Main\ORM\Fields\StringField':
-				$tabControl->AddEditField($structureElement['CODE'], $structureElement['CODE'] . ':', $structureElement['IS_REQUIRED'], array('SIZE' => 40), $elementValue);
-				break;
 			case 'Bitrix\Main\ORM\Fields\BooleanField':
 				$tabControl->AddCheckBoxField($structureElement['CODE'], $structureElement['CODE'] . ':', $structureElement['IS_REQUIRED'], 'Y', $elementValue);
+				break;
+			case 'Bitrix\Main\ORM\Fields\StringField':
+			case 'Bitrix\Main\ORM\Fields\IntegerField':
+			case 'Bitrix\Main\ORM\Fields\FloatField':
+				$tabControl->AddEditField($structureElement['CODE'], $structureElement['CODE'] . ':', $structureElement['IS_REQUIRED'], array('SIZE' => 40), $elementValue);
+				break;
+			case 'Bitrix\Main\ORM\Fields\EnumField':
+				$tabControl->AddDropDownField($structureElement['CODE'], $structureElement['CODE'] . ':', $structureElement['IS_REQUIRED'], [
+					\Lsr\Model\ApartmentTable::STATUS_SALE=>\Lsr\Model\ApartmentTable::STATUS_SALE,
+					\Lsr\Model\ApartmentTable::STATUS_NOT_SALE=>\Lsr\Model\ApartmentTable::STATUS_NOT_SALE
+				],
+				$elementValue);
 				break;
 		}
 	}
