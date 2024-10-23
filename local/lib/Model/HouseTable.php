@@ -45,19 +45,10 @@ class HouseTable extends DataManager
 	// Реализация каскадного удаления
 	public static function onDelete(Event $event)
 	{
-		$result = new EventResult();
-		$primary = $event->getParameter("primary");
-
-		// Получаем все квартиры в доме
-		$apartments = ApartmentTable::getList([
-			'filter' => [ApartmentTable::HOUSE_ID => $primary['ID']],
-		]);
-
-		// Удаляем все квартиры
-		while ($apartment = $apartments->fetch()) {
-			ApartmentTable::delete($apartment['ID']);
-		}
-
-		return $result;
+		$id = $event->getParameter("primary")['ID'];
+		// Удаляем связанные квартиры
+		ApartmentTable::deleteByFilter([ApartmentTable::HOUSE_ID => $id]);
+		HouseImageTable::deleteByFilter([HouseImageTable::ENTITY_ID => $id]);
+		return new EventResult();
 	}
 }

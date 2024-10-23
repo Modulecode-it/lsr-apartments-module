@@ -22,6 +22,8 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
  */
 class ApartmentTable extends DataManager
 {
+	use TableTrait;
+
 	const STATUS_SALE = 'S';
 	const STATUS_NOT_SALE = 'N';
 	const NUMBER = 'NUMBER';
