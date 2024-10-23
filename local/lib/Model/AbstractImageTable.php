@@ -23,10 +23,12 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
  */
 
 /**
- *
+ * Абстрактный класс для прикрепления изображений к какой-то другой сущности
  */
 abstract class AbstractImageTable extends DataManager
 {
+	use TableTrait;
+
 	const ENTITY_ID = 'ENTITY_ID';
 	const ENTITY = 'ENTITY';
 	const FILE_ID = 'FILE_ID';
@@ -54,10 +56,25 @@ abstract class AbstractImageTable extends DataManager
 		];
 	}
 
+	/**
+	 * Удаляет файл при удалении записи в БД
+	 * @param Event $event
+	 * @return EventResult
+	 */
 	public static function onDelete(Event $event)
 	{
 		$fileId = $event->getParameter('object')->get(self::FILE_ID);
 		\CFile::Delete($fileId);
 		return new EventResult();
+	}
+
+	/**
+	 * Удаляет все изображения, прикрепленные к сущности.
+	 * @param int $entityId - id связанной сущности
+	 * @return void
+	 */
+	public static function deleteByEntity(int $entityId): void
+	{
+		static::deleteByFilter([self::ENTITY_ID => $entityId], self::FILE_ID);
 	}
 }

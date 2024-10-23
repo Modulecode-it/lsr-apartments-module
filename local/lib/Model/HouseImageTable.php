@@ -20,8 +20,6 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
  */
 class HouseImageTable extends AbstractImageTable
 {
-	use TableTrait;
-
 	public static function getTableName(): string
 	{
 		return 'lsr_houses_images';

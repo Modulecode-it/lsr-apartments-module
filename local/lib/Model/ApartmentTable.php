@@ -7,6 +7,8 @@ namespace Lsr\Model;
 
 use Bitrix\Main\Entity;
 use Bitrix\Main\ORM\Data\DataManager;
+use Bitrix\Main\ORM\Event;
+use Bitrix\Main\ORM\EventResult;
 use Bitrix\Main\ORM\Fields\Relations\Reference;
 use Bitrix\Main\ORM\Query\Join;
 
@@ -65,5 +67,18 @@ class ApartmentTable extends DataManager
 				Join::on('this.'.self::HOUSE_ID, 'ref.ID')
 			),
 		];
+	}
+
+	/**
+	 * Реализует каскадное удаление связанных сущностей
+	 * @param Event $event
+	 * @return EventResult
+	 */
+	public static function onDelete(Event $event)
+	{
+		$id = $event->getParameter("primary")['ID'];
+		// Удаляем связанные изображения
+		ApartmentImageTable::deleteByEntity($id);
+		return new EventResult();
 	}
 }

@@ -42,13 +42,17 @@ class HouseTable extends DataManager
 		];
 	}
 
-	// Реализация каскадного удаления
+	/**
+	 * Реализует каскадное удаление связанных сущностей
+	 * @param Event $event
+	 * @return EventResult
+	 */
 	public static function onDelete(Event $event)
 	{
 		$id = $event->getParameter("primary")['ID'];
 		// Удаляем связанные квартиры
 		ApartmentTable::deleteByFilter([ApartmentTable::HOUSE_ID => $id]);
-		HouseImageTable::deleteByFilter([HouseImageTable::ENTITY_ID => $id], HouseImageTable::FILE_ID);
+		HouseImageTable::deleteByEntity($id);
 		return new EventResult();
 	}
 }
