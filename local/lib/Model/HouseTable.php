@@ -48,7 +48,7 @@ class HouseTable extends DataManager
 		$id = $event->getParameter("primary")['ID'];
 		// Удаляем связанные квартиры
 		ApartmentTable::deleteByFilter([ApartmentTable::HOUSE_ID => $id]);
-		HouseImageTable::deleteByFilter([HouseImageTable::ENTITY_ID => $id]);
+		HouseImageTable::deleteByFilter([HouseImageTable::ENTITY_ID => $id], HouseImageTable::FILE_ID);
 		return new EventResult();
 	}
 }

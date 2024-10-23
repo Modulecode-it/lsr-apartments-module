@@ -22,15 +22,24 @@ class HouseTableTest extends TestCaseDbRollback
 		$this->assertNotNull($o);
 	}
 
-	#[NoReturn] public function testCascadeDelete()
+	#[NoReturn] public function test_delete_apartments_and_images_are_deleted()
 	{
-		$initCount = ApartmentTable::getCount();
 		$house = HouseTable::getList([
 			'order' => ['ID' => 'DESC'], // Сортировка по убыванию ID
 			'limit' => 1, // Ограничиваем результат одной записью
 		])->fetch();
+
+		$initApartmentCount = ApartmentTable::getList(['filter' => [ApartmentTable::HOUSE_ID => $house['ID']]])->getSelectedRowsCount();
+		$this->assertGreaterThan(0, $initApartmentCount);
+		$initImagesCount = HouseImageTable::getList(['filter' => [HouseImageTable::ENTITY_ID => $house['ID']]])->getSelectedRowsCount();
+		$this->assertGreaterThan(0, $initImagesCount);
+
 		HouseTable::delete($house['ID']);
-		$nowCount = ApartmentTable::getCount();
-		$this->assertLessThan($initCount, $nowCount);
+
+		$nowApartmentCount = ApartmentTable::getList(['filter' => [ApartmentTable::HOUSE_ID => $house['ID']]])->getSelectedRowsCount();
+		$this->assertEquals(0, $nowApartmentCount);
+
+		$nowImagesCount = HouseImageTable::getList(['filter' => [HouseImageTable::ENTITY_ID => $house['ID']]])->getSelectedRowsCount();
+		$this->assertEquals(0, $nowImagesCount);
 	}
 }

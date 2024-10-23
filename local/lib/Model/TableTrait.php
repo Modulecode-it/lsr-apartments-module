@@ -22,13 +22,14 @@ trait TableTrait
 	 * Удаляет все элементы таблицы, которые будут найдены по фильтру
 	 * Если ошибка - выбросит исключение
 	 * @param array $filter
+	 * @param string $primaryKey
 	 * @return void
 	 */
-	public static function deleteByFilter(array $filter): void
+	public static function deleteByFilter(array $filter, string $primaryKey = 'ID'): void
 	{
 		$list = static::getList(['filter' => $filter]);
 		while ($item = $list->fetch()) {
-			$result = static::delete($item['ID']);
+			$result = static::delete($item[$primaryKey]);
 			if (!$result->isSuccess()) {
 				throw new \LogicException("Не удален объект: " . join(", ",$result->getErrorMessages()));
 			}
