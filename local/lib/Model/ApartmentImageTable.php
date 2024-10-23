@@ -47,4 +47,11 @@ class ApartmentImageTable extends DataManager
 			),
 		];
 	}
+
+	public static function onDelete(Event $event)
+	{
+		$fileId = $event->getParameter('object')->get(self::FILE_ID);
+		\CFile::Delete($fileId);
+		return new EventResult();
+	}
 }
