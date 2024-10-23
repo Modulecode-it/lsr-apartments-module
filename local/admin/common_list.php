@@ -27,53 +27,14 @@ $filter = array();
 if (strlen($filter_active) > 0 && $filter_active != "NOT_REF")
 	$filter["ACTIVE"] = trim($filter_active);
 
-if (($ids = $lAdmin->GroupAction()) && $saleModulePermissions >= "W") {
-	if ($request->get('action_target')=='selected') {
-		$ids = array();
-		$dbRes = $classToList::getList(
-			array(
-				'select' => array('ID'),
-				'filter' => $filter,
-				'order' => array(ToUpper($by) => ToUpper($order))
-			)
-		);
-
-		while ($arResult = $dbRes->fetch())
-			$ids[] = $arResult['ID'];
-	}
-
-	foreach ($ids as $id) {
-		if ((int)$id <= 0)
-			continue;
-
-		switch ($_REQUEST['action']) {
-			case "delete":
-				$result = $classToList::delete($id);
-				if (!$result->isSuccess()) {
-					if ($result->getErrorMessages())
-						$lAdmin->AddGroupError(join(', ', $result->getErrorMessages()), $id);
-					else
-						$lAdmin->AddGroupError('Ошибка удаления записи', $id);
-				}
-				break;
-
-			case "activate":
-			case "deactivate":
-
-				$arFields = array(
-					"ACTIVE" => ($_REQUEST['action'] == 'activate') ? 'Y' : 'N'
-				);
-
-				$result = $classToList::update($id, $arFields);
-				if (!$result->isSuccess()) {
-					if ($result->getErrorMessages())
-						$lAdmin->AddGroupError(join(', ', $result->getErrorMessages()), $id);
-					else
-						$lAdmin->AddGroupError('Ошибка изменения записи', $id);
-				}
-
-				break;
-		}
+if ($request->get('action_button') == 'delete' && $request->get('ID')) {
+	$id = $request->get('ID');
+	$result = $classToList::delete($id);
+	if (!$result->isSuccess()) {
+		if ($result->getErrorMessages())
+			$lAdmin->AddGroupError(join(', ', $result->getErrorMessages()), $id);
+		else
+			$lAdmin->AddGroupError('Ошибка удаления записи', $id);
 	}
 }
 
