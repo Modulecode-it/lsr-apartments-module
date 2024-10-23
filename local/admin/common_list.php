@@ -158,6 +158,18 @@ $lAdmin->AddFooter(
 	)
 );
 
+
+$aContext = array(
+	array(
+		"TEXT" => 'Добавить',
+		"TITLE" => 'Создать новый элемент',
+		"LINK" => $editPhpUrl,
+		"ICON" => "btn_new",
+	)
+);
+$lAdmin->AddAdminContextMenu($aContext);
+
+
 $lAdmin->CheckListMode();
 
 $APPLICATION->SetTitle($titleForList);
