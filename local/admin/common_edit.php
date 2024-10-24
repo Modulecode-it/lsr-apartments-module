@@ -24,7 +24,9 @@ $id = (int)$request->get('ID');
 $elementToEdit = array();
 $structureToEdit = [];
 foreach ($classToEdit::getMap() as $tableField) {
-	if ($tableField::class == 'Bitrix\Main\ORM\Fields\Relations\Reference') {
+	if ($tableField::class == 'Bitrix\Main\ORM\Fields\Relations\Reference'
+		|| $tableField::class == 'Bitrix\Main\ORM\Fields\Relations\OneToMany'
+	) {
 		continue;
 	}
 	$structureToEdit[] = [
@@ -45,8 +47,12 @@ if ($server->getRequestMethod() == "POST"
 	foreach ($structureToEdit as $structureElement) {
 		if ($structureElement['CODE'] == 'ID' && !$id) {
 			continue;
+		} elseif ($structureElement['CODE'] == 'ACTIVE') {
+			$elementToEdit[$structureElement['CODE']] = (isset($_POST['ACTIVE']) && 'Y' == $_POST['ACTIVE'] ? 'Y' : 'N');
+			continue;
+		} else {
+			$elementToEdit[$structureElement['CODE']] = $request->getPost($structureElement['CODE']);
 		}
-		$elementToEdit[$structureElement['CODE']] = $request->getPost($structureElement['CODE']);
 	}
 
 	//todo валидация?
@@ -118,7 +124,11 @@ foreach ($structureToEdit as $structureElement) {
 	} else {
 		switch ($structureElement['TYPE']) {
 			case 'Bitrix\Main\ORM\Fields\BooleanField':
-				$tabControl->AddCheckBoxField($structureElement['CODE'], $structureElement['CODE'] . ':', $structureElement['IS_REQUIRED'], 'Y', $elementValue);
+//				$tabControl->AddCheckBoxField($structureElement['CODE'], $structureElement['CODE'] . ':', $structureElement['IS_REQUIRED'], 'Y', $elementValue == "Y");
+//				var_dump($elementValue);die();
+//				$tabControl->AddCheckBoxField($structureElement['CODE'], $structureElement['CODE'] . ':', $structureElement['IS_REQUIRED'], ['N','Y'], $elementValue == "Y");
+				$tabControl->AddCheckBoxField($structureElement['CODE'], $structureElement['CODE'] . ':', $structureElement['IS_REQUIRED'], 'Y', $elementValue == "Y");
+//				$tabControl->AddCheckBoxField($structureElement['CODE'], $structureElement['CODE'] . ':', $structureElement['IS_REQUIRED'], ['N','Y'], $elementValue);
 				break;
 			case 'Bitrix\Main\ORM\Fields\StringField':
 			case 'Bitrix\Main\ORM\Fields\IntegerField':
