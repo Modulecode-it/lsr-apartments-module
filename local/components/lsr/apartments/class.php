@@ -66,7 +66,7 @@ class CLsrApartmentsComponent extends CBitrixComponent
 	private function getPageNavigation(): PageNavigation
 	{
 		$nav = new PageNavigation("nav");
-		$nav->allowAllRecords(true) // Разрешить показывать все записи на одной странице (опционально)
+		$nav->allowAllRecords(false)
 			->setPageSize(10)
 			->initFromUri(); // Инициализируем из URI (для правильной работы с ?page=2 и т.д.)
 		$nav->setRecordCount($this->getCountApartmentsByFilter());
