@@ -14,15 +14,23 @@ $apartments = $arResult['APARTMENTS'];
 
 <div>
 	<h2>Фильтр</h2>
-	<div class="mb-3">
-		<label for="house" class="form-label">Дом</label>
-		<select class="form-select" aria-label="Выберите дом" id="house">
-			<option selected>Выберите дом</option>
-			<?php foreach ($arResult['HOUSES'] as $house): ?>
-				<option value="<?= $house->getId() ?>"><?= $house->getAddress() ?></option>
-			<?php endforeach; ?>
-		</select>
-	</div>
+	<form action="">
+		<div class="mb-3">
+			<label for="house" class="form-label">Дом</label>
+			<select class="form-select" aria-label="Выберите дом" id="house">
+				<option selected>Выберите дом</option>
+				<?php foreach ($arResult['HOUSES'] as $house): ?>
+					<option value="<?= $house->getId() ?>"><?= $house->getAddress() ?></option>
+				<?php endforeach; ?>
+			</select>
+		</div>
+		<div class="form-check">
+			<input class="form-check-input" type="checkbox" value="" id="hasSale">
+			<label class="form-check-label" for="hasSale">
+				Есть скидка
+			</label>
+		</div>
+	</form>
 </div>
 
 <?php if($apartments->count()): ?>
@@ -55,7 +63,7 @@ $apartments = $arResult['APARTMENTS'];
 		$component
 	); ?>
 <?php else:  ?>
-	<div class="alert alert-warning" role="alert">
+	<div class="alert alert-warning mt-3" role="alert">
 		Все квартиры раскупили. Но мы уже строим новые!
 	</div>
 <?php endif; ?>
