@@ -84,6 +84,14 @@ if ($server->getRequestMethod() == "POST"
 		$elementToEdit['ID'] = $id;
 	}
 
+	if ($_POST['FILE_ID']) {
+		if ($_POST['FILE_ID_del']) {
+			foreach ($_POST['FILE_ID_del'] as $keyToDel => $FILE_ID_delValue) {
+				$imagesClass::delete($_POST['FILE_ID'][$keyToDel]);
+			}
+		}
+	}
+
 	if (!$result->isSuccess()) {
 		$errorMessage .= implode("\n", $result->getErrorMessages());
 		echo $errorMessage;
@@ -168,12 +176,16 @@ foreach ($structureToEdit as $structureElement) {
 		if ($structureElement['CODE'] == \Lsr\Model\AbstractImageTable::FILE_ID) {
 			$linkedElementValues = [];
 			$linkedElementQuery = $structureElement['CLASS']::getList(array('filter' => array(\Lsr\Model\AbstractImageTable::ENTITY_ID => $id)));
+
+			$i = 0;
 			while($linkedElementCursor = $linkedElementQuery->fetch()) {
-				$linkedElementValues[] = CFile::GetByID($linkedElementCursor[$structureElement['CODE']])->Fetch()['SRC'];
+				$linkedElementValues[$structureElement['CODE']."[".$i."]"] = $linkedElementCursor[$structureElement['CODE']];
+				$i++;
 			}
 			$tabControl->BeginCustomField('FILES_CUSTOM_FIELD', 'FILES_CUSTOM_FIELD_CONTENT');
+
 			echo \Bitrix\Main\UI\FileInput::createInstance(array(
-				"name" => 'PROP',
+				"name" => 'my_files[]',
 				"description" => false,
 				"upload" => true,
 				"allowUpload" => "I",
