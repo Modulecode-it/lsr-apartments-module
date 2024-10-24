@@ -68,6 +68,10 @@ if ($server->getRequestMethod() == "POST"
 	if (!$result->isSuccess()) {
 		$errorMessage .= implode("\n", $result->getErrorMessages());
 		echo $errorMessage;
+	} else {
+		if ($request->get('save') !== null) {
+			LocalRedirect($backurl);
+		}
 	}
 }
 
