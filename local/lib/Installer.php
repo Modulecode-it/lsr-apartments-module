@@ -24,8 +24,8 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
 
 class Installer
 {
-	const HOUSES_COUNT = 1000;
-	const APARTMENTS_COUNT_IN_HOUSE = 100;
+	const HOUSES_COUNT = 100;
+	const APARTMENTS_COUNT_IN_HOUSE = 20;
 
 	/**
 	 * @throws SqlQueryException
