@@ -1,10 +1,9 @@
 <?if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();
 
-/**
- * @var array $arResult
- */
+global $APPLICATION;
 
 /**
+ * @var array $arResult
  * @var \Bitrix\Main\ORM\Objectify\Collection $collection
  */
 $collection = $arResult['COLLECTION'];
@@ -33,10 +32,7 @@ $collection = $arResult['COLLECTION'];
 		</div>
 	<?php endforeach; ?>
 
-
-	<?php
-	global $APPLICATION;
-	$APPLICATION->IncludeComponent(
+	<?php $APPLICATION->IncludeComponent(
 		'bitrix:main.pagenavigation',
 		'',
 		array(
@@ -44,10 +40,7 @@ $collection = $arResult['COLLECTION'];
 			'SEF_MODE' => 'N',
 		),
 		$component
-	);
-
-
-	?>
+	); ?>
 <?php else:  ?>
 	<div class="alert alert-warning" role="alert">
 		Все квартиры раскупили. Но мы уже строим новые!
