@@ -100,9 +100,12 @@ if ($usePageNavigation) {
 
 $headers = [];
 foreach ($classToList::getMap() as $tableField) {
-	if ($tableField::class != 'Bitrix\Main\ORM\Fields\Relations\Reference') {
-		$columName = $tableField->getColumnName();
+	if ($tableField::class == 'Bitrix\Main\ORM\Fields\Relations\Reference'
+		|| $tableField::class == 'Bitrix\Main\ORM\Fields\Relations\OneToMany'
+	) {
+		continue;
 	}
+	$columName = $tableField->getColumnName();
 	$headers[] = [
 		"id" => $columName,
 		"content" => $columName,

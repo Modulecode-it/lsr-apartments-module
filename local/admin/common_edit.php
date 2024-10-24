@@ -24,7 +24,9 @@ $id = (int)$request->get('ID');
 $elementToEdit = array();
 $structureToEdit = [];
 foreach ($classToEdit::getMap() as $tableField) {
-	if ($tableField::class == 'Bitrix\Main\ORM\Fields\Relations\Reference') {
+	if ($tableField::class == 'Bitrix\Main\ORM\Fields\Relations\Reference'
+		|| $tableField::class == 'Bitrix\Main\ORM\Fields\Relations\OneToMany'
+	) {
 		continue;
 	}
 	$structureToEdit[] = [
