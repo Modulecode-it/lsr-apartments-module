@@ -4,17 +4,30 @@ global $APPLICATION;
 
 /**
  * @var array $arResult
- * @var \Bitrix\Main\ORM\Objectify\Collection $collection
+ * @var \Bitrix\Main\ORM\Objectify\Collection $apartments
  */
-$collection = $arResult['COLLECTION'];
+$apartments = $arResult['APARTMENTS'];
 
 ?>
 
 <h1>Квартиры в продаже</h1>
 
-<?php if($collection->count()): ?>
+<div>
+	<h2>Фильтр</h2>
+	<div class="mb-3">
+		<label for="house" class="form-label">Дом</label>
+		<select class="form-select" aria-label="Выберите дом" id="house">
+			<option selected>Выберите дом</option>
+			<?php foreach ($arResult['HOUSES'] as $house): ?>
+				<option value="<?= $house->getId() ?>"><?= $house->getAddress() ?></option>
+			<?php endforeach; ?>
+		</select>
+	</div>
+</div>
+
+<?php if($apartments->count()): ?>
 	<?php /** @var Bitrix\Main\ORM\Entity $item  */ ?>
-	<?php foreach ($collection as $item): ?>
+	<?php foreach ($apartments as $item): ?>
 		<div>
 			<h4>Квартира № <?= $item->getNumber() ?></h4>
 			<? if($item->getImages()->count() > 0): ?>

@@ -3,6 +3,7 @@
 use Bitrix\Main\ORM\Objectify\Collection;
 use Bitrix\Main\UI\PageNavigation;
 use Lsr\Model\ApartmentTable;
+use Lsr\Model\HouseTable;
 
 if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();
 
@@ -15,19 +16,14 @@ class CLsrApartmentsComponent extends CBitrixComponent
 
 	public function executeComponent()
 	{
-		// Создаем объект для постраничной навигации
-		$nav = new PageNavigation("nav");
-		$nav->allowAllRecords(true) // Разрешить показывать все записи на одной странице (опционально)
-			->setPageSize(10)
-			->initFromUri(); // Инициализируем из URI (для правильной работы с ?page=2 и т.д.)
-		$nav->setRecordCount($this->getCountByFilter());
-
-		$this->arResult['COLLECTION'] = $this->getItems($nav);
+		$nav = $this->getPageNavigation();
+		$this->arResult['APARTMENTS'] = $this->filterApartments($nav);
+		$this->arResult['HOUSES'] = HouseTable::getList()->fetchCollection();
 		$this->arResult['NAV'] = $nav;
 		$this->IncludeComponentTemplate();
 	}
 
-	private function getItems(PageNavigation $nav): ?Collection
+	private function filterApartments(PageNavigation $nav): ?Collection
 	{
 		/**
 		 * Нужно выбрать еще изображения квартир. На одну квартиру их может быть больше одного.
@@ -59,8 +55,21 @@ class CLsrApartmentsComponent extends CBitrixComponent
 		])->fetchCollection();
 	}
 
-	private function getCountByFilter(): int
+	private function getCountApartmentsByFilter(): int
 	{
 		return ApartmentTable::getList(['filter' => self::FILTER,])->getSelectedRowsCount();
+	}
+
+	/**
+	 * @return PageNavigation
+	 */
+	private function getPageNavigation(): PageNavigation
+	{
+		$nav = new PageNavigation("nav");
+		$nav->allowAllRecords(true) // Разрешить показывать все записи на одной странице (опционально)
+			->setPageSize(10)
+			->initFromUri(); // Инициализируем из URI (для правильной работы с ?page=2 и т.д.)
+		$nav->setRecordCount($this->getCountApartmentsByFilter());
+		return $nav;
 	}
 }
