@@ -17,16 +17,24 @@ $apartments = $arResult['APARTMENTS'];
 	<form action="" method="get">
 		<div class="mb-3">
 			<label for="house" class="form-label">Дом</label>
-			<select class="form-select" aria-label="Выберите дом" id="house" name="house">
-				<option selected>Выберите дом</option>
+			<select class="form-select" aria-label="Выберите дом" id="house" name="HOUSE">
+				<option <?= !$arResult['FORM_DATA']['HOUSE'] ? "selected" : "" ?>>Выберите дом</option>
 				<?php foreach ($arResult['HOUSES'] as $house): ?>
-					<option value="<?= $house->getId() ?>"><?= $house->getAddress() ?></option>
+					<option value="<?= $house->getId() ?>"
+							<?= $arResult['FORM_DATA']['HOUSE'] == $house->getId() ? "selected" : "" ?>
+					><?= $house->getAddress() ?></option>
 				<?php endforeach; ?>
 			</select>
 		</div>
 		<div class="mb-3">
 			<div class="form-check">
-				<input class="form-check-input" type="checkbox" value="" id="hasSale" name="hasSale">
+				<input class="form-check-input"
+					   type="checkbox"
+					   value="1"
+					   id="hasSale"
+					   name="HAS_SALE"
+						<?= $arResult['FORM_DATA']['HAS_SALE'] ? "checked" : "" ?>
+				>
 				<label class="form-check-label" for="hasSale">
 					Есть скидка
 				</label>
