@@ -24,6 +24,9 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
 
 class Installer
 {
+	const HOUSES_COUNT = 1000;
+	const APARTMENTS_COUNT_IN_HOUSE = 100;
+
 	/**
 	 * @throws SqlQueryException
 	 * @throws SystemException
@@ -66,7 +69,7 @@ class Installer
 		$connection = Application::getConnection();
 		$connection->startTransaction();
 		try{
-			for ($i = 0; $i < 100; $i++ ) {
+			for ($i = 0; $i < self::HOUSES_COUNT; $i++ ) {
 				$this->insertHouse($i);
 			}
 			$connection->commitTransaction();
@@ -97,7 +100,7 @@ class Installer
 
 	private function insertApartments(EntityObject $house): void
 	{
-		for ($i = 0; $i < 2; $i++) {
+		for ($i = 0; $i < self::APARTMENTS_COUNT_IN_HOUSE; $i++) {
 			$apartment = ApartmentTable::getEntity()->createObject();
 			$apartment->set(ApartmentTable::ACTIVE, rand(0, 1) ? "N" : "Y");
 			$apartment->set(ApartmentTable::NUMBER, $i + 1);
