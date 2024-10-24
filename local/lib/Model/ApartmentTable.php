@@ -68,7 +68,7 @@ class ApartmentTable extends DataManager
 				HouseTable::class,
 				Join::on('this.'.self::HOUSE_ID, 'ref.ID')
 			),
-			(new OneToMany(self::IMAGES, ApartmentTable::class, 'ENTITY'))->configureJoinType('inner'),
+			(new OneToMany(self::IMAGES, ApartmentImageTable::class, 'ENTITY'))->configureJoinType('left'),
 		];
 	}
 

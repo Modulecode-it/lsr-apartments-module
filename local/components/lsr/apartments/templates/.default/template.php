@@ -25,9 +25,9 @@ $collection = $arResult['COLLECTION'];
 			<div>Адрес: <?= $item->getHouse()->getAddress() ?></div>
 
 			<div>
-<!--				--><?php //foreach ($item->getImages() as $image): ?>
-<!--					--><?php //\CFile::ShowFile($image->getFileId()) ?>
-<!--				--><?php //endforeach; ?>
+				<?php foreach ($item->getImages() as $image): ?>
+					<?= \CFile::ShowFile($image->getFileId()) ?>
+				<?php endforeach; ?>
 			</div>
 		</div>
 	<?php endforeach; ?>

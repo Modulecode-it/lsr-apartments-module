@@ -21,19 +21,40 @@ class CLsrApartmentsComponent extends CBitrixComponent
 			->initFromUri(); // Инициализируем из URI (для правильной работы с ?page=2 и т.д.)
 		$nav->setRecordCount($this->getCountByFilter());
 
-		$this->arResult['COLLECTION'] = $this->getCollection($nav);
+		$this->arResult['COLLECTION'] = $this->getItems($nav);
 		$this->arResult['NAV'] = $nav;
 		$this->IncludeComponentTemplate();
 	}
 
-	private function getCollection(PageNavigation $nav): \Bitrix\Main\ORM\Objectify\Collection
+	private function getItems(PageNavigation $nav)
 	{
-		return ApartmentTable::getList([
-			'select' => ['*', ApartmentTable::HOUSE/*, ApartmentTable::IMAGES*/],
+		/**
+		 * Нужно выбрать еще изображения квартир. На одну квартиру их может быть больше одного.
+		 * Лимит работает на уровне sql, а getList делает join.
+		 * Поэтому, получим несколько записей, которая вернет БД для одной квартиры и
+		 * фактически лимит будет выполнен неправильно.
+		 *
+		 * Поэтому сначала получим список записей основной таблицы, а потом без лимита выберем все данные.
+		 */
+
+		$order = [ApartmentTable::HOUSE_ID => 'DESC', ApartmentTable::NUMBER => 'ASC'];
+		$idsData = ApartmentTable::getList([
+			'select' => ['ID'],
 			'filter' => self::FILTER,
-			'order' => [ApartmentTable::HOUSE_ID => 'DESC', ApartmentTable::NUMBER => 'ASC'],
-			'offset' => $nav->getOffset(),              // Смещение для текущей страницы
+			'order' => $order,
+			'offset' => $nav->getOffset(),
 			'limit' => $nav->getLimit(),
+		])->fetchAll();
+
+		$ids = [];
+		foreach ($idsData as $one) {
+			$ids[] = $one['ID'];
+		}
+
+		return ApartmentTable::getList([
+			'select' => ['*', ApartmentTable::HOUSE, ApartmentTable::IMAGES],
+			'filter' => ['ID' => $ids],
+			'order' => $order,
 		])->fetchCollection();
 	}
 
