@@ -3,7 +3,7 @@ use Bitrix\Main\Application;
 use Bitrix\Main\Page;
 use Bitrix\Main\Config;
 
-if (!$classToEdit || !$backurl || !$tabName || !$tabName) {
+if (!$classToEdit || !$backurl || !$tabName || !$tabName || !$imagesClass) {
 	throw new \Exception('предполагается, что для вызова должны быть заданы переменные');
 }
 
@@ -30,10 +30,29 @@ foreach ($classToEdit::getMap() as $tableField) {
 		continue;
 	}
 	$structureToEdit[] = [
+		'REFERENCE' => false,
 		'CODE' => $tableField->getColumnName(),
 		'IS_PRIMARY' => $tableField->isPrimary(),
 		'IS_REQUIRED' => $tableField->isRequired(),
 		'TYPE' => $tableField::class
+	];
+}
+
+//картинки?
+foreach ($imagesClass::getMap() as $tableField) {
+	if ($tableField::class == 'Bitrix\Main\ORM\Fields\Relations\Reference'
+		|| $tableField::class == 'Bitrix\Main\ORM\Fields\Relations\OneToMany'
+	) {
+		continue;
+	}
+
+	$structureToEdit[] = [
+		'REFERENCE' => true,
+		'CODE' => $tableField->getColumnName(),
+		'IS_PRIMARY' => $tableField->isPrimary(),
+		'IS_REQUIRED' => $tableField->isRequired(),
+		'TYPE' => $tableField::class,
+		'CLASS' => $imagesClass
 	];
 }
 
@@ -121,30 +140,56 @@ $tabControl->Begin(array("FORM_ACTION" => $APPLICATION->GetCurPage()."?ID=".$id.
 $tabControl->BeginNextFormTab();
 
 foreach ($structureToEdit as $structureElement) {
-	$elementValue = $elementToEdit[$structureElement['CODE']];
+	if (!$structureElement['REFERENCE']) {
+		$elementValue = $elementToEdit[$structureElement['CODE']];
 
-	if ($structureElement['IS_PRIMARY']) {
-		$tabControl->AddViewField($structureElement['CODE'], $structureElement['CODE'].':', $elementValue);
+		if ($structureElement['IS_PRIMARY']) {
+			$tabControl->AddViewField($structureElement['CODE'], $structureElement['CODE'] . ':', $elementValue);
+		} else {
+			switch ($structureElement['TYPE']) {
+				case 'Bitrix\Main\ORM\Fields\BooleanField':
+					$tabControl->AddCheckBoxField($structureElement['CODE'], $structureElement['CODE'] . ':', $structureElement['IS_REQUIRED'], 'Y', $elementValue == "Y");
+					break;
+				case 'Bitrix\Main\ORM\Fields\StringField':
+				case 'Bitrix\Main\ORM\Fields\IntegerField':
+				case 'Bitrix\Main\ORM\Fields\FloatField':
+					$tabControl->AddEditField($structureElement['CODE'], $structureElement['CODE'] . ':', $structureElement['IS_REQUIRED'], array('SIZE' => 40), $elementValue);
+					break;
+				case 'Bitrix\Main\ORM\Fields\EnumField':
+					$tabControl->AddDropDownField($structureElement['CODE'], $structureElement['CODE'] . ':', $structureElement['IS_REQUIRED'], [
+						\Lsr\Model\ApartmentTable::STATUS_SALE => \Lsr\Model\ApartmentTable::STATUS_SALE,
+						\Lsr\Model\ApartmentTable::STATUS_NOT_SALE => \Lsr\Model\ApartmentTable::STATUS_NOT_SALE
+					],
+						$elementValue);
+					break;
+			}
+		}
 	} else {
-		switch ($structureElement['TYPE']) {
-			case 'Bitrix\Main\ORM\Fields\BooleanField':
-				$tabControl->AddCheckBoxField($structureElement['CODE'], $structureElement['CODE'] . ':', $structureElement['IS_REQUIRED'], 'Y', $elementValue == "Y");
-				break;
-			case 'Bitrix\Main\ORM\Fields\StringField':
-			case 'Bitrix\Main\ORM\Fields\IntegerField':
-			case 'Bitrix\Main\ORM\Fields\FloatField':
-				$tabControl->AddEditField($structureElement['CODE'], $structureElement['CODE'] . ':', $structureElement['IS_REQUIRED'], array('SIZE' => 40), $elementValue);
-				break;
-			case 'Bitrix\Main\ORM\Fields\EnumField':
-				$tabControl->AddDropDownField($structureElement['CODE'], $structureElement['CODE'] . ':', $structureElement['IS_REQUIRED'], [
-					\Lsr\Model\ApartmentTable::STATUS_SALE=>\Lsr\Model\ApartmentTable::STATUS_SALE,
-					\Lsr\Model\ApartmentTable::STATUS_NOT_SALE=>\Lsr\Model\ApartmentTable::STATUS_NOT_SALE
-				],
-				$elementValue);
-				break;
+		if ($structureElement['CODE'] == \Lsr\Model\AbstractImageTable::FILE_ID) {
+			$linkedElementValues = [];
+			$linkedElementQuery = $structureElement['CLASS']::getList(array('filter' => array(\Lsr\Model\AbstractImageTable::ENTITY_ID => $id)));
+			while($linkedElementCursor = $linkedElementQuery->fetch()) {
+				$linkedElementValues[] = CFile::GetByID($linkedElementCursor[$structureElement['CODE']])->Fetch()['SRC'];
+			}
+			$tabControl->BeginCustomField('FILES_CUSTOM_FIELD', 'FILES_CUSTOM_FIELD_CONTENT');
+			echo \Bitrix\Main\UI\FileInput::createInstance(array(
+				"name" => 'PROP',
+				"description" => false,
+				"upload" => true,
+				"allowUpload" => "I",
+				"fileDialog" => false,
+				"cloud" => false,
+				"delete" => true,
+				"maxCount" => 10,
+				"multiple" => true,
+				'edit' => false,
+				'allowUploadExt' =>false
+			))->show($linkedElementValues);
+			$tabControl->EndCustomField('FILES_CUSTOM_FIELD');
 		}
 	}
 }
+$tabControl->EndTab();
 
 $tabControl->Buttons(
 	array(

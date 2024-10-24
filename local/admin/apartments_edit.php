@@ -2,6 +2,7 @@
 require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_admin_before.php");
 
 $classToEdit = \Lsr\Model\ApartmentTable::class;
+$imagesClass = \Lsr\Model\ApartmentImageTable::class;
 $backurl = '/bitrix/admin/lsr_apartments_list.php';
 $tabName = 'Квартира';
 $tabTitle = 'Параметры:';
