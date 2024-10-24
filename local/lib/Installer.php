@@ -16,7 +16,6 @@ use Lsr\Model\ApartmentImageTable;
 use Lsr\Model\ApartmentTable;
 use Lsr\Model\HouseImageTable;
 use Lsr\Model\HouseTable;
-use Lsr\Service\Image;
 use Lsr\Service\FileService;
 
 if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
@@ -86,7 +85,7 @@ class Installer
 	private function insertHouse(int $i): void
 	{
 		$house = HouseTable::getEntity()->createObject();
-		$house->set(HouseTable::ADDRESS, 'Мой адрес ' . $i);
+		$house->set(HouseTable::ADDRESS, 'Москва, ул. Авиаторов, д. ' . $i);
 		$result = $house->save();
 		if (!$result->isSuccess()) {
 			throw new \LogicException("Сущность дома не сохранена");
