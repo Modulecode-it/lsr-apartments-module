@@ -1,5 +1,6 @@
 <?php
 
+use Bitrix\Main\ORM\Objectify\Collection;
 use Bitrix\Main\UI\PageNavigation;
 use Lsr\Model\ApartmentTable;
 
@@ -26,7 +27,7 @@ class CLsrApartmentsComponent extends CBitrixComponent
 		$this->IncludeComponentTemplate();
 	}
 
-	private function getItems(PageNavigation $nav)
+	private function getItems(PageNavigation $nav): ?Collection
 	{
 		/**
 		 * Нужно выбрать еще изображения квартир. На одну квартиру их может быть больше одного.

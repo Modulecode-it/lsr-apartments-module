@@ -18,17 +18,18 @@ $collection = $arResult['COLLECTION'];
 	<?php foreach ($collection as $item): ?>
 		<div>
 			<h4>Квартира № <?= $item->getNumber() ?></h4>
+			<? if($item->getImages()->count() > 0): ?>
+				<div>
+					<?php foreach ($item->getImages() as $image): ?>
+						<?= \CFile::ShowFile($image->getFileId(), 0, 100, 100) ?>
+					<?php endforeach; ?>
+				</div>
+			<? endif; ?>
 			<div>Стоимость: <?= $item->getPrice() ?></div>
 			<? if($item->getSalePrice()): ?>
 				<div>Стоимость со скидкой: <?= $item->getSalePrice() ?></div>
 			<? endif; ?>
 			<div>Адрес: <?= $item->getHouse()->getAddress() ?></div>
-
-			<div>
-				<?php foreach ($item->getImages() as $image): ?>
-					<?= \CFile::ShowFile($image->getFileId()) ?>
-				<?php endforeach; ?>
-			</div>
 		</div>
 	<?php endforeach; ?>
 
