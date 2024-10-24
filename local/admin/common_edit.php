@@ -124,11 +124,7 @@ foreach ($structureToEdit as $structureElement) {
 	} else {
 		switch ($structureElement['TYPE']) {
 			case 'Bitrix\Main\ORM\Fields\BooleanField':
-//				$tabControl->AddCheckBoxField($structureElement['CODE'], $structureElement['CODE'] . ':', $structureElement['IS_REQUIRED'], 'Y', $elementValue == "Y");
-//				var_dump($elementValue);die();
-//				$tabControl->AddCheckBoxField($structureElement['CODE'], $structureElement['CODE'] . ':', $structureElement['IS_REQUIRED'], ['N','Y'], $elementValue == "Y");
 				$tabControl->AddCheckBoxField($structureElement['CODE'], $structureElement['CODE'] . ':', $structureElement['IS_REQUIRED'], 'Y', $elementValue == "Y");
-//				$tabControl->AddCheckBoxField($structureElement['CODE'], $structureElement['CODE'] . ':', $structureElement['IS_REQUIRED'], ['N','Y'], $elementValue);
 				break;
 			case 'Bitrix\Main\ORM\Fields\StringField':
 			case 'Bitrix\Main\ORM\Fields\IntegerField':
