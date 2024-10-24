@@ -12,31 +12,34 @@ $apartments = $arResult['APARTMENTS'];
 
 <h1>Квартиры в продаже</h1>
 
-<div>
+<div class="bg-light p-3 mb-3">
 	<h2>Фильтр</h2>
-	<form action="">
+	<form action="" method="get">
 		<div class="mb-3">
 			<label for="house" class="form-label">Дом</label>
-			<select class="form-select" aria-label="Выберите дом" id="house">
+			<select class="form-select" aria-label="Выберите дом" id="house" name="house">
 				<option selected>Выберите дом</option>
 				<?php foreach ($arResult['HOUSES'] as $house): ?>
 					<option value="<?= $house->getId() ?>"><?= $house->getAddress() ?></option>
 				<?php endforeach; ?>
 			</select>
 		</div>
-		<div class="form-check">
-			<input class="form-check-input" type="checkbox" value="" id="hasSale">
-			<label class="form-check-label" for="hasSale">
-				Есть скидка
-			</label>
+		<div class="mb-3">
+			<div class="form-check">
+				<input class="form-check-input" type="checkbox" value="" id="hasSale" name="hasSale">
+				<label class="form-check-label" for="hasSale">
+					Есть скидка
+				</label>
+			</div>
 		</div>
+		<button type="submit" class="btn btn-primary">Submit</button>
 	</form>
 </div>
 
 <?php if($apartments->count()): ?>
 	<?php /** @var Bitrix\Main\ORM\Entity $item  */ ?>
 	<?php foreach ($apartments as $item): ?>
-		<div>
+		<div class="mb-3">
 			<h4>Квартира № <?= $item->getNumber() ?></h4>
 			<? if($item->getImages()->count() > 0): ?>
 				<div>
@@ -45,9 +48,9 @@ $apartments = $arResult['APARTMENTS'];
 					<?php endforeach; ?>
 				</div>
 			<? endif; ?>
-			<div>Стоимость: <?= $item->getPrice() ?></div>
+			<div>Стоимость: <?= $item->getPrice() ?> руб.</div>
 			<? if($item->getSalePrice()): ?>
-				<div>Стоимость со скидкой: <?= $item->getSalePrice() ?></div>
+				<div>Стоимость со скидкой: <?= $item->getSalePrice() ?> руб.</div>
 			<? endif; ?>
 			<div>Адрес: <?= $item->getHouse()->getAddress() ?></div>
 		</div>
