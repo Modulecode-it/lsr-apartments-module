@@ -3,15 +3,36 @@ IncludeTemplateLangFile(__FILE__);
 global $APPLICATION;
 global $USER;
 ?>
-	<!doctype html>
-	<html lang="en">
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<?$APPLICATION->ShowHead();?>
-		<title><?$APPLICATION->ShowTitle()?></title>
-		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-	</head>
-	<body>
-	<?$APPLICATION->ShowPanel()?>
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<?$APPLICATION->ShowHead();?>
+	<title><?$APPLICATION->ShowTitle()?></title>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+</head>
+<body>
+<?$APPLICATION->ShowPanel()?>
+<div class="container">
+	<header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
+		<a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
+
+			<svg class="bi me-2" width="140" height="45" viewBox="0 0 140 45" fill="none" xmlns="http://www.w3.org/2000/svg">
+				<g clip-path="url(#clip0_6_3463)">
+					<path fill-rule="evenodd" clip-rule="evenodd" d="M-0.000183105 13.8839L11.402 0H43.4855V31.1161L32.5169 45.0046H0.00428659V13.893H0.00875629L-0.000183105 13.8839ZM95.9763 13.8839L107.374 0H139.457V31.1161L128.489 45.0046H95.9763V13.893H95.9807L95.9763 13.8839ZM59.3837 0L47.9815 13.8839L47.9904 13.893H47.9815V45.0046H80.4985L91.4672 31.1161V0H59.3837ZM64.1808 38.7933C58.5982 38.7933 54.3877 34.4646 54.3877 28.7159V28.6564C54.3877 22.8848 58.692 18.5332 64.4043 18.5332C65.9299 18.5026 67.4434 18.8153 68.8383 19.4493C70.0215 20.0145 71.0697 20.8385 71.9089 21.8633L68.5701 25.2896L68.2885 24.9277C67.8016 24.3472 67.1971 23.8826 66.5169 23.5661C65.8368 23.2497 65.0976 23.0891 64.3507 23.0955C61.5705 23.0955 59.4742 25.4637 59.4742 28.5922V28.6472C59.4742 31.8261 61.5705 34.2218 64.3507 34.2218C65.4817 34.252 66.5888 33.8851 67.4884 33.182C67.8607 32.8812 68.2076 32.5487 68.5254 32.188L68.5522 32.1559L68.5924 32.0918L71.8195 35.3944C71.0425 36.3312 70.0991 37.1084 69.0394 37.6847C67.5329 38.4565 65.8645 38.8372 64.1808 38.7933ZM103.789 18.9456V38.3995H108.71V33.6814H111.754C116.769 33.6814 119.746 30.3513 119.746 26.073V25.9173C119.746 21.7443 116.737 18.9456 111.892 18.9456H103.789ZM111.539 29.3069H108.705V23.3567H111.508C113.716 23.3567 114.985 24.5797 114.985 26.412C114.985 28.0427 113.631 29.3069 111.539 29.3069ZM5.93069 38.3306H6.22122C6.75105 38.3265 7.27932 38.2713 7.79903 38.1656C9.07709 37.9023 10.2536 37.266 11.1871 36.3334C12.3939 35.115 13.2163 33.5713 13.7348 29.6686C14.0164 27.5203 14.1549 23.4344 14.1549 23.4344H18.8526V38.0191L23.4832 37.9778V19.0141H9.8238C9.84615 19.6554 9.84615 21.4052 9.84615 22.6007C9.8238 25.2666 9.62266 28.8578 9.10865 30.7221C8.76001 32.023 7.58895 33.5988 6.24804 33.9927H6.19887C6.11059 34.0109 6.02075 34.0201 5.93069 34.0202V38.3306Z" fill="#DF1E42"/>
+				</g>
+				<defs>
+					<clipPath id="clip0_6_3463">
+						<rect width="140" height="45" fill="white"/>
+					</clipPath>
+				</defs>
+			</svg>
+
+			<span class="fs-4">Модуль квартиры</span>
+		</a>
+	</header>
+</div>
+
+<div class="container">
 
