@@ -2,6 +2,7 @@
 use Bitrix\Main\Application;
 use Bitrix\Main\Page;
 use Bitrix\Main\Config;
+use Lsr\Service\FileService;
 
 if (!$classToEdit || !$backurl || !$tabName || !$tabName || !$imagesClass) {
 	throw new \Exception('предполагается, что для вызова должны быть заданы переменные');
@@ -88,6 +89,31 @@ if ($server->getRequestMethod() == "POST"
 		if ($_POST['FILE_ID_del']) {
 			foreach ($_POST['FILE_ID_del'] as $keyToDel => $FILE_ID_delValue) {
 				$imagesClass::delete($_POST['FILE_ID'][$keyToDel]);
+			}
+		}
+		$element = $classToEdit::getList(array('filter' => array('ID' => $id)));
+		foreach ($_POST['FILE_ID'] as $fileEntry) {
+			//новый файл?
+			if (is_array($fileEntry)) {
+				if ($fileEntry['name']) {
+					$fileName = $fileEntry['name'];
+				}
+				if ($fileEntry['tmp_name']) {
+					$imageService = new FileService();
+
+					$image = $imagesClass::getEntity()->createObject();
+					$image->set($imagesClass::ENTITY_ID, $id);
+
+					$filePath = BX_TEMPORARY_FILES_DIRECTORY . $fileEntry['tmp_name'];
+					$fileId = $imageService->saveExistingFileToBFile($filePath, $classToEdit::getTableName(), $fileName);
+					$image->set($imagesClass::FILE_ID, $fileId);
+
+					$result = $image->save();
+
+					if (!$result->isSuccess()) {
+						throw new \LogicException("Сущность изображения не сохранена. " . join(", ", $result->getErrorMessages()));
+					}
+				}
 			}
 		}
 	}
@@ -185,7 +211,7 @@ foreach ($structureToEdit as $structureElement) {
 			$tabControl->BeginCustomField('FILES_CUSTOM_FIELD', 'FILES_CUSTOM_FIELD_CONTENT');
 
 			echo \Bitrix\Main\UI\FileInput::createInstance(array(
-				"name" => 'my_files[]',
+				"name" => 'FILE_ID[]',
 				"description" => false,
 				"upload" => true,
 				"allowUpload" => "I",
