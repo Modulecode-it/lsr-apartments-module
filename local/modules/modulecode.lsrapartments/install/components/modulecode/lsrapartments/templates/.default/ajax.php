@@ -47,7 +47,7 @@ $apartments = $arResult['APARTMENTS'];
 	</div>
 	<div>
 		<?php $APPLICATION->IncludeComponent(
-			'lsr:apartments.pagenavigation',
+			'modulecode:lsrapartments.pagenavigation',
 			'',
 			['NAV_OBJECT' => $arResult['NAV'],],
 			$component

@@ -4,6 +4,6 @@ global $APPLICATION;
 $APPLICATION->SetTitle("Модуль \"квартиры\"");
 ?>
 
-<?php $APPLICATION->IncludeComponent("lsr:apartments", ""); ?>
+<?php $APPLICATION->IncludeComponent("modulecode:lsrapartments", ""); ?>
 
 <?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>

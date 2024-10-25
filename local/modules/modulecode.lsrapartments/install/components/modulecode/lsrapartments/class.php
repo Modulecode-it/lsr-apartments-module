@@ -12,7 +12,7 @@ use Lsr\Model\HouseTable;
 if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();
 
 /**
- * Компонент списка квартир с фильтрацией
+ * Компонент списка квартир с фильтрацией и постраничной навигацией, работающий без перезагрузки страницы
  */
 class ModulecodeLsrApartmentsComponent extends CBitrixComponent
 {
@@ -30,11 +30,11 @@ class ModulecodeLsrApartmentsComponent extends CBitrixComponent
 	 */
 	public function executeComponent()
 	{
-		if (!CModule::IncludeModule("modulecode.lsrapartments"))
-		{
+		if (!CModule::IncludeModule("modulecode.lsrapartments")) {
 			ShowError(GetMessage("LSRAPARTMENTS_MODULE_NOT_INSTALL"));
 			return;
 		}
+
 		$filter = $this->getFilterFromRequest();
 		$nav = $this->getPageNavigation($filter);
 		$this->arResult['APARTMENTS'] = $this->filterApartments($nav, $filter);
