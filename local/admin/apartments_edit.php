@@ -1,8 +1,8 @@
 <?php
 if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();
 
-$classToEdit = \Lsr\Model\ApartmentTable::class;
-$imagesClass = \Lsr\Model\ApartmentImageTable::class;
+$classToEdit = \Modulecode\Lsrapartments\Model\ApartmentTable::class;
+$imagesClass = \Modulecode\Lsrapartments\Model\ApartmentImageTable::class;
 $backurl = '/bitrix/admin/lsr_apartments_list.php';
 $tabName = 'Квартира';
 $tabTitle = 'Параметры:';

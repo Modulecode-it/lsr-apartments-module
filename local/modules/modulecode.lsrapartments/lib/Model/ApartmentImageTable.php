@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Lsr\Model;
+namespace Modulecode\Lsrapartments\Model;
 
 if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
 	die();

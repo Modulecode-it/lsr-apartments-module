@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 
-namespace Lsr;
+namespace Modulecode\Lsrapartments;
 
 
 if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
@@ -17,6 +17,6 @@ class Bootstrap
 		//todo загрузка приложения
 
 		//добавимся в админку
-		\Lsr\AdminInterface::init();
+		\Modulecode\Lsrapartments\AdminInterface::init();
 	}
 }

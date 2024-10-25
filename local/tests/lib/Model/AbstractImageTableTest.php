@@ -14,8 +14,9 @@ use Bitrix\Main\Application;
 use Bitrix\Main\IO\Directory;
 use Bitrix\Main\ORM\Data\DataManager;
 use Bitrix\Main\ORM\Fields\IntegerField;
-use Lsr\Service\FileService;
-use Lsr\TestCaseDbRollback;
+use Modulecode\Lsrapartments\Model\AbstractImageTable;
+use Modulecode\Lsrapartments\Service\FileService;
+use Modulecode\Lsrapartments\TestCaseDbRollback;
 
 class TestImageEntityTable extends DataManager
 {

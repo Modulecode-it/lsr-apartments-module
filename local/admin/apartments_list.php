@@ -7,7 +7,7 @@
  */
 if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();
 
-$classToList = \Lsr\Model\ApartmentTable::class;
+$classToList = \Modulecode\Lsrapartments\Model\ApartmentTable::class;
 $tableId = 'lsr_apartments';
 $titleForList = 'Список квартир';
 $editPhpUrl = 'lsr_apartments_edit.php';

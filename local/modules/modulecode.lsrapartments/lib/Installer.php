@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 
-namespace Lsr;
+namespace Modulecode\Lsrapartments;
 
 
 use Bitrix\Main\Application;
@@ -12,11 +12,11 @@ use Bitrix\Main\DB\SqlQueryException;
 use Bitrix\Main\ORM\Data\DataManager;
 use Bitrix\Main\ORM\Objectify\EntityObject;
 use Bitrix\Main\SystemException;
-use Lsr\Model\ApartmentImageTable;
-use Lsr\Model\ApartmentTable;
-use Lsr\Model\HouseImageTable;
-use Lsr\Model\HouseTable;
-use Lsr\Service\FileService;
+use Modulecode\Lsrapartments\Model\ApartmentImageTable;
+use Modulecode\Lsrapartments\Model\ApartmentTable;
+use Modulecode\Lsrapartments\Model\HouseImageTable;
+use Modulecode\Lsrapartments\Model\HouseTable;
+use Modulecode\Lsrapartments\Service\FileService;
 
 if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
 	die();

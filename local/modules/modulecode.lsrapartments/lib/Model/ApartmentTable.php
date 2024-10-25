@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 
-namespace Lsr\Model;
+namespace Modulecode\Lsrapartments\Model;
 
 use Bitrix\Main\Entity;
 use Bitrix\Main\ORM\Data\DataManager;

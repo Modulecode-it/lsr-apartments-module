@@ -1,6 +1,6 @@
 <?php
 
-namespace Lsr;
+namespace Modulecode\Lsrapartments;
 
 
 use PHPUnit\Framework\TestCase;

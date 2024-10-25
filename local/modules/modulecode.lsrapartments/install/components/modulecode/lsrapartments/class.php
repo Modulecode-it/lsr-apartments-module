@@ -6,8 +6,8 @@ use Bitrix\Main\ObjectPropertyException;
 use Bitrix\Main\ORM\Objectify\Collection;
 use Bitrix\Main\SystemException;
 use Bitrix\Main\UI\PageNavigation;
-use Lsr\Model\ApartmentTable;
-use Lsr\Model\HouseTable;
+use Modulecode\Lsrapartments\Model\ApartmentTable;
+use Modulecode\Lsrapartments\Model\HouseTable;
 
 if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();
 

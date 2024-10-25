@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 
-namespace Lsr;
+namespace Modulecode\Lsrapartments;
 
 
 if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
@@ -20,7 +20,7 @@ class AdminInterface
 {
 	public static function init(): void
 	{
-		AddEventHandler("main", "OnBuildGlobalMenu", array(\Lsr\AdminInterface::class, 'addToAdminList'));
+		AddEventHandler("main", "OnBuildGlobalMenu", array(AdminInterface::class, 'addToAdminList'));
 	}
 
 	public static function addToAdminList(&$aGlobalMenu, &$aModuleMenu) {
@@ -52,8 +52,8 @@ class AdminInterface
 	public static function getLinkToElementEditByClassString($clsString): string
 	{
 		$arMap = [
-			'\Lsr\Model\House' => '/bitrix/admin/lsr_houses_edit.php',
-			'\Lsr\Model\Apartment' => '/bitrix/admin/lsr_apartments_edit.php',
+			'\Modulecode\Lsrapartments\Model\House' => '/bitrix/admin/lsr_houses_edit.php',
+			'\Modulecode\Lsrapartments\Model\Apartment' => '/bitrix/admin/lsr_apartments_edit.php',
 		];
 		return $arMap[$clsString];
 	}

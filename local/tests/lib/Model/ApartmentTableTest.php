@@ -10,7 +10,9 @@
 namespace Lsr\Model;
 
 
-use Lsr\TestCaseDbRollback;
+use Modulecode\Lsrapartments\Model\ApartmentImageTable;
+use Modulecode\Lsrapartments\Model\ApartmentTable;
+use Modulecode\Lsrapartments\TestCaseDbRollback;
 
 class ApartmentTableTest extends TestCaseDbRollback
 {

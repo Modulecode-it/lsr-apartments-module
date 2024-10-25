@@ -11,7 +11,10 @@ namespace Lsr\Model;
 
 
 use JetBrains\PhpStorm\NoReturn;
-use Lsr\TestCaseDbRollback;
+use Modulecode\Lsrapartments\Model\ApartmentTable;
+use Modulecode\Lsrapartments\Model\HouseImageTable;
+use Modulecode\Lsrapartments\Model\HouseTable;
+use Modulecode\Lsrapartments\TestCaseDbRollback;
 
 class HouseTableTest extends TestCaseDbRollback
 {

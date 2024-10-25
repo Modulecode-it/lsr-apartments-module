@@ -1,8 +1,10 @@
 <?php
+
 use Bitrix\Main\Application;
-use Bitrix\Main\Page;
-use Bitrix\Main\Config;
-use Lsr\Service\FileService;
+use Modulecode\Lsrapartments\AdminInterface;
+use Modulecode\Lsrapartments\Model\AbstractImageTable;
+use Modulecode\Lsrapartments\Service\FileService;
+
 if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();
 
 if (!$classToEdit || !$backurl || !$tabName || !$tabName || !$imagesClass) {
@@ -55,7 +57,7 @@ foreach ($classToEditMap as $tableField) {
 		foreach ($structureToEdit as $structureToEditKey=>$structureToEditValue) {
 			if ($structureToEditValue['CODE'] == $codeToSubstitute) {
 				$structureToEdit[$structureToEditKey]['EXTERNAL'] = true;
-				$structureToEdit[$structureToEditKey]['LINK'] = \Lsr\AdminInterface::getLinkToElementEditByClassString($classToLink);
+				$structureToEdit[$structureToEditKey]['LINK'] = AdminInterface::getLinkToElementEditByClassString($classToLink);
 				unset($structureToEdit[$structureToEditKey]['IS_PRIMARY']);
 				unset($structureToEdit[$structureToEditKey]['IS_REQUIRED']);
 			}
@@ -247,9 +249,9 @@ foreach ($structureToEdit as $structureElement) {
 				$linkedElementsSelectionArray[$linkedElementsSelectionCursor['ID']] = $linkedElementsSelectionCursor['ADDRESS'] . ' [' . $linkedElementsSelectionCursor['ID'] . ']';
 			}
 			$tabControl->AddDropDownField($structureElement['CODE'], $structureElement['TITLE'] . ':', true, $linkedElementsSelectionArray, $elementToEdit[$structureElement['CODE']],['onchange="showLinkToLinkedElement()"']);
-		} elseif ($structureElement['CODE'] == \Lsr\Model\AbstractImageTable::FILE_ID) {
+		} elseif ($structureElement['CODE'] == AbstractImageTable::FILE_ID) {
 			$linkedElementValues = [];
-			$linkedElementQuery = $structureElement['CLASS']::getList(array('filter' => array(\Lsr\Model\AbstractImageTable::ENTITY_ID => $id)));
+			$linkedElementQuery = $structureElement['CLASS']::getList(array('filter' => array(AbstractImageTable::ENTITY_ID => $id)));
 
 			$i = 0;
 			while($linkedElementCursor = $linkedElementQuery->fetch()) {

@@ -10,6 +10,7 @@
 namespace Lsr;
 
 
+use Modulecode\Lsrapartments\Installer;
 use PHPUnit\Framework\TestCase;
 
 class InstallerTest extends TestCase
