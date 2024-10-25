@@ -5,8 +5,7 @@
  * Date: 22.10.2024
  * Time: 11:40
  */
-
-require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_admin_before.php");
+if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();
 
 $classToList = \Lsr\Model\HouseTable::class;
 $tableId = 'lsr_houses';

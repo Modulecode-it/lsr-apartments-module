@@ -43,7 +43,7 @@ class HouseTable extends DataManager
 			),
 			new Entity\StringField(self::ADDRESS),
 			(new OneToMany(self::APARTMENTS, ApartmentTable::class, 'HOUSE'))->configureJoinType('inner'),
-			(new OneToMany(self::IMAGES, ApartmentTable::class, 'ENTITY'))->configureJoinType('inner'),
+			(new OneToMany(self::IMAGES, HouseImageTable::class, 'ENTITY'))->configureJoinType('inner'),
 		];
 	}
 
