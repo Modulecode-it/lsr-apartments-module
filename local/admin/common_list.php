@@ -45,7 +45,10 @@ $params = array(
 	'select' => array('*'),
 	'filter' => $filter
 );
-
+if (isset($by)) {
+	$order = isset($order) ? $order : "ASC";
+	$params['order'] = array($by => $order);
+}
 $navyParams = CDBResult::GetNavParams(CAdminResult::GetNavSize($tableId));
 if ($navyParams['SHOW_ALL']) {
 	$usePageNavigation = false;
