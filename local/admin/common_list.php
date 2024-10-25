@@ -1,4 +1,6 @@
 <?php
+if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();
+
 if (!$classToList || !$tableId || !$titleForList || !$editPhpUrl) {
 	throw new \Exception('предполагается, что для вызова должны быть заданы переменные');
 }

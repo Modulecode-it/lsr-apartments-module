@@ -3,6 +3,7 @@ use Bitrix\Main\Application;
 use Bitrix\Main\Page;
 use Bitrix\Main\Config;
 use Lsr\Service\FileService;
+if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();
 
 if (!$classToEdit || !$backurl || !$tabName || !$tabName || !$imagesClass) {
 	throw new \Exception('предполагается, что для вызова должны быть заданы переменные');
