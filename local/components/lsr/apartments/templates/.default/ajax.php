@@ -29,7 +29,7 @@ $apartments = $arResult['APARTMENTS'];
 		<?php /** @var Bitrix\Main\ORM\Entity $item  */ ?>
 		<?php foreach ($apartments as $item): ?>
 			<div class="mb-3">
-				<h4>Квартира № <?= $item->getNumber() ?></h4>
+				<h4><?= GetMessage("apartment_number") ?> <?= $item->getNumber() ?></h4>
 				<? if($item->getImages()->count() > 0): ?>
 					<div>
 						<?php foreach ($item->getImages() as $image): ?>
@@ -37,11 +37,11 @@ $apartments = $arResult['APARTMENTS'];
 						<?php endforeach; ?>
 					</div>
 				<? endif; ?>
-				<div>Стоимость: <?= number_format($item->getPrice(), 0, '.', ' ') ?> руб.</div>
+				<div><?= GetMessage("price") ?>: <?= number_format($item->getPrice(), 0, '.', ' ') ?> руб.</div>
 				<? if($item->getSalePrice()): ?>
-					<div>Стоимость со скидкой: <?= number_format($item->getSalePrice(), 0, '.', ' ') ?> руб.</div>
+					<div><?= GetMessage("sale_price") ?>: <?= number_format($item->getSalePrice(), 0, '.', ' ') ?> руб.</div>
 				<? endif; ?>
-				<div>Адрес: <?= $item->getHouse()->getAddress() ?></div>
+				<div><?= GetMessage("address") ?>: <?= $item->getHouse()->getAddress() ?></div>
 			</div>
 		<?php endforeach; ?>
 	</div>

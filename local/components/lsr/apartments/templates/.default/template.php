@@ -9,16 +9,16 @@
 
 
 <div class="mb-3">
-	<h1>Квартиры в продаже</h1>
+	<h1><?= GetMessage("title") ?></h1>
 
 	<? if($arResult['APARTMENTS']->count() > 0): ?>
 		<div class="bg-light p-3 mb-3">
-			<h2>Фильтр</h2>
+			<h2><?= GetMessage("filter") ?></h2>
 			<form action="" method="get" id="js-lsr-apartments-filter">
 				<div class="mb-3">
-					<label for="house" class="form-label">Дом</label>
+					<label for="house" class="form-label"><?= GetMessage("house") ?></label>
 					<select class="form-select" aria-label="Выберите дом" id="house" name="HOUSE">
-						<option <?= !$arResult['FORM_DATA']['HOUSE'] ? "selected" : "" ?>>Любой</option>
+						<option <?= !$arResult['FORM_DATA']['HOUSE'] ? "selected" : "" ?>><?= GetMessage("anyone") ?></option>
 						<?php foreach ($arResult['HOUSES'] as $house): ?>
 							<option value="<?= $house->getId() ?>"
 								<?= $arResult['FORM_DATA']['HOUSE'] == $house->getId() ? "selected" : "" ?>
@@ -36,7 +36,7 @@
 							<?= $arResult['FORM_DATA']['HAS_SALE'] ? "checked" : "" ?>
 						>
 						<label class="form-check-label" for="hasSale">
-							Продажа со скидкой
+							<?= GetMessage("sale_checkbox") ?>
 						</label>
 					</div>
 				</div>
