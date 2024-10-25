@@ -16,12 +16,17 @@ $(document).ready(function() {
 		formData += '&nav=page-' + page; // Добавляем номер страницы к данным
 
 		$.ajax({
-			url: lsrApartmentsAjaxUrl,
+			url: lsrApartments.ajaxUrl,
 			method: 'GET',
 			data: formData, // Передаем данные фильтра и страницы
 			dataType: 'html',
 			success: function(response) {
 				listWrap.html(response);
+
+				//Изменяем адрес страницы на актуальный
+				let hasQuery = lsrApartments.pageUrl.indexOf('?') > -1;
+				let newPageUrl = lsrApartments.pageUrl + (hasQuery ? "&" : "?") + formData;
+				history.pushState({}, "", newPageUrl);
 			}
 		});
 	}

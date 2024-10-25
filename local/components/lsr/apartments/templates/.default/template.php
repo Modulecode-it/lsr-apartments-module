@@ -49,5 +49,8 @@
 </div>
 
 <script>
-	let lsrApartmentsAjaxUrl = "<?= $componentPath ?>/ajax.php";
+	let lsrApartments = {
+		ajaxUrl: "<?= $componentPath ?>/ajax.php",
+		pageUrl: "<?= $arResult['PAGE_URL'] ?>",
+	};
 </script>
