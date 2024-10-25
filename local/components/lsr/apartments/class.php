@@ -32,10 +32,17 @@ class CLsrApartmentsComponent extends CBitrixComponent
 		$filter = $this->getFilterFromRequest();
 		$nav = $this->getPageNavigation($filter);
 		$this->arResult['APARTMENTS'] = $this->filterApartments($nav, $filter);
-		$this->arResult['HOUSES'] = HouseTable::getList()->fetchCollection();
 		$this->arResult['NAV'] = $nav;
 		$this->arResult['FORM_DATA'] = $this->makeFormDataFromRequest();
-		$this->IncludeComponentTemplate($this->arParams['AJAX'] == 'Y' ? "ajax" : "");
+
+		if ($this->arParams['AJAX'] == 'Y') {
+			$this->IncludeComponentTemplate("ajax");
+			return;
+		}
+
+		//Список домов нужен только для фильтра
+		$this->arResult['HOUSES'] = HouseTable::getList()->fetchCollection();
+		$this->IncludeComponentTemplate();
 	}
 
 	/**
