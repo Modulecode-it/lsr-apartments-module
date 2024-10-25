@@ -1,5 +1,5 @@
 <?php
-if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();
+require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_admin_before.php");
 
 $classToEdit = \Modulecode\Lsrapartments\Model\ApartmentTable::class;
 $imagesClass = \Modulecode\Lsrapartments\Model\ApartmentImageTable::class;

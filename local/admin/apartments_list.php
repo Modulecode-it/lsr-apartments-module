@@ -5,7 +5,7 @@
  * Date: 22.10.2024
  * Time: 11:40
  */
-if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();
+require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_admin_before.php");
 
 $classToList = \Modulecode\Lsrapartments\Model\ApartmentTable::class;
 $tableId = 'lsr_apartments';
