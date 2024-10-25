@@ -286,7 +286,7 @@ $tabControl->Buttons(
 ?>
 <script>
     function showLinkToLinkedElement() {
-	    if (document.querySelector('[onchange="showLinkToLinkedElement()"]').length) {
+	    if (document.querySelector('[onchange="showLinkToLinkedElement()"]')) {
             if (!document.querySelector('#linkToLinkedElement')) {
                 document.querySelector('[onchange="showLinkToLinkedElement()"]').insertAdjacentHTML('afterend', '<div><a id="linkToLinkedElement" href="#">Перейти</a></div>');
             }
