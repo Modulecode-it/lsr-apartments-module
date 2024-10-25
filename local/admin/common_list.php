@@ -45,7 +45,10 @@ $params = array(
 	'select' => array('*'),
 	'filter' => $filter
 );
-
+if (isset($by)) {
+	$order = isset($order) ? $order : "ASC";
+	$params['order'] = array($by => $order);
+}
 $navyParams = CDBResult::GetNavParams(CAdminResult::GetNavSize($tableId));
 if ($navyParams['SHOW_ALL']) {
 	$usePageNavigation = false;
@@ -124,10 +127,26 @@ $lAdmin->AddHeaders($headers);
 $visibleHeaders = $lAdmin->GetVisibleHeaderColumns();
 
 while ($cursor = $dbResultList->Fetch()) {
+	if($cursor['ACTIVE'] == 'Y') {
+		$cursor['ACTIVE'] = 'Да';
+	}
+	if($cursor['ACTIVE'] == 'N') {
+		$cursor['ACTIVE'] = 'Нет';
+	}
+	if($cursor['STATUS'] == 'S') {
+		$cursor['STATUS'] = 'Продано';
+	}
+	if($cursor['STATUS'] == 'N') {
+		$cursor['STATUS'] = 'Не продано';
+	}
+
 	$row =& $lAdmin->AddRow($cursor['ID'], $cursor, $editPhpUrl."?ID=".$cursor['ID']."&lang=".LANG, 'Изменить параметры');
 
 	$row->AddField("ID", "<a href=\"".$editPhpUrl."?ID=".$cursor['ID']."&lang=".LANG."\">".$cursor['ID']."</a>");
-	$row->AddField("NAME", htmlspecialcharsbx($cursor['NAME']));
+	if ($cursor['HOUSE_ID']) {
+		$houseEditUrl = '/bitrix/admin/lsr_houses_edit.php?ID='.$cursor['ID'];
+		$row->AddField("HOUSE_ID", '<a href="' . $houseEditUrl . '">' . $cursor['ID'] . "</a>");
+	}
 
 	$arActions = [
 		[
