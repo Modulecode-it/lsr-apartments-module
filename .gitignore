@@ -6,14 +6,3 @@
 *.log
 .vscode
 .sass-cache
-/local/vendor
-
-#подключение кастомнных страниц в админке битрикса - Квартиры
-!/bitrix/
-/bitrix/*
-!/bitrix/admin/
-/bitrix/admin/*
-!/bitrix/admin/lsr_apartments_list.php
-!/bitrix/admin/lsr_apartments_edit.php
-!/bitrix/admin/lsr_houses_list.php
-!/bitrix/admin/lsr_houses_edit.php

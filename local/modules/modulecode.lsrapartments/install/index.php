@@ -50,7 +50,7 @@ Class modulecode_lsrapartments extends CModule
 
 	function InstallFiles($arParams = array())
 	{
-//		CopyDirFiles($_SERVER["DOCUMENT_ROOT"]."/local/modules/modulecode.lsrapartments/install/admin/", $_SERVER["DOCUMENT_ROOT"]."/bitrix/admin");
+		CopyDirFiles($_SERVER["DOCUMENT_ROOT"]."/local/modules/modulecode.lsrapartments/install/admin/", $_SERVER["DOCUMENT_ROOT"]."/bitrix/admin");
 //		CopyDirFiles($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/highloadblock/install/themes/", $_SERVER["DOCUMENT_ROOT"]."/bitrix/themes/", true, true);
 		CopyDirFiles($_SERVER["DOCUMENT_ROOT"]."/local/modules/modulecode.lsrapartments/install/components/", $_SERVER["DOCUMENT_ROOT"]."/local/components", true, true);
 		return true;
@@ -58,7 +58,7 @@ Class modulecode_lsrapartments extends CModule
 
 	function UnInstallFiles()
 	{
-//		DeleteDirFiles($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/highloadblock/install/admin/", $_SERVER["DOCUMENT_ROOT"]."/bitrix/admin");
+		DeleteDirFiles($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/modulecode.lsrapartments/install/admin/", $_SERVER["DOCUMENT_ROOT"]."/bitrix/admin");
 //		DeleteDirFiles($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/highloadblock/install/themes/.default/", $_SERVER["DOCUMENT_ROOT"]."/bitrix/themes/.default");
 		DeleteDirFiles($_SERVER["DOCUMENT_ROOT"]."/local/modules/modulecode.lsrapartments/install/components/", $_SERVER["DOCUMENT_ROOT"]."/local/components/modulecode.lsrapartments");
 //		DeleteDirFilesEx("/bitrix/themes/.default/icons/highloadblock/");
