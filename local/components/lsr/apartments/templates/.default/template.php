@@ -14,11 +14,11 @@
 	<? if($arResult['APARTMENTS']->count() > 0): ?>
 		<div class="bg-light p-3 mb-3">
 			<h2>Фильтр</h2>
-			<form action="" method="get" id="js-filter-form">
+			<form action="" method="get" id="js-lsr-apartments-filter">
 				<div class="mb-3">
 					<label for="house" class="form-label">Дом</label>
 					<select class="form-select" aria-label="Выберите дом" id="house" name="HOUSE">
-						<option <?= !$arResult['FORM_DATA']['HOUSE'] ? "selected" : "" ?>>Выберите дом</option>
+						<option <?= !$arResult['FORM_DATA']['HOUSE'] ? "selected" : "" ?>>Любой</option>
 						<?php foreach ($arResult['HOUSES'] as $house): ?>
 							<option value="<?= $house->getId() ?>"
 								<?= $arResult['FORM_DATA']['HOUSE'] == $house->getId() ? "selected" : "" ?>
@@ -36,15 +36,14 @@
 							<?= $arResult['FORM_DATA']['HAS_SALE'] ? "checked" : "" ?>
 						>
 						<label class="form-check-label" for="hasSale">
-							Есть скидка
+							Продажа со скидкой
 						</label>
 					</div>
 				</div>
-				<button type="submit" class="btn btn-primary">Submit</button>
 			</form>
 		</div>
 	<? endif; ?>
-	<div id="js-lsr-apartments">
+	<div id="js-lsr-apartments-list">
 		<?php require 'ajax.php' ?>
 	</div>
 </div>
