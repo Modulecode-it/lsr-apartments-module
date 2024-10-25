@@ -130,7 +130,10 @@ while ($cursor = $dbResultList->Fetch()) {
 	$row =& $lAdmin->AddRow($cursor['ID'], $cursor, $editPhpUrl."?ID=".$cursor['ID']."&lang=".LANG, 'Изменить параметры');
 
 	$row->AddField("ID", "<a href=\"".$editPhpUrl."?ID=".$cursor['ID']."&lang=".LANG."\">".$cursor['ID']."</a>");
-	$row->AddField("NAME", htmlspecialcharsbx($cursor['NAME']));
+	if ($cursor['HOUSE_ID']) {
+		$houseEditUrl = '/bitrix/admin/lsr_houses_edit.php?ID='.$cursor['ID'];
+		$row->AddField("HOUSE_ID", '<a href="' . $houseEditUrl . '">' . $cursor['ID'] . "</a>");
+	}
 
 	$arActions = [
 		[
