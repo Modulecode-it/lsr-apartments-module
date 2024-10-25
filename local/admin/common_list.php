@@ -108,9 +108,10 @@ foreach ($classToList::getMap() as $tableField) {
 		continue;
 	}
 	$columName = $tableField->getColumnName();
+	$title = $tableField->getTitle();
 	$headers[] = [
 		"id" => $columName,
-		"content" => $columName,
+		"content" => $title,
 		"sort" => $columName,
 		"default" => true
 	];
