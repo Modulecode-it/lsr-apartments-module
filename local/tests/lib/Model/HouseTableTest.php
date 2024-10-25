@@ -7,7 +7,7 @@
  * Time: 11:51
  */
 
-namespace Lsr\Model;
+namespace Modulecode\Lsrapartments\Model;
 
 
 use JetBrains\PhpStorm\NoReturn;
@@ -18,10 +18,10 @@ use Modulecode\Lsrapartments\TestCaseDbRollback;
 
 class HouseTableTest extends TestCaseDbRollback
 {
-	public function testGetList()
+	public function testGetByPrimary()
 	{
 		$ht = new HouseTable();
-		$o = $ht::getByPrimary(0)->fetchObject();
+		$o = $ht::getByPrimary(1)->fetchObject();
 		$this->assertNotNull($o);
 	}
 

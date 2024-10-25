@@ -7,7 +7,7 @@
  * Time: 11:07
  */
 
-namespace Lsr;
+namespace Modulecode\Lsrapartments;
 
 
 use Modulecode\Lsrapartments\Installer;

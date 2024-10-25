@@ -7,7 +7,7 @@
  * Time: 20:04
  */
 
-namespace Lsr\Model;
+namespace Modulecode\Lsrapartments\Model;
 
 
 use Modulecode\Lsrapartments\Model\ApartmentImageTable;

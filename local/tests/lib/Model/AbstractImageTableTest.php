@@ -7,7 +7,7 @@
  * Time: 13:08
  */
 
-namespace Lsr\Model;
+namespace Modulecode\Lsrapartments\Model;
 
 
 use Bitrix\Main\Application;
