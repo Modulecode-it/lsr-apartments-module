@@ -32,13 +32,19 @@ foreach ($classToEditMap as $tableField) {
 	) {
 		continue;
 	}
-	$structureToEdit[] = [
+
+	$tableFieldData = [
 		'EXTERNAL' => false,
 		'CODE' => $tableField->getColumnName(),
 		'IS_PRIMARY' => $tableField->isPrimary(),
 		'IS_REQUIRED' => $tableField->isRequired(),
+		'TITLE' => $tableField->getTitle(),
 		'TYPE' => $tableField::class
 	];
+	if ($tableField::class == 'Bitrix\Main\ORM\Fields\EnumField') {
+		$tableFieldData['ENUMS_MAP'] = $tableField->getValues();
+	}
+	$structureToEdit[] = $tableFieldData;
 }
 //а вдруг если какое-то свойство используется как референс на другой объект.
 foreach ($classToEditMap as $tableField) {
@@ -201,19 +207,15 @@ foreach ($structureToEdit as $structureElement) {
 		} else {
 			switch ($structureElement['TYPE']) {
 				case 'Bitrix\Main\ORM\Fields\BooleanField':
-					$tabControl->AddCheckBoxField($structureElement['CODE'], $structureElement['CODE'] . ':', $structureElement['IS_REQUIRED'], 'Y', $elementValue == "Y");
+					$tabControl->AddCheckBoxField($structureElement['CODE'], $structureElement['TITLE'] . ':', $structureElement['IS_REQUIRED'], 'Y', $elementValue == "Y");
 					break;
 				case 'Bitrix\Main\ORM\Fields\StringField':
 				case 'Bitrix\Main\ORM\Fields\IntegerField':
 				case 'Bitrix\Main\ORM\Fields\FloatField':
-					$tabControl->AddEditField($structureElement['CODE'], $structureElement['CODE'] . ':', $structureElement['IS_REQUIRED'], array('SIZE' => 40), $elementValue);
+					$tabControl->AddEditField($structureElement['CODE'], $structureElement['TITLE'] . ':', $structureElement['IS_REQUIRED'], array('SIZE' => 40), $elementValue);
 					break;
 				case 'Bitrix\Main\ORM\Fields\EnumField':
-					$tabControl->AddDropDownField($structureElement['CODE'], $structureElement['CODE'] . ':', $structureElement['IS_REQUIRED'], [
-						\Lsr\Model\ApartmentTable::STATUS_SALE => \Lsr\Model\ApartmentTable::STATUS_SALE,
-						\Lsr\Model\ApartmentTable::STATUS_NOT_SALE => \Lsr\Model\ApartmentTable::STATUS_NOT_SALE
-					],
-						$elementValue);
+					$tabControl->AddDropDownField($structureElement['CODE'], $structureElement['TITLE'] . ':', $structureElement['IS_REQUIRED'],array_flip($structureElement['ENUMS_MAP']),$elementValue);
 					break;
 			}
 		}
@@ -221,14 +223,14 @@ foreach ($structureToEdit as $structureElement) {
 		if ($structureElement['LINK']) {
 			if ($elementToEdit) {
 				$hrefToLinkedElement = $structureElement['LINK'] . '?ID=' . $elementToEdit[$structureElement['CODE']];
-				$tabControl->AddViewField($structureElement['CODE'], $structureElement['CODE'] . ':', '<a href="' . $hrefToLinkedElement . '">' . $elementToEdit[$structureElement['CODE']] . '</a>');
+				$tabControl->AddViewField($structureElement['CODE'], $structureElement['TITLE'] . ':', '<a href="' . $hrefToLinkedElement . '">' . $elementToEdit[$structureElement['CODE']] . '</a>');
 			} else {
 				$linkedElementsSelectionQuery = ($classToLink.'Table')::getList(array('filter' => array()));
 				$linkedElementsSelectionArray = [];
 				while ($linkedElementsSelectionCursor = $linkedElementsSelectionQuery->fetch()) {
 					$linkedElementsSelectionArray[$linkedElementsSelectionCursor['ID']] = $linkedElementsSelectionCursor['ADDRESS'] . ' [' . $linkedElementsSelectionCursor['ID'] . ']';
 				}
-				$tabControl->AddDropDownField($structureElement['CODE'], $structureElement['CODE'] . ':', true, $linkedElementsSelectionArray, $elementValue);
+				$tabControl->AddDropDownField($structureElement['CODE'], $structureElement['TITLE'] . ':', true, $linkedElementsSelectionArray, $elementValue);
 			}
 		} elseif ($structureElement['CODE'] == \Lsr\Model\AbstractImageTable::FILE_ID) {
 			$linkedElementValues = [];

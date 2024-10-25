@@ -52,17 +52,42 @@ class ApartmentTable extends DataManager
 				[
 					'values' => ['N', 'Y'],
 					'default_value' => 'Y',
+					'title' => 'Активность'
 				]
 			),
-			new Entity\IntegerField(self::NUMBER, ['required' => true]),
+			new Entity\IntegerField(self::NUMBER,
+				[
+					'required' => true,
+					'title' => 'Номер'
+				]
+			),
 			new Entity\EnumField(self::STATUS, [
-				'values' => [self::STATUS_SALE, self::STATUS_NOT_SALE],
+				'values' => [
+					'продана'=>self::STATUS_SALE,
+					'не продана'=>self::STATUS_NOT_SALE
+				],
 				'required' => true,
-				'default_value' => self::STATUS_SALE
+				'default_value' => self::STATUS_SALE,
+				'title' => 'Статус'
 			]),
-			new Entity\FloatField(self::PRICE, ['required' => true]),
-			new Entity\FloatField(self::SALE_PRICE, ['nullable' => true]),
-			new Entity\IntegerField(self::HOUSE_ID, ['required' => true]),
+			new Entity\FloatField(self::PRICE,
+				[
+					'required' => true,
+					'title' => 'Стоимость'
+				]
+			),
+			new Entity\FloatField(self::SALE_PRICE,
+				[
+					'nullable' => true,
+					'title' => 'Стоимость со скидкой'
+				]
+			),
+			new Entity\IntegerField(self::HOUSE_ID,
+				[
+					'required' => true,
+					'title' => 'Дом'
+				]
+			),
 			new Reference(
 				self::HOUSE,
 				HouseTable::class,

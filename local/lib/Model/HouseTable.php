@@ -39,9 +39,10 @@ class HouseTable extends DataManager
 				[
 					'values' => ['N', 'Y'],
 					'default_value' => 'Y',
+					'title' => 'Активность'
 				]
 			),
-			new Entity\StringField(self::ADDRESS),
+			new Entity\StringField(self::ADDRESS, ['title' => 'Адрес']),
 			(new OneToMany(self::APARTMENTS, ApartmentTable::class, 'HOUSE'))->configureJoinType('inner'),
 			(new OneToMany(self::IMAGES, HouseImageTable::class, 'ENTITY'))->configureJoinType('inner'),
 		];
