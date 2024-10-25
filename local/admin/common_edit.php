@@ -24,20 +24,38 @@ $id = (int)$request->get('ID');
 
 $elementToEdit = array();
 $structureToEdit = [];
-foreach ($classToEdit::getMap() as $tableField) {
+$classToEditMap = $classToEdit::getMap();
+foreach ($classToEditMap as $tableField) {
 	if ($tableField::class == 'Bitrix\Main\ORM\Fields\Relations\Reference'
 		|| $tableField::class == 'Bitrix\Main\ORM\Fields\Relations\OneToMany'
 	) {
 		continue;
 	}
 	$structureToEdit[] = [
-		'REFERENCE' => false,
+		'EXTERNAL' => false,
 		'CODE' => $tableField->getColumnName(),
 		'IS_PRIMARY' => $tableField->isPrimary(),
 		'IS_REQUIRED' => $tableField->isRequired(),
 		'TYPE' => $tableField::class
 	];
 }
+//а вдруг если какое-то свойство используется как референс на другой объект.
+foreach ($classToEditMap as $tableField) {
+	if ($tableField::class == 'Bitrix\Main\ORM\Fields\Relations\Reference') {
+		$classToLink = $tableField->getDataType();
+		$linkStructure = $tableField->getElementals();
+		$codeToSubstitute = array_keys($linkStructure)[0];
+		foreach ($structureToEdit as $structureToEditKey=>$structureToEditValue) {
+			if ($structureToEditValue['CODE'] == $codeToSubstitute) {
+				$structureToEdit[$structureToEditKey]['EXTERNAL'] = true;
+				$structureToEdit[$structureToEditKey]['LINK'] = \Lsr\AdminInterface::getLinkToElementEditByClassString($classToLink);
+				unset($structureToEdit[$structureToEditKey]['IS_PRIMARY']);
+				unset($structureToEdit[$structureToEditKey]['IS_REQUIRED']);
+			}
+		}
+	}
+}
+
 
 //картинки?
 foreach ($imagesClass::getMap() as $tableField) {
@@ -48,7 +66,7 @@ foreach ($imagesClass::getMap() as $tableField) {
 	}
 
 	$structureToEdit[] = [
-		'REFERENCE' => true,
+		'EXTERNAL' => true,
 		'CODE' => $tableField->getColumnName(),
 		'IS_PRIMARY' => $tableField->isPrimary(),
 		'IS_REQUIRED' => $tableField->isRequired(),
@@ -174,7 +192,7 @@ $tabControl->Begin(array("FORM_ACTION" => $APPLICATION->GetCurPage()."?ID=".$id.
 $tabControl->BeginNextFormTab();
 
 foreach ($structureToEdit as $structureElement) {
-	if (!$structureElement['REFERENCE']) {
+	if (!$structureElement['EXTERNAL']) {
 		$elementValue = $elementToEdit[$structureElement['CODE']];
 
 		if ($structureElement['IS_PRIMARY']) {
@@ -199,7 +217,10 @@ foreach ($structureToEdit as $structureElement) {
 			}
 		}
 	} else {
-		if ($structureElement['CODE'] == \Lsr\Model\AbstractImageTable::FILE_ID) {
+		if ($structureElement['LINK']) {
+			$hrefToLinkedElement = $structureElement['LINK'].'?ID='.$elementToEdit[$structureElement['CODE']];
+			$tabControl->AddViewField($structureElement['CODE'], $structureElement['CODE'] . ':', '<a href="'.$hrefToLinkedElement.'">'.$elementToEdit[$structureElement['CODE']].'</a>');
+		} elseif ($structureElement['CODE'] == \Lsr\Model\AbstractImageTable::FILE_ID) {
 			$linkedElementValues = [];
 			$linkedElementQuery = $structureElement['CLASS']::getList(array('filter' => array(\Lsr\Model\AbstractImageTable::ENTITY_ID => $id)));
 

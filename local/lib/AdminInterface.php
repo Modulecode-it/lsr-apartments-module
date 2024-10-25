@@ -48,4 +48,13 @@ class AdminInterface
 
 		$aModuleMenu[] = $aMenu;
 	}
+
+	public static function getLinkToElementEditByClassString($clsString): string
+	{
+		$arMap = [
+			'\Lsr\Model\House' => '/local/admin/houses_edit.php',
+			'\Lsr\Model\Apartment' => '/local/admin/apartments_edit.php',
+		];
+		return $arMap[$clsString];
+	}
 }
