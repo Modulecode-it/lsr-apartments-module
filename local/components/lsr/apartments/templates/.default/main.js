@@ -1,29 +1,32 @@
 $(document).ready(function() {
-	console.log(lsrApartmentsAjaxUrl);
+	let listWrap = $("#js-lsr-apartments-list");
+	let filter = $("#js-lsr-apartments-filter");
 
-	$("#js-filter-form").on('submit', function(event) {
-		event.preventDefault(); // Отменяем стандартное действие формы
+	filter.on("change", ":input", function() {
 		loadProducts(1); // Загружаем товары с первой страницы
 	});
 
-	$("#js-lsr-apartments ").on("click", ".bx-pagination button", function(event) {
-		event.preventDefault(); // Отменяем стандартное действие
-		let page = $(this).data('page');
-		loadProducts(page);
+	listWrap.on("click", ".bx-pagination button", function() {
+		loadProducts($(this).data('page'));
 	});
 
 	function loadProducts(page = 1) {
 		// Собираем данные формы
-		let formData = $('#js-filter-form').serialize();
+		let formData = filter.serialize();
 		formData += '&nav=page-' + page; // Добавляем номер страницы к данным
 
 		$.ajax({
-			url: lsrApartmentsAjaxUrl,
+			url: lsrApartments.ajaxUrl,
 			method: 'GET',
 			data: formData, // Передаем данные фильтра и страницы
 			dataType: 'html',
 			success: function(response) {
-				$('#js-lsr-apartments').html(response);
+				listWrap.html(response);
+
+				//Изменяем адрес страницы на актуальный
+				let hasQuery = lsrApartments.pageUrl.indexOf('?') > -1;
+				let newPageUrl = lsrApartments.pageUrl + (hasQuery ? "&" : "?") + formData;
+				history.pushState({}, "", newPageUrl);
 			}
 		});
 	}

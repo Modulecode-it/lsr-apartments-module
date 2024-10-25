@@ -24,44 +24,12 @@ $apartments = $arResult['APARTMENTS'];
 
 ?>
 
-<div class="bg-light p-3 mb-3">
-	<h2>Фильтр</h2>
-	<form action="" method="get" id="js-filter-form">
-		<div class="mb-3">
-			<label for="house" class="form-label">Дом</label>
-			<select class="form-select" aria-label="Выберите дом" id="house" name="HOUSE">
-				<option <?= !$arResult['FORM_DATA']['HOUSE'] ? "selected" : "" ?>>Выберите дом</option>
-				<?php foreach ($arResult['HOUSES'] as $house): ?>
-					<option value="<?= $house->getId() ?>"
-						<?= $arResult['FORM_DATA']['HOUSE'] == $house->getId() ? "selected" : "" ?>
-					><?= $house->getAddress() ?></option>
-				<?php endforeach; ?>
-			</select>
-		</div>
-		<div class="mb-3">
-			<div class="form-check">
-				<input class="form-check-input"
-					   type="checkbox"
-					   value="1"
-					   id="hasSale"
-					   name="HAS_SALE"
-					<?= $arResult['FORM_DATA']['HAS_SALE'] ? "checked" : "" ?>
-				>
-				<label class="form-check-label" for="hasSale">
-					Есть скидка
-				</label>
-			</div>
-		</div>
-		<button type="submit" class="btn btn-primary">Submit</button>
-	</form>
-</div>
-
 <?php if($apartments->count()): ?>
 	<div>
 		<?php /** @var Bitrix\Main\ORM\Entity $item  */ ?>
 		<?php foreach ($apartments as $item): ?>
 			<div class="mb-3">
-				<h4>Квартира № <?= $item->getNumber() ?></h4>
+				<h4><?= GetMessage("apartment_number") ?> <?= $item->getNumber() ?></h4>
 				<? if($item->getImages()->count() > 0): ?>
 					<div>
 						<?php foreach ($item->getImages() as $image): ?>
@@ -69,11 +37,11 @@ $apartments = $arResult['APARTMENTS'];
 						<?php endforeach; ?>
 					</div>
 				<? endif; ?>
-				<div>Стоимость: <?= number_format($item->getPrice(), 0, '.', ' ') ?> руб.</div>
+				<div><?= GetMessage("price") ?>: <?= number_format($item->getPrice(), 0, '.', ' ') ?> руб.</div>
 				<? if($item->getSalePrice()): ?>
-					<div>Стоимость со скидкой: <?= number_format($item->getSalePrice(), 0, '.', ' ') ?> руб.</div>
+					<div><?= GetMessage("sale_price") ?>: <?= number_format($item->getSalePrice(), 0, '.', ' ') ?> руб.</div>
 				<? endif; ?>
-				<div>Адрес: <?= $item->getHouse()->getAddress() ?></div>
+				<div><?= GetMessage("address") ?>: <?= $item->getHouse()->getAddress() ?></div>
 			</div>
 		<?php endforeach; ?>
 	</div>
@@ -81,10 +49,7 @@ $apartments = $arResult['APARTMENTS'];
 		<?php $APPLICATION->IncludeComponent(
 			'lsr:apartments.pagenavigation',
 			'',
-			array(
-				'NAV_OBJECT' => $arResult['NAV'],
-				'SEF_MODE' => 'N',
-			),
+			['NAV_OBJECT' => $arResult['NAV'],],
 			$component
 		); ?>
 	</div>
