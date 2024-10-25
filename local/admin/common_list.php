@@ -127,6 +127,19 @@ $lAdmin->AddHeaders($headers);
 $visibleHeaders = $lAdmin->GetVisibleHeaderColumns();
 
 while ($cursor = $dbResultList->Fetch()) {
+	if($cursor['ACTIVE'] == 'Y') {
+		$cursor['ACTIVE'] = 'Да';
+	}
+	if($cursor['ACTIVE'] == 'N') {
+		$cursor['ACTIVE'] = 'Нет';
+	}
+	if($cursor['STATUS'] == 'S') {
+		$cursor['STATUS'] = 'Продано';
+	}
+	if($cursor['STATUS'] == 'N') {
+		$cursor['STATUS'] = 'Не продано';
+	}
+
 	$row =& $lAdmin->AddRow($cursor['ID'], $cursor, $editPhpUrl."?ID=".$cursor['ID']."&lang=".LANG, 'Изменить параметры');
 
 	$row->AddField("ID", "<a href=\"".$editPhpUrl."?ID=".$cursor['ID']."&lang=".LANG."\">".$cursor['ID']."</a>");
