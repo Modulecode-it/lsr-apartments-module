@@ -219,8 +219,17 @@ foreach ($structureToEdit as $structureElement) {
 		}
 	} else {
 		if ($structureElement['LINK']) {
-			$hrefToLinkedElement = $structureElement['LINK'].'?ID='.$elementToEdit[$structureElement['CODE']];
-			$tabControl->AddViewField($structureElement['CODE'], $structureElement['CODE'] . ':', '<a href="'.$hrefToLinkedElement.'">'.$elementToEdit[$structureElement['CODE']].'</a>');
+			if ($elementToEdit) {
+				$hrefToLinkedElement = $structureElement['LINK'] . '?ID=' . $elementToEdit[$structureElement['CODE']];
+				$tabControl->AddViewField($structureElement['CODE'], $structureElement['CODE'] . ':', '<a href="' . $hrefToLinkedElement . '">' . $elementToEdit[$structureElement['CODE']] . '</a>');
+			} else {
+				$linkedElementsSelectionQuery = ($classToLink.'Table')::getList(array('filter' => array()));
+				$linkedElementsSelectionArray = [];
+				while ($linkedElementsSelectionCursor = $linkedElementsSelectionQuery->fetch()) {
+					$linkedElementsSelectionArray[$linkedElementsSelectionCursor['ID']] = $linkedElementsSelectionCursor['ADDRESS'] . ' [' . $linkedElementsSelectionCursor['ID'] . ']';
+				}
+				$tabControl->AddDropDownField($structureElement['CODE'], $structureElement['CODE'] . ':', true, $linkedElementsSelectionArray, $elementValue);
+			}
 		} elseif ($structureElement['CODE'] == \Lsr\Model\AbstractImageTable::FILE_ID) {
 			$linkedElementValues = [];
 			$linkedElementQuery = $structureElement['CLASS']::getList(array('filter' => array(\Lsr\Model\AbstractImageTable::ENTITY_ID => $id)));
