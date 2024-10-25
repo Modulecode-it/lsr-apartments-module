@@ -84,6 +84,14 @@ foreach ($imagesClass::getMap() as $tableField) {
 
 $errorMessage = '';
 
+if ($server->getRequestMethod() == "GET"
+	&& !empty($_GET['ID'])
+	&& $_GET['delete'] == 'Y'
+) {
+	$classToEdit::delete($id);
+	LocalRedirect($backurl);
+}
+
 if ($server->getRequestMethod() == "POST"
 	&& ($request->get('save') !== null || $request->get('apply') !== null)
 	&& check_bitrix_sessid()
@@ -180,6 +188,15 @@ $aMenu = array(
 		"ICON" => "btn_list"
 	)
 );
+if ($id > 0) {
+
+	$aMenu[] = array(
+		"TEXT"	=> 'Удалить',
+		"TITLE"	=> 'Удалить элемент',
+		"ICON"	=> "btn_delete",
+		"LINK"	=> "javascript:if(confirm('Удалить?'))window.location=window.location.origin + window.location.pathname + '?ID=".$id."&delete=Y'"
+	);
+}
 
 $contextMenu = new CAdminContextMenu($aMenu);
 $contextMenu->Show();
