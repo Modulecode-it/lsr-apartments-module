@@ -258,6 +258,7 @@ foreach ($structureToEdit as $structureElement) {
 			}
 			$tabControl->BeginCustomField('FILES_CUSTOM_FIELD', 'FILES_CUSTOM_FIELD_CONTENT');
 
+			echo 'Изображение:';
 			echo \Bitrix\Main\UI\FileInput::createInstance(array(
 				"name" => 'FILE_ID[]',
 				"description" => false,
