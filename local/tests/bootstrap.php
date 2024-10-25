@@ -30,21 +30,7 @@ global $DBName;
 global $DBLogin;
 global $DBPassword;
 
-define ('IS_UCHMET_ADAPTIVE_TEMPLATE', true);
 require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/modules/main/include/prolog_before.php");
 
 @set_time_limit(0);
 @ignore_user_abort(true);
-
-
-/**
- * Если сайт, в котором находится скрипт, имеет адрес uchmag.dev1.devs.uchmag.ru, то вернет dev1
- * @param string $docRootDir
- * @return string
- */
-function sandboxDirName($docRootDir)
-{
-	$sandboxDir = $docRootDir . '/..';
-	$sandboxRealDir =  realpath($sandboxDir);
-	return basename($sandboxRealDir);
-}
