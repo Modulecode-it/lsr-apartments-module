@@ -14,7 +14,7 @@ if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();
 /**
  * Компонент списка квартир с фильтрацией
  */
-class CLsrApartmentsComponent extends CBitrixComponent
+class ModulecodeLsrApartmentsComponent extends CBitrixComponent
 {
 	public function onPrepareComponentParams($arParams)
 	{
@@ -30,6 +30,11 @@ class CLsrApartmentsComponent extends CBitrixComponent
 	 */
 	public function executeComponent()
 	{
+		if (!CModule::IncludeModule("modulecode.lsrapartments"))
+		{
+			ShowError(GetMessage("LSRAPARTMENTS_MODULE_NOT_INSTALL"));
+			return;
+		}
 		$filter = $this->getFilterFromRequest();
 		$nav = $this->getPageNavigation($filter);
 		$this->arResult['APARTMENTS'] = $this->filterApartments($nav, $filter);

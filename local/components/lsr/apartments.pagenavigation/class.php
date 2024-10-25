@@ -8,7 +8,7 @@ if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true)
  * Адаптация компонента bitrix:main.pagenavigation
  * для показа постраничной навигации в режиме без перезагрузки страницы
  */
-class ApartmentsPageNavigationComponent extends CBitrixComponent
+class ModulecodeLsrApartmentsPageNavigationComponent extends CBitrixComponent
 {
 	public function onPrepareComponentParams($arParams)
 	{
