@@ -198,6 +198,7 @@ $tabControl->EndEpilogContent();
 $tabControl->Begin(array("FORM_ACTION" => $APPLICATION->GetCurPage()."?ID=".$id."&lang=".$lang));
 $tabControl->BeginNextFormTab();
 
+$externalLinkToPassForJs = '';
 foreach ($structureToEdit as $structureElement) {
 	if (!$structureElement['EXTERNAL']) {
 		$elementValue = $elementToEdit[$structureElement['CODE']];
@@ -221,17 +222,14 @@ foreach ($structureToEdit as $structureElement) {
 		}
 	} else {
 		if ($structureElement['LINK']) {
-			if ($elementToEdit) {
-				$hrefToLinkedElement = $structureElement['LINK'] . '?ID=' . $elementToEdit[$structureElement['CODE']];
-				$tabControl->AddViewField($structureElement['CODE'], $structureElement['TITLE'] . ':', '<a href="' . $hrefToLinkedElement . '">' . $elementToEdit[$structureElement['CODE']] . '</a>');
-			} else {
-				$linkedElementsSelectionQuery = ($classToLink.'Table')::getList(array('filter' => array()));
-				$linkedElementsSelectionArray = [];
-				while ($linkedElementsSelectionCursor = $linkedElementsSelectionQuery->fetch()) {
-					$linkedElementsSelectionArray[$linkedElementsSelectionCursor['ID']] = $linkedElementsSelectionCursor['ADDRESS'] . ' [' . $linkedElementsSelectionCursor['ID'] . ']';
-				}
-				$tabControl->AddDropDownField($structureElement['CODE'], $structureElement['TITLE'] . ':', true, $linkedElementsSelectionArray, $elementValue);
+			$externalLinkToPassForJs = $structureElement['LINK'];
+
+			$linkedElementsSelectionQuery = ($classToLink.'Table')::getList(array('filter' => array()));
+			$linkedElementsSelectionArray = [];
+			while ($linkedElementsSelectionCursor = $linkedElementsSelectionQuery->fetch()) {
+				$linkedElementsSelectionArray[$linkedElementsSelectionCursor['ID']] = $linkedElementsSelectionCursor['ADDRESS'] . ' [' . $linkedElementsSelectionCursor['ID'] . ']';
 			}
+			$tabControl->AddDropDownField($structureElement['CODE'], $structureElement['TITLE'] . ':', true, $linkedElementsSelectionArray, $elementToEdit[$structureElement['CODE']],['onchange="showLinkToLinkedElement()"']);
 		} elseif ($structureElement['CODE'] == \Lsr\Model\AbstractImageTable::FILE_ID) {
 			$linkedElementValues = [];
 			$linkedElementQuery = $structureElement['CLASS']::getList(array('filter' => array(\Lsr\Model\AbstractImageTable::ENTITY_ID => $id)));
@@ -268,5 +266,19 @@ $tabControl->Buttons(
 		"back_url" => $backurl
 	)
 );
-
+?>
+<script>
+    function showLinkToLinkedElement() {
+	    if (document.querySelector('[onchange="showLinkToLinkedElement()"]').length) {
+            if (!document.querySelector('#linkToLinkedElement')) {
+                document.querySelector('[onchange="showLinkToLinkedElement()"]').insertAdjacentHTML('afterend', '<div><a id="linkToLinkedElement" href="#">Перейти</a></div>');
+            }
+            document.querySelector('#linkToLinkedElement').href='<?=$externalLinkToPassForJs?>?ID=' + document.querySelector('[onchange="showLinkToLinkedElement()"]').value;
+	    }
+    }
+    document.addEventListener("DOMContentLoaded", function() {
+        showLinkToLinkedElement();
+    });
+</script>
+<?php
 $tabControl->Show();
