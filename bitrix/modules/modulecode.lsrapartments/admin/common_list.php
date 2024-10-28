@@ -111,11 +111,21 @@ foreach ($classToList::getMap() as $tableField) {
 	) {
 		continue;
 	}
-	if ($tableField::class == 'Bitrix\Main\ORM\Fields\EnumField'
-		|| $tableField::class == 'Bitrix\Main\ORM\Fields\BooleanField'
-	) {
+	if ($tableField::class == 'Bitrix\Main\ORM\Fields\EnumField') {
 		$valuesMap = $tableField->getValues();
 		$translationMaps[$tableField->getColumnName()] = array_flip($valuesMap);
+	}
+	if ($tableField::class == 'Bitrix\Main\ORM\Fields\BooleanField') {
+		$booleanFieldMap = $tableField->getValues();
+		foreach ($booleanFieldMap as $booleanFieldMapKey => $booleanFieldValue) {
+			if ($booleanFieldValue == 'Y') {
+				$booleanFieldMap[$booleanFieldValue] = GetMessage('MODULECODE_LSRAPARTMENTS_YES');
+			}
+			if ($booleanFieldValue == 'N') {
+				$booleanFieldMap[$booleanFieldValue] = GetMessage('MODULECODE_LSRAPARTMENTS_NO');
+			}
+		}
+		$translationMaps[$tableField->getColumnName()] = $booleanFieldMap;
 	}
 	$columName = $tableField->getColumnName();
 	$title = $tableField->getTitle();
