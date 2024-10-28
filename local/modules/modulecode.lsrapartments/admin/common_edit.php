@@ -21,7 +21,7 @@ $context = $instance->getContext();
 $request = $context->getRequest();
 $server = $context->getServer();
 $lang = $context->getLanguage();
-$pageTitle = 'Редактирование элемента: '. $tabName;
+$pageTitle = GetMessage("TITLE_REDACT"). $tabName;
 
 $id = (int)$request->get('ID');
 
@@ -147,7 +147,7 @@ if ($server->getRequestMethod() == "POST"
 					$result = $image->save();
 
 					if (!$result->isSuccess()) {
-						throw new \LogicException("Сущность изображения не сохранена. " . join(", ", $result->getErrorMessages()));
+						throw new \LogicException(GetMessage("IMAGE_SAVE_FAILED") . join(", ", $result->getErrorMessages()));
 					}
 				}
 			}
@@ -186,7 +186,7 @@ $tabControl = new CAdminForm("tabControl", $aTabs);
 
 $aMenu = array(
 	array(
-		"TEXT" => 'Назад',
+		"TEXT" => GetMessage("BACK"),
 		"LINK" => $backurl,
 		"ICON" => "btn_list"
 	)
@@ -194,10 +194,10 @@ $aMenu = array(
 if ($id > 0) {
 
 	$aMenu[] = array(
-		"TEXT"	=> 'Удалить',
-		"TITLE"	=> 'Удалить элемент',
+		"TEXT"	=> GetMessage("DELETE_TEXT"),
+		"TITLE"	=> GetMessage("DELETE_TITLE"),
 		"ICON"	=> "btn_delete",
-		"LINK"	=> "javascript:if(confirm('Удалить?'))window.location=window.location.origin + window.location.pathname + '?ID=".$id."&delete=Y'"
+		"LINK"	=> "javascript:if(confirm('".GetMessage("DELETE_CONFIRM")."'))window.location=window.location.origin + window.location.pathname + '?ID=".$id."&delete=Y'"
 	);
 }
 
@@ -292,7 +292,7 @@ $tabControl->Buttons(
     function showLinkToLinkedElement() {
 	    if (document.querySelector('[onchange="showLinkToLinkedElement()"]')) {
             if (!document.querySelector('#linkToLinkedElement')) {
-                document.querySelector('[onchange="showLinkToLinkedElement()"]').insertAdjacentHTML('afterend', '<div><a id="linkToLinkedElement" href="#">Перейти</a></div>');
+                document.querySelector('[onchange="showLinkToLinkedElement()"]').insertAdjacentHTML('afterend', '<div><a id="linkToLinkedElement" href="#"><?=GetMessage("TO_LINKED_ELEMENT")?></a></div>');
             }
             document.querySelector('#linkToLinkedElement').href='<?=$externalLinkToPassForJs?>?ID=' + document.querySelector('[onchange="showLinkToLinkedElement()"]').value;
 	    }
