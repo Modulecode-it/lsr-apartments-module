@@ -28,6 +28,7 @@ $id = (int)$request->get('ID');
 $elementToEdit = array();
 $structureToEdit = [];
 $classToEditMap = $classToEdit::getMap();
+/** @var \Bitrix\Main\ORM\Fields\ScalarField $tableField */
 foreach ($classToEditMap as $tableField) {
 	if ($tableField::class == 'Bitrix\Main\ORM\Fields\Relations\Reference'
 		|| $tableField::class == 'Bitrix\Main\ORM\Fields\Relations\OneToMany'
@@ -41,7 +42,8 @@ foreach ($classToEditMap as $tableField) {
 		'IS_PRIMARY' => $tableField->isPrimary(),
 		'IS_REQUIRED' => $tableField->isRequired(),
 		'TITLE' => $tableField->getTitle(),
-		'TYPE' => $tableField::class
+		'TYPE' => $tableField::class,
+		'DEFAULT_VALUE' => $tableField->getDefaultValue(),
 	];
 	if ($tableField::class == 'Bitrix\Main\ORM\Fields\EnumField') {
 		$tableFieldData['ENUMS_MAP'] = $tableField->getValues();
@@ -95,22 +97,19 @@ if ($server->getRequestMethod() == "GET"
 	LocalRedirect($backurl);
 }
 
+$elementToEdit = [];
+foreach ($structureToEdit as $structureElement) {
+	if ($structureElement['CODE'] == 'ID' && !$id) {
+		continue;
+	} else {
+		$elementToEdit[$structureElement['CODE']] = $request->getPost($structureElement['CODE']) ?? $structureElement['DEFAULT_VALUE'];
+	}
+}
+
 if ($server->getRequestMethod() == "POST"
 	&& ($request->get('save') !== null || $request->get('apply') !== null)
 	&& check_bitrix_sessid()
 ){
-	$elementToEdit = [];
-	foreach ($structureToEdit as $structureElement) {
-		if ($structureElement['CODE'] == 'ID' && !$id) {
-			continue;
-		} elseif ($structureElement['CODE'] == 'ACTIVE') {
-			$elementToEdit[$structureElement['CODE']] = (isset($_POST['ACTIVE']) && 'Y' == $_POST['ACTIVE'] ? 'Y' : 'N');
-			continue;
-		} else {
-			$elementToEdit[$structureElement['CODE']] = $request->getPost($structureElement['CODE']);
-		}
-	}
-
 	if ($id > 0) {
 		$result = $classToEdit::update($id, $elementToEdit);
 	} else {
