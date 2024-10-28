@@ -6,11 +6,11 @@ if(CModule::IncludeModule('modulecode.lsrapartments')) {
 	$classToEdit = \Modulecode\Lsrapartments\Model\ApartmentTable::class;
 	$imagesClass = \Modulecode\Lsrapartments\Model\ApartmentImageTable::class;
 	$backurl = '/bitrix/admin/lsr_apartments_list.php';
-	$tabName = 'Квартира';
-	$tabTitle = 'Параметры:';
+	$tabName = GetMessage("TAB_NAME");
+	$tabTitle = GetMessage("TAB_TITLE");
 	require_once("common_edit.php");
 } else {
-	ShowError("Модуль ЛСР.Квартиры не подключен");
+	ShowError(GetMessage("INCLUDE_ERROR"));
 }
 
 require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/modules/main/include/epilog_admin.php");
