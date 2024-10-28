@@ -254,7 +254,7 @@ foreach ($structureToEdit as $structureElement) {
 			$externalLinkToPassForJs = $structureElement['LINK'];
 
 			$linkedElementsSelectionQuery = ($classToLink.'Table')::getList(array('filter' => array()));
-			$linkedElementsSelectionArray = [];
+			$linkedElementsSelectionArray = ["" => ""];
 			while ($linkedElementsSelectionCursor = $linkedElementsSelectionQuery->fetch()) {
 				$linkedElementsSelectionArray[$linkedElementsSelectionCursor['ID']] = $linkedElementsSelectionCursor['ADDRESS'] . ' [' . $linkedElementsSelectionCursor['ID'] . ']';
 			}
@@ -310,7 +310,7 @@ $tabControl->Buttons(
     function showLinkToLinkedElement() {
 	    if (document.querySelector('[onchange="showLinkToLinkedElement()"]')) {
             if (!document.querySelector('#linkToLinkedElement')) {
-                document.querySelector('[onchange="showLinkToLinkedElement()"]').insertAdjacentHTML('afterend', '<div><a id="linkToLinkedElement" href="#"><?=GetMessage("TO_LINKED_ELEMENT")?></a></div>');
+                document.querySelector('[onchange="showLinkToLinkedElement()"]').insertAdjacentHTML('afterend', '<div><a id="linkToLinkedElement" href="#" target="_blank"><?=GetMessage("TO_LINKED_ELEMENT")?></a></div>');
             }
             document.querySelector('#linkToLinkedElement').href='<?=$externalLinkToPassForJs?>?ID=' + document.querySelector('[onchange="showLinkToLinkedElement()"]').value;
 	    }
