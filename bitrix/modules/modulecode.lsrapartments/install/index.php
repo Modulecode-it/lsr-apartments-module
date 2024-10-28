@@ -12,12 +12,10 @@ Class modulecode_lsrapartments extends CModule
 	var $MODULE_NAME;
 	var $MODULE_DESCRIPTION;
 	var $MODULE_CSS;
-	private const MODULE_MIN_PHP_VERSION = '8.2.20';
+	public const MODULE_MIN_PHP_VERSION = '8.2';
 
 	function __construct()
 	{
-		//версия php подходит? если нет, то об этом имеет смысл сказать пораньше
-		self::checkMinPhpVersion();
 
 		$arModuleVersion = array();
 
@@ -46,6 +44,13 @@ Class modulecode_lsrapartments extends CModule
 	function DoInstall()
 	{
 		if (!IsModuleInstalled(self::MODULE_NAME)) {
+			if (!self::isMinPhpVersionOk()) {
+				global $APPLICATION;
+				$APPLICATION->IncludeAdminFile(
+					"Несоответствие минимальным техническим требованиям",
+					$_SERVER['DOCUMENT_ROOT'] . "/bitrix/modules/modulecode.lsrapartments/install/minversionalert.php"
+				);
+			}
 			$this->InstallFiles();
 			$this->InstallDB();
 			RegisterModule(self::MODULE_NAME);
@@ -101,10 +106,11 @@ Class modulecode_lsrapartments extends CModule
 		Loader::registerNamespace('\Modulecode\Lsrapartments', $_SERVER['DOCUMENT_ROOT'].'/bitrix/modules/modulecode.lsrapartments/lib');
 	}
 
-	function checkMinPhpVersion()
+	function isMinPhpVersionOk(): bool
 	{
 		if (version_compare(PHP_VERSION, self::MODULE_MIN_PHP_VERSION, '<')) {
-			throw new Exception('Для модуля '. self::MODULE_NAME.' требуется версия PHP не ниже ' . self::MODULE_MIN_PHP_VERSION . '. Сейчас PHP версии: ' . PHP_VERSION);
+			return false;
 		}
+		return true;
 	}
 }
