@@ -47,7 +47,7 @@ class HouseTable extends DataManager
 			),
 			new Entity\StringField(
 				self::ADDRESS,
-				['title' => Loc::getMessage("MODULECODE_LSRAPARTMENTS_HOUSETABLE_ADDRESS")]
+				['required' => true, 'title' => Loc::getMessage("MODULECODE_LSRAPARTMENTS_HOUSETABLE_ADDRESS")]
 			),
 			(new OneToMany(self::APARTMENTS, ApartmentTable::class, 'HOUSE'))->configureJoinType('inner'),
 			(new OneToMany(self::IMAGES, HouseImageTable::class, 'ENTITY'))->configureJoinType('inner'),
