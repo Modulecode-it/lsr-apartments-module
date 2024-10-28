@@ -6,3 +6,9 @@
 *.log
 .vscode
 .sass-cache
+
+!bitrix
+/bitrix/*
+!/bitrix/modules
+/bitrix/modules/*
+!/bitrix/modules/modulecode.lsrapartments
