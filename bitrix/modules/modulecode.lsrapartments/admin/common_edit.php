@@ -262,21 +262,30 @@ foreach ($structureToEdit as $structureElement) {
 				$i++;
 			}
 			$tabControl->BeginCustomField('FILES_CUSTOM_FIELD', 'FILES_CUSTOM_FIELD_CONTENT');
-
-			echo $structureElement['TITLE'] . ':';
-			echo \Bitrix\Main\UI\FileInput::createInstance(array(
-				"name" => 'FILE_ID[]',
-				"description" => false,
-				"upload" => true,
-				"allowUpload" => "I",
-				"fileDialog" => false,
-				"cloud" => false,
-				"delete" => true,
-				"maxCount" => 10,
-				"multiple" => true,
-				'edit' => false,
-				'allowUploadExt' =>false
-			))->show($linkedElementValues);
+			?>
+			<tr class="">
+				<td width="40%">
+					<?=$structureElement['TITLE'] . ':'?>
+				</td>
+				<td>
+					<?
+					echo \Bitrix\Main\UI\FileInput::createInstance(array(
+						"name" => 'FILE_ID[]',
+						"description" => false,
+						"upload" => true,
+						"allowUpload" => "I",
+						"fileDialog" => false,
+						"cloud" => false,
+						"delete" => true,
+						"maxCount" => 10,
+						"multiple" => true,
+						'edit' => false,
+						'allowUploadExt' =>false
+					))->show($linkedElementValues);
+					?>
+				</td>
+			</tr>
+			<?
 			$tabControl->EndCustomField('FILES_CUSTOM_FIELD');
 		}
 	}
