@@ -66,8 +66,8 @@ class ApartmentTable extends DataManager
 			),
 			new Entity\EnumField(self::STATUS, [
 				'values' => [
-					'продана'=>self::STATUS_SALE,
-					'не продана'=>self::STATUS_NOT_SALE
+					'В продаже'=>self::STATUS_SALE,
+					'Не в продаже'=>self::STATUS_NOT_SALE
 				],
 				'required' => true,
 				'default_value' => self::STATUS_SALE,
