@@ -59,7 +59,7 @@ Class modulecode_lsrapartments extends CModule
 	function UnInstallFiles()
 	{
 		DeleteDirFiles($_SERVER["DOCUMENT_ROOT"]."/local/modules/modulecode.lsrapartments/install/admin/", $_SERVER["DOCUMENT_ROOT"]."/bitrix/admin");
-		DeleteDirFiles($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/modulecode.lsrapartments/install/themes/.default/", $_SERVER["DOCUMENT_ROOT"]."/bitrix/themes/.default");
+		DeleteDirFiles($_SERVER["DOCUMENT_ROOT"]."/local/modules/modulecode.lsrapartments/install/themes/.default/", $_SERVER["DOCUMENT_ROOT"]."/bitrix/themes/.default");
 		DeleteDirFilesEx("/local/components/modulecode/lsrapartments");
 		DeleteDirFilesEx("/local/components/modulecode/lsrapartments.pagenavigation");
 		return true;
