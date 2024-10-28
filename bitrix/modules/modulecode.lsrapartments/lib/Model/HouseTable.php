@@ -26,6 +26,7 @@ class HouseTable extends DataManager
 	const ADDRESS = 'ADDRESS';
 	const APARTMENTS = 'APARTMENTS';
 	const IMAGES = 'IMAGES';
+	const ACTIVE = 'ACTIVE';
 
 	public static function getTableName(): string
 	{
@@ -37,12 +38,9 @@ class HouseTable extends DataManager
 		return [
 			new Entity\IntegerField('ID', ['primary' => true, 'autocomplete' => true]),
 			new Entity\BooleanField(
-				'ACTIVE',
+				self::ACTIVE,
 				[
-					'values' => [
-						Loc::getMessage("MODULECODE_LSRAPARTMENTS_YES") => 'Y',
-						Loc::getMessage("MODULECODE_LSRAPARTMENTS_NO") => 'N',
-					],
+					'values' => ['Y', 'N'],
 					'default_value' => 'Y',
 					'title' => Loc::getMessage("MODULECODE_LSRAPARTMENTS_HOUSETABLE_ACTIVE")
 				]

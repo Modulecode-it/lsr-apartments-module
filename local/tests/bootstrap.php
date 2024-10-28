@@ -10,7 +10,7 @@ define ('NO_AGENT_CHECK', true);
 //define("BX_CLUSTER_GROUP", 2);
 
 $_SERVER["DOCUMENT_ROOT"] = realpath(dirname(__FILE__)."/../..");
-$_SERVER['SERVER_NAME'] = 'lsr-houses.tv3.modulecode.ru/';
+$_SERVER['SERVER_NAME'] = 'lsr-apartments-module.tv3.modulecode.ru';
 $_SERVER['HTTP_HOST'] = $_SERVER['SERVER_NAME'];
 chdir($_SERVER["DOCUMENT_ROOT"]);
 
@@ -35,7 +35,6 @@ require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/modules/main/include/prolog_before.
 if(!CModule::IncludeModule('modulecode.lsrapartments')) {
 	throw new \LogicException("Модуль modulecode.lsrapartments не подключен");
 }
-echo 1; exit;
 
 @set_time_limit(0);
 @ignore_user_abort(true);

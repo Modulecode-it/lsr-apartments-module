@@ -88,7 +88,7 @@ class Installer
 		$house->set(HouseTable::ADDRESS, 'Москва, ул. Авиаторов, д. ' . $i);
 		$result = $house->save();
 		if (!$result->isSuccess()) {
-			throw new \LogicException("Сущность дома не сохранена");
+			throw new \LogicException("Сущность дома не сохранена: " . join(", ", $result->getErrorMessages()));
 		}
 
 		$this->insertApartments($house);
@@ -117,7 +117,7 @@ class Installer
 			$apartment->set(ApartmentTable::HOUSE, $house);
 			$result = $apartment->save();
 			if (!$result->isSuccess()) {
-				throw new \LogicException("Сущность квартиры не сохранена");
+				throw new \LogicException("Сущность квартиры не сохранена: " . join(", ", $result->getErrorMessages()));
 			}
 
 			$this->insertApartmentImages($apartment);

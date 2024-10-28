@@ -51,10 +51,7 @@ class ApartmentTable extends DataManager
 			new Entity\BooleanField(
 				self::ACTIVE,
 				[
-					'values' => [
-						Loc::getMessage("MODULECODE_LSRAPARTMENTS_YES") => 'Y',
-						Loc::getMessage("MODULECODE_LSRAPARTMENTS_NO") => 'N',
-					],
+					'values' => ['Y', 'N',],
 					'default_value' => 'Y',
 					'title' => Loc::getMessage("MODULECODE_LSRAPARTMENTS_APARTMENTTABLE_ACTIVE")
 				]
