@@ -12,11 +12,11 @@ require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_admi
 if(CModule::IncludeModule('modulecode.lsrapartments')) {
 	$classToList = \Modulecode\Lsrapartments\Model\HouseTable::class;
 	$tableId = 'lsr_houses';
-	$titleForList = 'Список домов';
+	$titleForList = GetMessage("TITLE_FOR_LIST");
 	$editPhpUrl = 'lsr_houses_edit.php';
 	require_once("common_list.php");
 } else {
-	ShowError("Модуль ЛСР.Квартиры не подключен");
+	ShowError(GetMessage("INCLUDE_ERROR"));
 }
 
 require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/modules/main/include/epilog_admin.php");
