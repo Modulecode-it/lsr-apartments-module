@@ -44,7 +44,7 @@ abstract class AbstractImageTable extends DataManager
 	{
 		return [
 			// Поле для хранения ID файла изображения
-			new Entity\IntegerField(self::FILE_ID, ['primary' => true, 'autocomplete' => false]),
+			new Entity\IntegerField(self::FILE_ID, ['primary' => true, 'autocomplete' => false, 'title'=>'Изображение']),
 			// Поле связи с основной таблицей, к которой прикрепляются файлы
 			new Entity\IntegerField(self::ENTITY_ID, ['required' => true]),
 			// Описание связи с основной таблицей

@@ -80,7 +80,8 @@ foreach ($imagesClass::getMap() as $tableField) {
 		'IS_PRIMARY' => $tableField->isPrimary(),
 		'IS_REQUIRED' => $tableField->isRequired(),
 		'TYPE' => $tableField::class,
-		'CLASS' => $imagesClass
+		'CLASS' => $imagesClass,
+		'TITLE' => $tableField->getTitle()
 	];
 }
 
@@ -260,7 +261,7 @@ foreach ($structureToEdit as $structureElement) {
 			}
 			$tabControl->BeginCustomField('FILES_CUSTOM_FIELD', 'FILES_CUSTOM_FIELD_CONTENT');
 
-			echo 'Изображение:';
+			echo $structureElement['TITLE'] . ':';
 			echo \Bitrix\Main\UI\FileInput::createInstance(array(
 				"name" => 'FILE_ID[]',
 				"description" => false,
