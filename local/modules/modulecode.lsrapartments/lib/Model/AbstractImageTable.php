@@ -6,6 +6,7 @@ namespace Modulecode\Lsrapartments\Model;
 
 use Bitrix\Main\Entity;
 use Bitrix\Main\Entity\DataManager;
+use Bitrix\Main\Localization\Loc;
 use Bitrix\Main\ORM\Event;
 use Bitrix\Main\ORM\EventResult;
 use Bitrix\Main\ORM\Fields\Relations\Reference;
@@ -44,7 +45,13 @@ abstract class AbstractImageTable extends DataManager
 	{
 		return [
 			// Поле для хранения ID файла изображения
-			new Entity\IntegerField(self::FILE_ID, ['primary' => true, 'autocomplete' => false, 'title'=>'Изображение']),
+			new Entity\IntegerField(self::FILE_ID,
+				[
+					'primary' => true,
+					'autocomplete' => false,
+					'title' => Loc::getMessage("MODULECODE_LSRAPARTMENTS_ABSTRACTIMAGETABLE_FILEID")
+				]
+			),
 			// Поле связи с основной таблицей, к которой прикрепляются файлы
 			new Entity\IntegerField(self::ENTITY_ID, ['required' => true]),
 			// Описание связи с основной таблицей

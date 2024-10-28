@@ -6,6 +6,7 @@ namespace Modulecode\Lsrapartments\Model;
 
 use Bitrix\Main\Entity;
 use Bitrix\Main\Entity\DataManager;
+use Bitrix\Main\Localization\Loc;
 use Bitrix\Main\ORM\Event;
 use Bitrix\Main\ORM\EventResult;
 use Bitrix\Main\ORM\Fields\Relations\OneToMany;
@@ -35,17 +36,21 @@ class HouseTable extends DataManager
 	{
 		return [
 			new Entity\IntegerField('ID', ['primary' => true, 'autocomplete' => true]),
-			new Entity\BooleanField('ACTIVE',
+			new Entity\BooleanField(
+				'ACTIVE',
 				[
 					'values' => [
-						'Нет'=>'N',
-						'Да'=>'Y'
+						Loc::getMessage("MODULECODE_LSRAPARTMENTS_YES") => 'Y',
+						Loc::getMessage("MODULECODE_LSRAPARTMENTS_NO") => 'N',
 					],
 					'default_value' => 'Y',
-					'title' => 'Активность'
+					'title' => Loc::getMessage("MODULECODE_LSRAPARTMENTS_HOUSETABLE_ACTIVE")
 				]
 			),
-			new Entity\StringField(self::ADDRESS, ['title' => 'Адрес']),
+			new Entity\StringField(
+				self::ADDRESS,
+				['title' => Loc::getMessage("MODULECODE_LSRAPARTMENTS_HOUSETABLE_ADDRESS")]
+			),
 			(new OneToMany(self::APARTMENTS, ApartmentTable::class, 'HOUSE'))->configureJoinType('inner'),
 			(new OneToMany(self::IMAGES, HouseImageTable::class, 'ENTITY'))->configureJoinType('inner'),
 		];

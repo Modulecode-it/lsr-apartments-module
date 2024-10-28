@@ -6,6 +6,7 @@ declare(strict_types=1);
 namespace Modulecode\Lsrapartments\Model;
 
 use Bitrix\Main\Entity;
+use Bitrix\Main\Localization\Loc;
 use Bitrix\Main\ORM\Data\DataManager;
 use Bitrix\Main\ORM\Event;
 use Bitrix\Main\ORM\EventResult;
@@ -51,50 +52,54 @@ class ApartmentTable extends DataManager
 				self::ACTIVE,
 				[
 					'values' => [
-						'Нет'=>'N',
-						'Да'=>'Y'
+						Loc::getMessage("MODULECODE_LSRAPARTMENTS_YES") => 'Y',
+						Loc::getMessage("MODULECODE_LSRAPARTMENTS_NO") => 'N',
 					],
 					'default_value' => 'Y',
-					'title' => 'Активность'
+					'title' => Loc::getMessage("MODULECODE_LSRAPARTMENTS_APARTMENTTABLE_ACTIVE")
 				]
 			),
-			new Entity\IntegerField(self::NUMBER,
+			new Entity\IntegerField(
+				self::NUMBER,
 				[
 					'required' => true,
-					'title' => 'Номер'
+					'title' => Loc::getMessage("MODULECODE_LSRAPARTMENTS_APARTMENTTABLE_NUMBER")
 				]
 			),
 			new Entity\EnumField(self::STATUS, [
 				'values' => [
-					'В продаже'=>self::STATUS_SALE,
-					'Не в продаже'=>self::STATUS_NOT_SALE
+					Loc::getMessage("MODULECODE_LSRAPARTMENTS_APARTMENTTABLE_SALE") => self::STATUS_SALE,
+					Loc::getMessage("MODULECODE_LSRAPARTMENTS_APARTMENTTABLE_NOT_SALE") => self::STATUS_NOT_SALE
 				],
 				'required' => true,
 				'default_value' => self::STATUS_SALE,
-				'title' => 'Статус'
+				'title' => Loc::getMessage("MODULECODE_LSRAPARTMENTS_APARTMENTTABLE_STATUS")
 			]),
-			new Entity\FloatField(self::PRICE,
+			new Entity\FloatField(
+				self::PRICE,
 				[
 					'required' => true,
-					'title' => 'Стоимость'
+					'title' => Loc::getMessage("MODULECODE_LSRAPARTMENTS_APARTMENTTABLE_PRICE")
 				]
 			),
-			new Entity\FloatField(self::SALE_PRICE,
+			new Entity\FloatField(
+				self::SALE_PRICE,
 				[
 					'nullable' => true,
-					'title' => 'Стоимость со скидкой'
+					'title' => Loc::getMessage("MODULECODE_LSRAPARTMENTS_APARTMENTTABLE_SALE_PRICE")
 				]
 			),
-			new Entity\IntegerField(self::HOUSE_ID,
+			new Entity\IntegerField(
+				self::HOUSE_ID,
 				[
 					'required' => true,
-					'title' => 'Дом'
+					'title' => Loc::getMessage("MODULECODE_LSRAPARTMENTS_APARTMENTTABLE_HOUSE")
 				]
 			),
 			new Reference(
 				self::HOUSE,
 				HouseTable::class,
-				Join::on('this.'.self::HOUSE_ID, 'ref.ID')
+				Join::on('this.' . self::HOUSE_ID, 'ref.ID')
 			),
 			(new OneToMany(self::IMAGES, ApartmentImageTable::class, 'ENTITY'))->configureJoinType('left'),
 		];
