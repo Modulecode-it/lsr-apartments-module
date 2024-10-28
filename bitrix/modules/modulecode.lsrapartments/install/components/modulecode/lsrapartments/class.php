@@ -106,7 +106,7 @@ class ModulecodeLsrApartmentsComponent extends CBitrixComponent
 	{
 		$nav = new PageNavigation("nav");
 		$nav->allowAllRecords(false)
-			->setPageSize(3)
+			->setPageSize(10)
 			->initFromUri(); // Инициализируем из URI (для правильной работы с ?page=2 и т.д.)
 		$nav->setRecordCount($this->getCountApartmentsByFilter($filter));
 		return $nav;
