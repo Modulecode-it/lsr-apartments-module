@@ -17,7 +17,7 @@ if(CModule::IncludeModule('modulecode.lsrapartments')) {
 	$editPhpUrl = 'lsr_apartments_edit.php';
 	require_once("common_list.php");
 } else {
-	ShowError(GetMessage("INCLUDE_ERROR"));
+	ShowError('Модуль ЛСР.Квартиры не подключен');
 }
 
 require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/modules/main/include/epilog_admin.php");

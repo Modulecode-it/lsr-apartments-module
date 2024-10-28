@@ -10,7 +10,7 @@ if(CModule::IncludeModule('modulecode.lsrapartments')) {
 	$tabTitle = GetMessage("TAB_TITLE");
 	require_once("common_edit.php");
 } else {
-	ShowError(GetMessage("INCLUDE_ERROR"));
+	ShowError('Модуль ЛСР.Квартиры не подключен');
 }
 
 require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/modules/main/include/epilog_admin.php");
