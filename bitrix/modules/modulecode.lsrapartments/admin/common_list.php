@@ -154,8 +154,8 @@ while ($cursor = $dbResultList->Fetch()) {
 
 	$row->AddField("ID", "<a href=\"".$editPhpUrl."?ID=".$cursor['ID']."&lang=".LANG."\">".$cursor['ID']."</a>");
 	if ($cursor['HOUSE_ID']) {
-		$houseEditUrl = '/bitrix/admin/lsr_houses_edit.php?ID='.$cursor['ID'];
-		$row->AddField("HOUSE_ID", '<a href="' . $houseEditUrl . '">' . $cursor['ID'] . "</a>");
+		$houseEditUrl = '/bitrix/admin/lsr_houses_edit.php?ID='.$cursor['HOUSE_ID'];
+		$row->AddField("HOUSE_ID", '<a href="' . $houseEditUrl . '">' . $cursor['HOUSE_ID'] . "</a>");
 	}
 
 	$arActions = [
