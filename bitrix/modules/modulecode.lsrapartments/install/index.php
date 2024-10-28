@@ -9,8 +9,13 @@ Class modulecode_lsrapartments extends CModule
 	var $MODULE_NAME;
 	var $MODULE_DESCRIPTION;
 	var $MODULE_CSS;
+	private const MODULE_MIN_PHP_VERSION = '8.2.20';
+
 	function __construct()
 	{
+		//версия php подходит? если нет, то об этом имеет смысл сказать пораньше
+		self::checkMinPhpVersion();
+
 		$arModuleVersion = array();
 
 		$path = str_replace("\\", "/", __FILE__);
@@ -63,5 +68,12 @@ Class modulecode_lsrapartments extends CModule
 		DeleteDirFilesEx("/bitrix/components/modulecode/lsrapartments");
 		DeleteDirFilesEx("/bitrix/components/modulecode/lsrapartments.pagenavigation");
 		return true;
+	}
+
+	function checkMinPhpVersion()
+	{
+		if (version_compare(PHP_VERSION, self::MODULE_MIN_PHP_VERSION, '<')) {
+			throw new Exception('Для модуля '. self::MODULE_NAME.' требуется версия PHP не ниже ' . self::MODULE_MIN_PHP_VERSION . '. Сейчас PHP версии: ' . PHP_VERSION);
+		}
 	}
 }
