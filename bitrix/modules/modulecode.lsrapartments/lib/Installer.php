@@ -17,22 +17,20 @@ use Modulecode\Lsrapartments\Model\HouseTable;
 use Modulecode\Lsrapartments\Service\FileService;
 
 /**
- * Позволяет провести установку БД и наполнить модуль тестыми данными
+ * Позволяет провести установку БД и наполнить модуль демонстрационными данными
  */
 class Installer
 {
-	const HOUSES_COUNT = 100;
-	const APARTMENTS_COUNT_IN_HOUSE = 20;
-
 	/**
 	 * @throws SqlQueryException
 	 * @throws SystemException
 	 * @throws ArgumentException
+	 * @throws \Exception
 	 */
 	public function install(): void
 	{
 		$this->recreateTables();
-		$this->insertExampleData();
+		$this->insertDemoData();
 	}
 
 	private function getTableClasses(): array
@@ -81,13 +79,13 @@ class Installer
 		$this->createTablesIfNotExists();
 	}
 
-	public function insertExampleData(): void
+	public function insertDemoData(int $housesCount = 100, int $apartmentsCountInHouse = 20): void
 	{
 		$connection = Application::getConnection();
 		$connection->startTransaction();
 		try {
-			for ($i = 0; $i < self::HOUSES_COUNT; $i++) {
-				$this->insertHouse($i);
+			for ($i = 0; $i < $housesCount; $i++) {
+				$this->insertHouse($i, $apartmentsCountInHouse);
 			}
 			$connection->commitTransaction();
 		} catch (\Exception $e) {
@@ -98,11 +96,12 @@ class Installer
 
 	/**
 	 * @param int $i
+	 * @param int $apartmentsCountInHouse
 	 * @return void
 	 * @throws ArgumentException
 	 * @throws SystemException
 	 */
-	private function insertHouse(int $i): void
+	private function insertHouse(int $i, int $apartmentsCountInHouse): void
 	{
 		$house = HouseTable::getEntity()->createObject();
 		$house->set(HouseTable::ADDRESS, 'Москва, ул. Авиаторов, д. ' . $i);
@@ -111,13 +110,13 @@ class Installer
 			throw new \LogicException("Сущность дома не сохранена: " . join(", ", $result->getErrorMessages()));
 		}
 
-		$this->insertApartments($house);
+		$this->insertApartments($house, $apartmentsCountInHouse);
 		$this->insertHouseImages($house);
 	}
 
-	private function insertApartments(EntityObject $house): void
+	private function insertApartments(EntityObject $house, int $apartmentsCountInHouse): void
 	{
-		for ($i = 0; $i < self::APARTMENTS_COUNT_IN_HOUSE; $i++) {
+		for ($i = 0; $i < $apartmentsCountInHouse; $i++) {
 			$apartment = ApartmentTable::getEntity()->createObject();
 			$apartment->set(ApartmentTable::ACTIVE, rand(0, 1) ? "N" : "Y");
 			$apartment->set(ApartmentTable::NUMBER, $i + 1);

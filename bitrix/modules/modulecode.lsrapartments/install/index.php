@@ -43,6 +43,8 @@ Class modulecode_lsrapartments extends CModule
 			$this->InstallFiles();
 			RegisterModule(self::MODULE_NAME);
 			$this->InstallDB();
+			global $APPLICATION;
+//			$APPLICATION->IncludeAdminFile("Установка модуля modulecode.lsrapartments", $_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/modulecode.lsrapartments/install/step.php");
 		}
 	}
 	function DoUninstall()
@@ -74,7 +76,9 @@ Class modulecode_lsrapartments extends CModule
 		if(!CModule::IncludeModule('modulecode.lsrapartments')) {
 			throw new \LogicException("Модуль modulecode.lsrapartments не подключен");
 		}
-		(new Installer())->createTablesIfNotExists();
+		$installer = new Installer();
+		$installer->createTablesIfNotExists();
+		$installer->insertDemoData(20, 5);
 	}
 
 	function UnInstallDB()

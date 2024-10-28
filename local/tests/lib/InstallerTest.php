@@ -22,10 +22,10 @@ class InstallerTest extends TestCase
 		$this->assertTrue(true);
 	}
 
-	public function testInsertExampleData()
+	public function testInsertDemoData()
 	{
 		$installer = new Installer();
-		$installer->insertExampleData();
+		$installer->insertDemoData();
 		$this->assertTrue(true);
 	}
 }
