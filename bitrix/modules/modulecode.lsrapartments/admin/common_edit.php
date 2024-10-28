@@ -161,7 +161,11 @@ if ($server->getRequestMethod() == "POST"
 		if ($request->get('save') !== null) {
 			LocalRedirect($backurl);
 		} else {
-			LocalRedirect($_SERVER['REQUEST_URI']);
+			if ($_POST['apply'] && $id && !$_GET['ID']) {
+				LocalRedirect($APPLICATION->GetCurPage()."?ID=".$id."&lang=".$lang);
+			} else {
+				LocalRedirect($_SERVER['REQUEST_URI']);
+			}
 		}
 	}
 }
