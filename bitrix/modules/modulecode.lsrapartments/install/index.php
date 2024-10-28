@@ -3,7 +3,7 @@
 use Bitrix\Main\Loader;
 use Modulecode\Lsrapartments\Installer;
 
-Class modulecode_lsrapartments extends CModule
+class modulecode_lsrapartments extends CModule
 {
 	private const MODULE_NAME = "modulecode.lsrapartments";
 	var $MODULE_ID = self::MODULE_NAME;
@@ -16,20 +16,16 @@ Class modulecode_lsrapartments extends CModule
 
 	function __construct()
 	{
-
 		$arModuleVersion = array();
 
 		$path = str_replace("\\", "/", __FILE__);
 		$path = substr($path, 0, strlen($path) - strlen("/index.php"));
-		include($path."/version.php");
+		include($path . "/version.php");
 
-		if (is_array($arModuleVersion) && array_key_exists("VERSION", $arModuleVersion))
-		{
+		if (is_array($arModuleVersion) && array_key_exists("VERSION", $arModuleVersion)) {
 			$this->MODULE_VERSION = $arModuleVersion["VERSION"];
 			$this->MODULE_VERSION_DATE = $arModuleVersion["VERSION_DATE"];
-		}
-		else
-		{
+		} else {
 			$this->MODULE_VERSION = "1.0.0";
 			$this->MODULE_VERSION_DATE = "2024-10-28 08:00:00";
 		}
@@ -56,6 +52,7 @@ Class modulecode_lsrapartments extends CModule
 			RegisterModule(self::MODULE_NAME);
 		}
 	}
+
 	function DoUninstall()
 	{
 		$this->UnInstallDB();
@@ -65,16 +62,35 @@ Class modulecode_lsrapartments extends CModule
 
 	function InstallFiles($arParams = array())
 	{
-		CopyDirFiles($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/modulecode.lsrapartments/install/admin/", $_SERVER["DOCUMENT_ROOT"]."/bitrix/admin");
-		CopyDirFiles($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/modulecode.lsrapartments/install/themes/", $_SERVER["DOCUMENT_ROOT"]."/bitrix/themes/", true, true);
-		CopyDirFiles($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/modulecode.lsrapartments/install/components/", $_SERVER["DOCUMENT_ROOT"]."/bitrix/components", true, true);
+		CopyDirFiles(
+			$_SERVER["DOCUMENT_ROOT"] . "/bitrix/modules/modulecode.lsrapartments/install/admin/",
+			$_SERVER["DOCUMENT_ROOT"] . "/bitrix/admin"
+		);
+		CopyDirFiles(
+			$_SERVER["DOCUMENT_ROOT"] . "/bitrix/modules/modulecode.lsrapartments/install/themes/",
+			$_SERVER["DOCUMENT_ROOT"] . "/bitrix/themes/",
+			true,
+			true
+		);
+		CopyDirFiles(
+			$_SERVER["DOCUMENT_ROOT"] . "/bitrix/modules/modulecode.lsrapartments/install/components/",
+			$_SERVER["DOCUMENT_ROOT"] . "/bitrix/components",
+			true,
+			true
+		);
 		return true;
 	}
 
 	function UnInstallFiles()
 	{
-		DeleteDirFiles($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/modulecode.lsrapartments/install/admin/", $_SERVER["DOCUMENT_ROOT"]."/bitrix/admin");
-		DeleteDirFiles($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/modulecode.lsrapartments/install/themes/.default/", $_SERVER["DOCUMENT_ROOT"]."/bitrix/themes/.default");
+		DeleteDirFiles(
+			$_SERVER["DOCUMENT_ROOT"] . "/bitrix/modules/modulecode.lsrapartments/install/admin/",
+			$_SERVER["DOCUMENT_ROOT"] . "/bitrix/admin"
+		);
+		DeleteDirFiles(
+			$_SERVER["DOCUMENT_ROOT"] . "/bitrix/modules/modulecode.lsrapartments/install/themes/.default/",
+			$_SERVER["DOCUMENT_ROOT"] . "/bitrix/themes/.default"
+		);
 		DeleteDirFilesEx("/bitrix/components/modulecode/lsrapartments");
 		DeleteDirFilesEx("/bitrix/components/modulecode/lsrapartments.pagenavigation");
 		return true;
@@ -87,7 +103,10 @@ Class modulecode_lsrapartments extends CModule
 		$installer->createTablesIfNotExists();
 		global $APPLICATION;
 		if (!$installer->isDemoDataInstalled()) {
-			$APPLICATION->IncludeAdminFile("Добавление демо-данных", $_SERVER['DOCUMENT_ROOT']."/bitrix/modules/modulecode.lsrapartments/install/step.php");
+			$APPLICATION->IncludeAdminFile(
+				"Добавление демо-данных",
+				$_SERVER['DOCUMENT_ROOT'] . "/bitrix/modules/modulecode.lsrapartments/install/step.php"
+			);
 		}
 	}
 
@@ -103,7 +122,10 @@ Class modulecode_lsrapartments extends CModule
 	 */
 	private function enableAutoloadClasses(): void
 	{
-		Loader::registerNamespace('\Modulecode\Lsrapartments', $_SERVER['DOCUMENT_ROOT'].'/bitrix/modules/modulecode.lsrapartments/lib');
+		Loader::registerNamespace(
+			'\Modulecode\Lsrapartments',
+			$_SERVER['DOCUMENT_ROOT'] . '/bitrix/modules/modulecode.lsrapartments/lib'
+		);
 	}
 
 	function isMinPhpVersionOk(): bool
