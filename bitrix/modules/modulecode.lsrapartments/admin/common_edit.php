@@ -155,8 +155,7 @@ if ($server->getRequestMethod() == "POST"
 	}
 
 	if (!$result->isSuccess()) {
-		$errorMessage .= implode("\n", $result->getErrorMessages());
-		CAdminMessage::ShowMessage($errorMessage);
+		$errors = $result->getErrorMessages();
 	} else {
 		if ($request->get('save') !== null) {
 			LocalRedirect($backurl);
@@ -324,4 +323,8 @@ $tabControl->Buttons(
     });
 </script>
 <?php
+
+if (!empty($errors)) {
+	CAdminMessage::ShowMessage(join("\n", $errors));
+}
 $tabControl->Show();
