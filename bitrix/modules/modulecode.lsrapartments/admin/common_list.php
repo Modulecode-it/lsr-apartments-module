@@ -28,7 +28,7 @@ $filter = array();
 
 if (strlen($filter_active) > 0 && $filter_active != "NOT_REF")
 	$filter["ACTIVE"] = trim($filter_active);
-if ($_GET['HOUSE_ID'])
+if ($classToList == 'Modulecode\Lsrapartments\Model\ApartmentTable' && $_GET['HOUSE_ID'])
 	$filter["HOUSE_ID"] = (int)$_GET['HOUSE_ID'];
 
 if ($request->get('action_button') == 'delete' && $request->get('ID')) {
