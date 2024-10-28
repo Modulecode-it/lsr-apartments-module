@@ -21,6 +21,8 @@ use Modulecode\Lsrapartments\Service\FileService;
  */
 class Installer
 {
+	const HOUSES_IN_STEP = 100;
+	const MAX_HOUSES = 1000;
 	private int $imagesInsertedCount = 0;
 
 	/**
@@ -81,13 +83,14 @@ class Installer
 		$this->createTablesIfNotExists();
 	}
 
-	public function insertDemoData(int $housesCount = 1000, int $apartmentsCountInHouse = 100): void
+	public function insertDemoData(int $lastInsertedHouseNumber = 0, int $apartmentsCountInHouse = 100): void
 	{
 		$connection = Application::getConnection();
 		$connection->startTransaction();
 		try {
 			$this->imagesInsertedCount = 0;
-			for ($i = 1; $i <= $housesCount; $i++) {
+			$limit = min($lastInsertedHouseNumber + self::HOUSES_IN_STEP, self::MAX_HOUSES);
+			for ($i = $lastInsertedHouseNumber + 1; $i <= $limit; $i++) {
 				$this->insertHouse($i, $apartmentsCountInHouse);
 			}
 			$connection->commitTransaction();
@@ -207,5 +210,10 @@ class Installer
 	private function isMaxImagesInserted(): bool
 	{
 		return $this->imagesInsertedCount > 200;
+	}
+
+	public function isDemoDataInstalled(): bool
+	{
+		return HouseTable::getCount() >= Installer::MAX_HOUSES;
 	}
 }

@@ -75,7 +75,10 @@ Class modulecode_lsrapartments extends CModule
 		$this->enableAutoloadClasses();
 		$installer = new Installer();
 		$installer->createTablesIfNotExists();
-		$installer->insertDemoData(50, 20);
+		global $APPLICATION;
+		if (!$installer->isDemoDataInstalled()) {
+			$APPLICATION->IncludeAdminFile("Добавление демо-данных", $_SERVER['DOCUMENT_ROOT']."/bitrix/modules/modulecode.lsrapartments/install/step.php");
+		}
 	}
 
 	function UnInstallDB()
