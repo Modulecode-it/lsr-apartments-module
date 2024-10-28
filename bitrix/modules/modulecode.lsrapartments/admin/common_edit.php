@@ -111,7 +111,7 @@ if ($server->getRequestMethod() == "POST"
 		}
 	}
 
-	//todo валидация?
+	//в ТЗ не оговорена валидация. поэтому полагаемся на битрикс.
 
 	if ($id > 0) {
 		$result = $classToEdit::update($id, $elementToEdit);
