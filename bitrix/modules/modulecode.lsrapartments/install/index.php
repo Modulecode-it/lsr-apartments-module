@@ -1,5 +1,7 @@
 <?php
 
+use Modulecode\Lsrapartments\Installer;
+
 Class modulecode_lsrapartments extends CModule
 {
 	private const MODULE_NAME = "modulecode.lsrapartments";
@@ -40,10 +42,12 @@ Class modulecode_lsrapartments extends CModule
 		if (!IsModuleInstalled(self::MODULE_NAME)) {
 			$this->InstallFiles();
 			RegisterModule(self::MODULE_NAME);
+			$this->InstallDB();
 		}
 	}
 	function DoUninstall()
 	{
+		$this->UnInstallDB();
 		$this->UnInstallFiles();
 		UnRegisterModule(self::MODULE_NAME);
 	}
@@ -63,5 +67,21 @@ Class modulecode_lsrapartments extends CModule
 		DeleteDirFilesEx("/bitrix/components/modulecode/lsrapartments");
 		DeleteDirFilesEx("/bitrix/components/modulecode/lsrapartments.pagenavigation");
 		return true;
+	}
+
+	function InstallDB()
+	{
+		if(!CModule::IncludeModule('modulecode.lsrapartments')) {
+			throw new \LogicException("Модуль modulecode.lsrapartments не подключен");
+		}
+		(new Installer())->createTablesIfNotExists();
+	}
+
+	function UnInstallDB()
+	{
+		if(!CModule::IncludeModule('modulecode.lsrapartments')) {
+			throw new \LogicException("Модуль modulecode.lsrapartments не подключен");
+		}
+		(new Installer())->dropTables();
 	}
 }

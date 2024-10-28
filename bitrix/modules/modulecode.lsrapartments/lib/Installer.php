@@ -35,6 +35,40 @@ class Installer
 		$this->insertExampleData();
 	}
 
+	private function getTableClasses(): array
+	{
+		return [
+			HouseTable::class,
+			HouseImageTable::class,
+			ApartmentTable::class,
+			ApartmentImageTable::class,
+		];
+	}
+
+	public function dropTables(): void
+	{
+		$connection = Application::getConnection();
+
+		/** @var DataManager $ormClass */
+		foreach (self::getTableClasses() as $ormClass) {
+			if ($connection->isTableExists($ormClass::getTableName())) {
+				$connection->dropTable($ormClass::getTableName());
+			}
+		}
+	}
+
+	public function createTablesIfNotExists(): void
+	{
+		$connection = Application::getConnection();
+
+		/** @var DataManager $ormClass */
+		foreach (self::getTableClasses() as $ormClass) {
+			if (!$connection->isTableExists($ormClass::getTableName())) {
+				$ormClass::getEntity()->createDbTable();
+			}
+		}
+	}
+
 	/**
 	 * @return void
 	 * @throws ArgumentException
@@ -43,22 +77,8 @@ class Installer
 	 */
 	private function recreateTables(): void
 	{
-		$connection = Application::getConnection();
-
-		$ormClasses = [
-			HouseTable::class,
-			HouseImageTable::class,
-			ApartmentTable::class,
-			ApartmentImageTable::class,
-		];
-
-		/** @var DataManager $ormClass */
-		foreach ($ormClasses as $ormClass) {
-			if ($connection->isTableExists($ormClass::getTableName())) {
-				$connection->dropTable($ormClass::getTableName());
-			}
-			$ormClass::getEntity()->createDbTable();
-		}
+		$this->dropTables();
+		$this->createTablesIfNotExists();
 	}
 
 	public function insertExampleData(): void
