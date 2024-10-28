@@ -3,15 +3,15 @@
 return [
 	"parent_menu" => "global_menu_content",
 	"sort" => 100,
-	'text' => 'Квартиры',
+	'text' => GetMessage("MENU_GROUP_TEXT"),
 	'icon' => 'lsr-apartments',
 	'items' => [
 		[
-			'text' => 'Квартиры',
+			'text' => GetMessage("MENU_APARTMENTS_TEXT"),
 			'url' => '/bitrix/admin/lsr_apartments_list.php',
 		],
 		[
-			'text' => 'Дома',
+			'text' => GetMessage("MENU_HOUSES_TEXT"),
 			'url' => '/bitrix/admin/lsr_houses_list.php',
 		],
 	]
