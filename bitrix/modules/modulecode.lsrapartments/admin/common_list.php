@@ -1,5 +1,8 @@
 <?php
-if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();
+
+if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
+	die();
+}
 
 if (!$classToList || !$tableId || !$titleForList || !$editPhpUrl) {
 	throw new \Exception('предполагается, что для вызова должны быть заданы переменные');
@@ -29,19 +32,22 @@ $lAdmin->InitFilter($arFilterFields);
 
 $filter = array();
 
-if (strlen($filter_active) > 0 && $filter_active != "NOT_REF")
+if (strlen($filter_active) > 0 && $filter_active != "NOT_REF") {
 	$filter["ACTIVE"] = trim($filter_active);
-if ($classToList == 'Modulecode\Lsrapartments\Model\ApartmentTable' && $_GET['HOUSE_ID'])
+}
+if ($classToList == 'Modulecode\Lsrapartments\Model\ApartmentTable' && $_GET['HOUSE_ID']) {
 	$filter["HOUSE_ID"] = (int)$_GET['HOUSE_ID'];
+}
 
 if ($request->get('action_button') == 'delete' && $request->get('ID')) {
 	$id = $request->get('ID');
 	$result = $classToList::delete($id);
 	if (!$result->isSuccess()) {
-		if ($result->getErrorMessages())
+		if ($result->getErrorMessages()) {
 			$lAdmin->AddGroupError(join(', ', $result->getErrorMessages()), $id);
-		else
+		} else {
 			$lAdmin->AddGroupError(GetMessage("ITEM_DELETE_FAILED"), $id);
+		}
 	}
 }
 
@@ -64,7 +70,7 @@ if ($navyParams['SHOW_ALL']) {
 
 if ($usePageNavigation) {
 	$params['limit'] = $navyParams['SIZEN'];
-	$params['offset'] = $navyParams['SIZEN']*($navyParams['PAGEN']-1);
+	$params['offset'] = $navyParams['SIZEN'] * ($navyParams['PAGEN'] - 1);
 }
 
 $totalPages = 0;
@@ -74,21 +80,23 @@ if ($usePageNavigation) {
 	$countQuery->addSelect(new \Bitrix\Main\Entity\ExpressionField('CNT', 'COUNT(1)'));
 	$countQuery->setFilter($params['filter']);
 
-	foreach ($params['runtime'] as $key => $field)
+	foreach ($params['runtime'] as $key => $field) {
 		$countQuery->registerRuntimeField($key, clone $field);
+	}
 
 	$totalCount = $countQuery->setLimit(null)->setOffset(null)->exec()->fetch();
 	unset($countQuery);
 	$totalCount = (int)$totalCount['CNT'];
 
 	if ($totalCount > 0) {
-		$totalPages = ceil($totalCount/$navyParams['SIZEN']);
+		$totalPages = ceil($totalCount / $navyParams['SIZEN']);
 
-		if ($navyParams['PAGEN'] > $totalPages)
+		if ($navyParams['PAGEN'] > $totalPages) {
 			$navyParams['PAGEN'] = $totalPages;
+		}
 
 		$params['limit'] = $navyParams['SIZEN'];
-		$params['offset'] = $navyParams['SIZEN']*($navyParams['PAGEN']-1);
+		$params['offset'] = $navyParams['SIZEN'] * ($navyParams['PAGEN'] - 1);
 	} else {
 		$navyParams['PAGEN'] = 1;
 		$params['limit'] = $navyParams['SIZEN'];
@@ -155,11 +163,19 @@ while ($cursor = $dbResultList->Fetch()) {
 		}
 	}
 
-	$row =& $lAdmin->AddRow($cursor['ID'], $cursor, $editPhpUrl."?ID=".$cursor['ID']."&lang=".LANG, GetMessage("EDIT_ITEM"));
+	$row =& $lAdmin->AddRow(
+		$cursor['ID'],
+		$cursor,
+		$editPhpUrl . "?ID=" . $cursor['ID'] . "&lang=" . LANG,
+		GetMessage("EDIT_ITEM")
+	);
 
-	$row->AddField("ID", "<a href=\"".$editPhpUrl."?ID=".$cursor['ID']."&lang=".LANG."\">".$cursor['ID']."</a>");
+	$row->AddField(
+		"ID",
+		"<a href=\"" . $editPhpUrl . "?ID=" . $cursor['ID'] . "&lang=" . LANG . "\">" . $cursor['ID'] . "</a>"
+	);
 	if ($cursor['HOUSE_ID']) {
-		$houseEditUrl = '/bitrix/admin/lsr_houses_edit.php?ID='.$cursor['HOUSE_ID'];
+		$houseEditUrl = '/bitrix/admin/lsr_houses_edit.php?ID=' . $cursor['HOUSE_ID'];
 		$row->AddField("HOUSE_ID", '<a href="' . $houseEditUrl . '">' . $cursor['HOUSE_ID'] . "</a>");
 	}
 
@@ -168,13 +184,15 @@ while ($cursor = $dbResultList->Fetch()) {
 			"ICON" => "edit",
 			"TEXT" => GetMessage("EDIT_TEXT"),
 			"TITLE" => GetMessage("EDIT_TITLE"),
-			"ACTION" => $lAdmin->ActionRedirect($editPhpUrl."?ID=".$cursor['ID']."&lang=".$context->getLanguage()),
+			"ACTION" => $lAdmin->ActionRedirect(
+				$editPhpUrl . "?ID=" . $cursor['ID'] . "&lang=" . $context->getLanguage()
+			),
 			"DEFAULT" => true,
 		],
 	];
 
 	if ($classToList == 'Modulecode\Lsrapartments\Model\HouseTable') {
-		$urlToLinkedApartments = "/bitrix/admin/lsr_apartments_list.php?HOUSE_ID=".$cursor['ID'];
+		$urlToLinkedApartments = "/bitrix/admin/lsr_apartments_list.php?HOUSE_ID=" . $cursor['ID'];
 		$arActions[] = [
 			"TEXT" => GetMessage("FIND_LINKED_APARTMENTS_TEXT"),
 			"TITLE" => GetMessage("FIND_LINKED_APARTMENTS_TITLE"),
@@ -186,7 +204,10 @@ while ($cursor = $dbResultList->Fetch()) {
 		"ICON" => "delete",
 		"TEXT" => GetMessage("DELETE_TEXT"),
 		"TITLE" => GetMessage("DELETE_TITLE"),
-		"ACTION" => "if(confirm('".GetMessage("DELETE_CONFIRM")."')) ".$lAdmin->ActionDoGroup($cursor['ID'], "delete"),
+		"ACTION" => "if(confirm('" . GetMessage("DELETE_CONFIRM") . "')) " . $lAdmin->ActionDoGroup(
+				$cursor['ID'],
+				"delete"
+			),
 	];
 
 	$row->AddActions($arActions);
@@ -221,24 +242,24 @@ $lAdmin->AddAdminContextMenu($aContext);
 $lAdmin->CheckListMode();
 
 $APPLICATION->SetTitle($titleForList);
-require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_admin_after.php");
+require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/modules/main/include/prolog_admin_after.php");
 ?>
-	<form name="find_form" method="GET" action="<?echo $APPLICATION->GetCurPage()?>?">
+	<form name="find_form" method="GET" action="<? echo $APPLICATION->GetCurPage() ?>?">
 		<?
 		$oFilter = new CAdminFilter(
-			$tableId."_filter",
+			$tableId . "_filter",
 			array()
 		);
 
 		$oFilter->Begin();
 		?>
 		<tr>
-			<td><?=GetMessage("ACTIVE")?></td>
+			<td><?= GetMessage("ACTIVE") ?></td>
 			<td>
 				<select name="filter_active">
 					<option value="NOT_REF">(Все)</option>
-					<option value="Y"<?if ($filter_active=="Y") echo " selected"?>>Да</option>
-					<option value="N"<?if ($filter_active=="N") echo " selected"?>>Нет</option>
+					<option value="Y"<? if ($filter_active == "Y") echo " selected" ?>>Да</option>
+					<option value="N"<? if ($filter_active == "N") echo " selected" ?>>Нет</option>
 				</select>
 			</td>
 		</tr>
@@ -246,9 +267,9 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_admin_aft
 		if ($classToList == 'Modulecode\Lsrapartments\Model\ApartmentTable') {
 			?>
 			<tr>
-				<td><?=GetMessage("HOUSE")?></td>
+				<td><?= GetMessage("HOUSE") ?></td>
 				<td>
-					<input name="HOUSE_ID" type="text" value="<?=(int)$_GET['HOUSE_ID'] ?: ''?>">
+					<input name="HOUSE_ID" type="text" value="<?= (int)$_GET['HOUSE_ID'] ?: '' ?>">
 				</td>
 			</tr>
 			<?

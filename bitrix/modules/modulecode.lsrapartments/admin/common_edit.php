@@ -5,7 +5,9 @@ use Modulecode\Lsrapartments\AdminInterface;
 use Modulecode\Lsrapartments\Model\AbstractImageTable;
 use Modulecode\Lsrapartments\Service\FileService;
 
-if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();
+if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
+	die();
+}
 
 if (!$classToEdit || !$backurl || !$tabName || !$tabName || !$imagesClass) {
 	throw new \Exception('предполагается, что для вызова должны быть заданы переменные');
@@ -21,7 +23,7 @@ $context = $instance->getContext();
 $request = $context->getRequest();
 $server = $context->getServer();
 $lang = $context->getLanguage();
-$pageTitle = GetMessage("TITLE_REDACT"). $tabName;
+$pageTitle = GetMessage("TITLE_REDACT") . $tabName;
 
 $id = (int)$request->get('ID');
 
@@ -56,10 +58,12 @@ foreach ($classToEditMap as $tableField) {
 		$classToLink = $tableField->getDataType();
 		$linkStructure = $tableField->getElementals();
 		$codeToSubstitute = array_keys($linkStructure)[0];
-		foreach ($structureToEdit as $structureToEditKey=>$structureToEditValue) {
+		foreach ($structureToEdit as $structureToEditKey => $structureToEditValue) {
 			if ($structureToEditValue['CODE'] == $codeToSubstitute) {
 				$structureToEdit[$structureToEditKey]['EXTERNAL'] = true;
-				$structureToEdit[$structureToEditKey]['LINK'] = AdminInterface::getLinkToElementEditByClassString($classToLink);
+				$structureToEdit[$structureToEditKey]['LINK'] = AdminInterface::getLinkToElementEditByClassString(
+					$classToLink
+				);
 				unset($structureToEdit[$structureToEditKey]['IS_PRIMARY']);
 				unset($structureToEdit[$structureToEditKey]['IS_REQUIRED']);
 			}
@@ -102,14 +106,16 @@ foreach ($structureToEdit as $structureElement) {
 	if ($structureElement['CODE'] == 'ID' && !$id) {
 		continue;
 	} else {
-		$elementToEdit[$structureElement['CODE']] = $request->getPost($structureElement['CODE']) ?? $structureElement['DEFAULT_VALUE'];
+		$elementToEdit[$structureElement['CODE']] = $request->getPost(
+			$structureElement['CODE']
+		) ?? $structureElement['DEFAULT_VALUE'];
 	}
 }
 
 if ($server->getRequestMethod() == "POST"
 	&& ($request->get('save') !== null || $request->get('apply') !== null)
 	&& check_bitrix_sessid()
-){
+) {
 	if ($id > 0) {
 		$result = $classToEdit::update($id, $elementToEdit);
 	} else {
@@ -138,13 +144,19 @@ if ($server->getRequestMethod() == "POST"
 					$image->set($imagesClass::ENTITY_ID, $id);
 
 					$filePath = BX_TEMPORARY_FILES_DIRECTORY . $fileEntry['tmp_name'];
-					$fileId = $imageService->saveExistingFileToBFile($filePath, $classToEdit::getTableName(), $fileName);
+					$fileId = $imageService->saveExistingFileToBFile(
+						$filePath,
+						$classToEdit::getTableName(),
+						$fileName
+					);
 					$image->set($imagesClass::FILE_ID, $fileId);
 
 					$result = $image->save();
 
 					if (!$result->isSuccess()) {
-						throw new \LogicException(GetMessage("IMAGE_SAVE_FAILED") . join(", ", $result->getErrorMessages()));
+						throw new \LogicException(
+							GetMessage("IMAGE_SAVE_FAILED") . join(", ", $result->getErrorMessages())
+						);
 					}
 				}
 			}
@@ -158,7 +170,7 @@ if ($server->getRequestMethod() == "POST"
 			LocalRedirect($backurl);
 		} else {
 			if ($_POST['apply'] && $id && !$_GET['ID']) {
-				LocalRedirect($APPLICATION->GetCurPage()."?ID=".$id."&lang=".$lang);
+				LocalRedirect($APPLICATION->GetCurPage() . "?ID=" . $id . "&lang=" . $lang);
 			} else {
 				LocalRedirect($_SERVER['REQUEST_URI']);
 			}
@@ -166,7 +178,7 @@ if ($server->getRequestMethod() == "POST"
 	}
 }
 
-require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_admin_after.php");
+require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/modules/main/include/prolog_admin_after.php");
 
 $APPLICATION->SetTitle(($id > 0) ? $pageTitle . ' № ' . $id : $pageTitle);
 
@@ -195,17 +207,19 @@ $aMenu = array(
 );
 if ($id > 0) {
 	$aMenu[] = array(
-		"TEXT"	=> GetMessage("DELETE_TEXT"),
-		"TITLE"	=> GetMessage("DELETE_TITLE"),
-		"ICON"	=> "btn_delete",
-		"LINK"	=> "javascript:if(confirm('".GetMessage("DELETE_CONFIRM")."'))window.location=window.location.origin + window.location.pathname + '?ID=".$id."&delete=Y'"
+		"TEXT" => GetMessage("DELETE_TEXT"),
+		"TITLE" => GetMessage("DELETE_TITLE"),
+		"ICON" => "btn_delete",
+		"LINK" => "javascript:if(confirm('" . GetMessage(
+				"DELETE_CONFIRM"
+			) . "'))window.location=window.location.origin + window.location.pathname + '?ID=" . $id . "&delete=Y'"
 	);
 
 	if ($classToEdit == 'Modulecode\Lsrapartments\Model\HouseTable') {
 		$aMenu[] = array(
 			"TEXT" => GetMessage('FIND_LINKED_APARTMENTS_TEXT'),
 			"TITLE" => GetMessage('FIND_LINKED_APARTMENTS_TITLE'),
-			"LINK" => "/bitrix/admin/lsr_apartments_list.php?HOUSE_ID=".$id
+			"LINK" => "/bitrix/admin/lsr_apartments_list.php?HOUSE_ID=" . $id
 		);
 	}
 }
@@ -219,12 +233,12 @@ echo bitrix_sessid_post();
 ?>
 
 	<input type="hidden" name="Update" value="Y">
-	<input type="hidden" name="lang" value="<?=$context->getLanguage();?>">
-	<input type="hidden" name="ID" value="<?=$id;?>" id="ID">
+	<input type="hidden" name="lang" value="<?= $context->getLanguage(); ?>">
+	<input type="hidden" name="ID" value="<?= $id; ?>" id="ID">
 
 <?
 $tabControl->EndEpilogContent();
-$tabControl->Begin(array("FORM_ACTION" => $APPLICATION->GetCurPage()."?ID=".$id."&lang=".$lang));
+$tabControl->Begin(array("FORM_ACTION" => $APPLICATION->GetCurPage() . "?ID=" . $id . "&lang=" . $lang));
 $tabControl->BeginNextFormTab();
 
 $externalLinkToPassForJs = '';
@@ -237,15 +251,33 @@ foreach ($structureToEdit as $structureElement) {
 		} else {
 			switch ($structureElement['TYPE']) {
 				case 'Bitrix\Main\ORM\Fields\BooleanField':
-					$tabControl->AddCheckBoxField($structureElement['CODE'], $structureElement['TITLE'] . ':', $structureElement['IS_REQUIRED'], 'Y', $elementValue == "Y");
+					$tabControl->AddCheckBoxField(
+						$structureElement['CODE'],
+						$structureElement['TITLE'] . ':',
+						$structureElement['IS_REQUIRED'],
+						'Y',
+						$elementValue == "Y"
+					);
 					break;
 				case 'Bitrix\Main\ORM\Fields\StringField':
 				case 'Bitrix\Main\ORM\Fields\IntegerField':
 				case 'Bitrix\Main\ORM\Fields\FloatField':
-					$tabControl->AddEditField($structureElement['CODE'], $structureElement['TITLE'] . ':', $structureElement['IS_REQUIRED'], array('SIZE' => 40), $elementValue);
+					$tabControl->AddEditField(
+						$structureElement['CODE'],
+						$structureElement['TITLE'] . ':',
+						$structureElement['IS_REQUIRED'],
+						array('SIZE' => 40),
+						$elementValue
+					);
 					break;
 				case 'Bitrix\Main\ORM\Fields\EnumField':
-					$tabControl->AddDropDownField($structureElement['CODE'], $structureElement['TITLE'] . ':', $structureElement['IS_REQUIRED'],array_flip($structureElement['ENUMS_MAP']),$elementValue);
+					$tabControl->AddDropDownField(
+						$structureElement['CODE'],
+						$structureElement['TITLE'] . ':',
+						$structureElement['IS_REQUIRED'],
+						array_flip($structureElement['ENUMS_MAP']),
+						$elementValue
+					);
 					break;
 			}
 		}
@@ -253,26 +285,35 @@ foreach ($structureToEdit as $structureElement) {
 		if ($structureElement['LINK']) {
 			$externalLinkToPassForJs = $structureElement['LINK'];
 
-			$linkedElementsSelectionQuery = ($classToLink.'Table')::getList(array('filter' => array()));
+			$linkedElementsSelectionQuery = ($classToLink . 'Table')::getList(array('filter' => array()));
 			$linkedElementsSelectionArray = ["" => ""];
 			while ($linkedElementsSelectionCursor = $linkedElementsSelectionQuery->fetch()) {
 				$linkedElementsSelectionArray[$linkedElementsSelectionCursor['ID']] = $linkedElementsSelectionCursor['ADDRESS'] . ' [' . $linkedElementsSelectionCursor['ID'] . ']';
 			}
-			$tabControl->AddDropDownField($structureElement['CODE'], $structureElement['TITLE'] . ':', true, $linkedElementsSelectionArray, $elementToEdit[$structureElement['CODE']],['onchange="showLinkToLinkedElement()"']);
+			$tabControl->AddDropDownField(
+				$structureElement['CODE'],
+				$structureElement['TITLE'] . ':',
+				true,
+				$linkedElementsSelectionArray,
+				$elementToEdit[$structureElement['CODE']],
+				['onchange="showLinkToLinkedElement()"']
+			);
 		} elseif ($structureElement['CODE'] == AbstractImageTable::FILE_ID) {
 			$linkedElementValues = [];
-			$linkedElementQuery = $structureElement['CLASS']::getList(array('filter' => array(AbstractImageTable::ENTITY_ID => $id)));
+			$linkedElementQuery = $structureElement['CLASS']::getList(
+				array('filter' => array(AbstractImageTable::ENTITY_ID => $id))
+			);
 
 			$i = 0;
-			while($linkedElementCursor = $linkedElementQuery->fetch()) {
-				$linkedElementValues[$structureElement['CODE']."[".$i."]"] = $linkedElementCursor[$structureElement['CODE']];
+			while ($linkedElementCursor = $linkedElementQuery->fetch()) {
+				$linkedElementValues[$structureElement['CODE'] . "[" . $i . "]"] = $linkedElementCursor[$structureElement['CODE']];
 				$i++;
 			}
 			$tabControl->BeginCustomField('FILES_CUSTOM_FIELD', 'FILES_CUSTOM_FIELD_CONTENT');
 			?>
 			<tr class="">
 				<td width="40%">
-					<?=$structureElement['TITLE'] . ':'?>
+					<?= $structureElement['TITLE'] . ':' ?>
 				</td>
 				<td>
 					<?
@@ -287,7 +328,7 @@ foreach ($structureToEdit as $structureElement) {
 						"maxCount" => 10,
 						"multiple" => true,
 						'edit' => false,
-						'allowUploadExt' =>false
+						'allowUploadExt' => false
 					))->show($linkedElementValues);
 					?>
 				</td>
@@ -306,19 +347,22 @@ $tabControl->Buttons(
 	)
 );
 ?>
-<script>
-    function showLinkToLinkedElement() {
-	    if (document.querySelector('[onchange="showLinkToLinkedElement()"]')) {
-            if (!document.querySelector('#linkToLinkedElement')) {
-                document.querySelector('[onchange="showLinkToLinkedElement()"]').insertAdjacentHTML('afterend', '<div><a id="linkToLinkedElement" href="#" target="_blank"><?=GetMessage("TO_LINKED_ELEMENT")?></a></div>');
-            }
-            document.querySelector('#linkToLinkedElement').href='<?=$externalLinkToPassForJs?>?ID=' + document.querySelector('[onchange="showLinkToLinkedElement()"]').value;
-	    }
-    }
-    document.addEventListener("DOMContentLoaded", function() {
-        showLinkToLinkedElement();
-    });
-</script>
+	<script>
+		function showLinkToLinkedElement() {
+			if (document.querySelector('[onchange="showLinkToLinkedElement()"]')) {
+				if (!document.querySelector('#linkToLinkedElement')) {
+					document.querySelector('[onchange="showLinkToLinkedElement()"]').insertAdjacentHTML('afterend', '<div><a id="linkToLinkedElement" href="#" target="_blank"><?=GetMessage(
+						"TO_LINKED_ELEMENT"
+					)?></a></div>');
+				}
+				document.querySelector('#linkToLinkedElement').href = '<?=$externalLinkToPassForJs?>?ID=' + document.querySelector('[onchange="showLinkToLinkedElement()"]').value;
+			}
+		}
+
+		document.addEventListener("DOMContentLoaded", function () {
+			showLinkToLinkedElement();
+		});
+	</script>
 <?php
 
 if (!empty($errors)) {
