@@ -21,6 +21,9 @@ $lAdmin = new CAdminList($tableId, $oSort);
 $arFilterFields = array(
 	"filter_active",
 );
+if ($classToList == 'Modulecode\Lsrapartments\Model\ApartmentTable') {
+	$arFilterFields[] = 'HOUSE_ID';
+}
 
 $lAdmin->InitFilter($arFilterFields);
 
@@ -240,6 +243,17 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_admin_aft
 			</td>
 		</tr>
 		<?
+		if ($classToList == 'Modulecode\Lsrapartments\Model\ApartmentTable') {
+			?>
+			<tr>
+				<td><?=GetMessage("HOUSE")?></td>
+				<td>
+					<input name="HOUSE_ID" type="text" value="<?=(int)$_GET['HOUSE_ID']?>">
+				</td>
+			</tr>
+			<?
+		}
+
 		$oFilter->Buttons(
 			array(
 				"table_id" => $tableId,
