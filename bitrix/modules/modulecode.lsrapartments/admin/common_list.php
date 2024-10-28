@@ -21,6 +21,9 @@ $lAdmin = new CAdminList($tableId, $oSort);
 $arFilterFields = array(
 	"filter_active",
 );
+if ($classToList == 'Modulecode\Lsrapartments\Model\ApartmentTable') {
+	$arFilterFields[] = 'HOUSE_ID';
+}
 
 $lAdmin->InitFilter($arFilterFields);
 
@@ -28,6 +31,8 @@ $filter = array();
 
 if (strlen($filter_active) > 0 && $filter_active != "NOT_REF")
 	$filter["ACTIVE"] = trim($filter_active);
+if ($classToList == 'Modulecode\Lsrapartments\Model\ApartmentTable' && $_GET['HOUSE_ID'])
+	$filter["HOUSE_ID"] = (int)$_GET['HOUSE_ID'];
 
 if ($request->get('action_button') == 'delete' && $request->get('ID')) {
 	$id = $request->get('ID');
@@ -111,11 +116,21 @@ foreach ($classToList::getMap() as $tableField) {
 	) {
 		continue;
 	}
-	if ($tableField::class == 'Bitrix\Main\ORM\Fields\EnumField'
-		|| $tableField::class == 'Bitrix\Main\ORM\Fields\BooleanField'
-	) {
+	if ($tableField::class == 'Bitrix\Main\ORM\Fields\EnumField') {
 		$valuesMap = $tableField->getValues();
 		$translationMaps[$tableField->getColumnName()] = array_flip($valuesMap);
+	}
+	if ($tableField::class == 'Bitrix\Main\ORM\Fields\BooleanField') {
+		$booleanFieldMap = $tableField->getValues();
+		foreach ($booleanFieldMap as $booleanFieldMapKey => $booleanFieldValue) {
+			if ($booleanFieldValue == 'Y') {
+				$booleanFieldMap[$booleanFieldValue] = GetMessage('MODULECODE_LSRAPARTMENTS_YES');
+			}
+			if ($booleanFieldValue == 'N') {
+				$booleanFieldMap[$booleanFieldValue] = GetMessage('MODULECODE_LSRAPARTMENTS_NO');
+			}
+		}
+		$translationMaps[$tableField->getColumnName()] = $booleanFieldMap;
 	}
 	$columName = $tableField->getColumnName();
 	$title = $tableField->getTitle();
@@ -144,8 +159,8 @@ while ($cursor = $dbResultList->Fetch()) {
 
 	$row->AddField("ID", "<a href=\"".$editPhpUrl."?ID=".$cursor['ID']."&lang=".LANG."\">".$cursor['ID']."</a>");
 	if ($cursor['HOUSE_ID']) {
-		$houseEditUrl = '/bitrix/admin/lsr_houses_edit.php?ID='.$cursor['ID'];
-		$row->AddField("HOUSE_ID", '<a href="' . $houseEditUrl . '">' . $cursor['ID'] . "</a>");
+		$houseEditUrl = '/bitrix/admin/lsr_houses_edit.php?ID='.$cursor['HOUSE_ID'];
+		$row->AddField("HOUSE_ID", '<a href="' . $houseEditUrl . '">' . $cursor['HOUSE_ID'] . "</a>");
 	}
 
 	$arActions = [
@@ -158,6 +173,14 @@ while ($cursor = $dbResultList->Fetch()) {
 		],
 	];
 
+	if ($classToList == 'Modulecode\Lsrapartments\Model\HouseTable') {
+		$urlToLinkedApartments = "/bitrix/admin/lsr_apartments_list.php?HOUSE_ID=".$cursor['ID'];
+		$arActions[] = [
+			"TEXT" => GetMessage("FIND_LINKED_APARTMENTS_TEXT"),
+			"TITLE" => GetMessage("FIND_LINKED_APARTMENTS_TITLE"),
+			"LINK" => $urlToLinkedApartments,
+		];
+	}
 	$arActions[] = ["SEPARATOR" => true];
 	$arActions[] = [
 		"ICON" => "delete",
@@ -220,6 +243,17 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_admin_aft
 			</td>
 		</tr>
 		<?
+		if ($classToList == 'Modulecode\Lsrapartments\Model\ApartmentTable') {
+			?>
+			<tr>
+				<td><?=GetMessage("HOUSE")?></td>
+				<td>
+					<input name="HOUSE_ID" type="text" value="<?=(int)$_GET['HOUSE_ID']?>">
+				</td>
+			</tr>
+			<?
+		}
+
 		$oFilter->Buttons(
 			array(
 				"table_id" => $tableId,

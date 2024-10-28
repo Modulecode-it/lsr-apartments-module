@@ -111,7 +111,7 @@ if ($server->getRequestMethod() == "POST"
 		}
 	}
 
-	//todo валидация?
+	//в ТЗ не оговорена валидация. поэтому полагаемся на битрикс.
 
 	if ($id > 0) {
 		$result = $classToEdit::update($id, $elementToEdit);
@@ -161,7 +161,11 @@ if ($server->getRequestMethod() == "POST"
 		if ($request->get('save') !== null) {
 			LocalRedirect($backurl);
 		} else {
-			LocalRedirect($_SERVER['REQUEST_URI']);
+			if ($_POST['apply'] && $id && !$_GET['ID']) {
+				LocalRedirect($APPLICATION->GetCurPage()."?ID=".$id."&lang=".$lang);
+			} else {
+				LocalRedirect($_SERVER['REQUEST_URI']);
+			}
 		}
 	}
 }
@@ -194,13 +198,20 @@ $aMenu = array(
 	)
 );
 if ($id > 0) {
-
 	$aMenu[] = array(
 		"TEXT"	=> GetMessage("DELETE_TEXT"),
 		"TITLE"	=> GetMessage("DELETE_TITLE"),
 		"ICON"	=> "btn_delete",
 		"LINK"	=> "javascript:if(confirm('".GetMessage("DELETE_CONFIRM")."'))window.location=window.location.origin + window.location.pathname + '?ID=".$id."&delete=Y'"
 	);
+
+	if ($classToEdit == 'Modulecode\Lsrapartments\Model\HouseTable') {
+		$aMenu[] = array(
+			"TEXT" => GetMessage('FIND_LINKED_APARTMENTS_TEXT'),
+			"TITLE" => GetMessage('FIND_LINKED_APARTMENTS_TITLE'),
+			"LINK" => "/bitrix/admin/lsr_apartments_list.php?HOUSE_ID=".$id
+		);
+	}
 }
 
 $contextMenu = new CAdminContextMenu($aMenu);
