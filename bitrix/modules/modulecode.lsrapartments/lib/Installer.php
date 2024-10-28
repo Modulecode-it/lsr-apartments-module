@@ -79,7 +79,7 @@ class Installer
 		$this->createTablesIfNotExists();
 	}
 
-	public function insertDemoData(int $housesCount = 100, int $apartmentsCountInHouse = 20): void
+	public function insertDemoData(int $housesCount = 20, int $apartmentsCountInHouse = 20): void
 	{
 		$connection = Application::getConnection();
 		$connection->startTransaction();
@@ -145,7 +145,7 @@ class Installer
 
 	private function insertApartmentImages(EntityObject $apartment): void
 	{
-		$imagesPath = $_SERVER['DOCUMENT_ROOT'] . '/local/templates/apartments/exampleimages/apartments';
+		$imagesPath = $_SERVER['DOCUMENT_ROOT'] . '/bitrix/modules/modulecode.lsrapartments/install/demoimages/apartments';
 		$imageService = new FileService();
 		for ($i = 1; $i <= 2; $i++) {
 			for ($j = 1; $j <= 3; $j++) {
@@ -168,7 +168,7 @@ class Installer
 
 	private function insertHouseImages(EntityObject $house): void
 	{
-		$imagesPath = $_SERVER['DOCUMENT_ROOT'] . '/local/templates/apartments/exampleimages/houses';
+		$imagesPath = $_SERVER['DOCUMENT_ROOT'] . '/bitrix/modules/modulecode.lsrapartments/install/demoimages/houses';
 		$imageService = new FileService();
 		for ($i = 1; $i <= 4; $i++) {
 			$image = HouseImageTable::getEntity()->createObject();
