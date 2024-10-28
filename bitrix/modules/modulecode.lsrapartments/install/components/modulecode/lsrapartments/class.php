@@ -72,7 +72,7 @@ class ModulecodeLsrApartmentsComponent extends CBitrixComponent
 		 * Поэтому сначала получим список записей основной таблицы, а потом без лимита выберем все данные.
 		 */
 
-		$order = [ApartmentTable::HOUSE_ID => 'DESC', ApartmentTable::NUMBER => 'ASC'];
+		$order = [ApartmentTable::HOUSE_ID => 'ASC', ApartmentTable::NUMBER => 'ASC'];
 		$idsData = ApartmentTable::getList([
 			'select' => ['ID'],
 			'filter' => $filter,

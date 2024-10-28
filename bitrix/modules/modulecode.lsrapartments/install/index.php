@@ -78,7 +78,7 @@ Class modulecode_lsrapartments extends CModule
 		}
 		$installer = new Installer();
 		$installer->createTablesIfNotExists();
-		$installer->insertDemoData(20, 5);
+		$installer->insertDemoData(50, 20);
 	}
 
 	function UnInstallDB()

@@ -21,6 +21,8 @@ use Modulecode\Lsrapartments\Service\FileService;
  */
 class Installer
 {
+	private int $imagesInsertedCount = 0;
+
 	/**
 	 * @throws SqlQueryException
 	 * @throws SystemException
@@ -79,12 +81,13 @@ class Installer
 		$this->createTablesIfNotExists();
 	}
 
-	public function insertDemoData(int $housesCount = 20, int $apartmentsCountInHouse = 20): void
+	public function insertDemoData(int $housesCount = 1000, int $apartmentsCountInHouse = 100): void
 	{
 		$connection = Application::getConnection();
 		$connection->startTransaction();
 		try {
-			for ($i = 0; $i < $housesCount; $i++) {
+			$this->imagesInsertedCount = 0;
+			for ($i = 1; $i <= $housesCount; $i++) {
 				$this->insertHouse($i, $apartmentsCountInHouse);
 			}
 			$connection->commitTransaction();
@@ -111,7 +114,10 @@ class Installer
 		}
 
 		$this->insertApartments($house, $apartmentsCountInHouse);
-		$this->insertHouseImages($house);
+
+		if (!$this->isMaxImagesInserted()) {
+			$this->insertHouseImages($house);
+		}
 	}
 
 	private function insertApartments(EntityObject $house, int $apartmentsCountInHouse): void
@@ -139,7 +145,9 @@ class Installer
 				throw new \LogicException("Сущность квартиры не сохранена: " . join(", ", $result->getErrorMessages()));
 			}
 
-			$this->insertApartmentImages($apartment);
+			if (!$this->isMaxImagesInserted()) {
+				$this->insertApartmentImages($apartment);
+			}
 		}
 	}
 
@@ -147,22 +155,23 @@ class Installer
 	{
 		$imagesPath = $_SERVER['DOCUMENT_ROOT'] . '/bitrix/modules/modulecode.lsrapartments/install/demoimages/apartments';
 		$imageService = new FileService();
-		for ($i = 1; $i <= 2; $i++) {
-			for ($j = 1; $j <= 3; $j++) {
-				$image = ApartmentImageTable::getEntity()->createObject();
-				$image->set(ApartmentImageTable::ENTITY, $apartment);
+		$i = rand(1,5);
+		$max = $i+2;
+		for (; $i < $max; $i++) {
+			$image = ApartmentImageTable::getEntity()->createObject();
+			$image->set(ApartmentImageTable::ENTITY, $apartment);
 
-				$filePath = $imagesPath . "/apartment_{$i}_{$j}.png";
-				$fileId = $imageService->saveExistingFileToBFile($filePath, "lsr_apartments");
-				$image->set(ApartmentImageTable::FILE_ID, $fileId);
+			$filePath = $imagesPath . "/apartment_{$i}.png";
+			$fileId = $imageService->saveExistingFileToBFile($filePath, "lsr_apartments");
+			$image->set(ApartmentImageTable::FILE_ID, $fileId);
 
-				$result = $image->save();
-				if (!$result->isSuccess()) {
-					throw new \LogicException(
-						"Сущность изображения квартиры не сохранена. " . join(", ", $result->getErrorMessages())
-					);
-				}
+			$result = $image->save();
+			if (!$result->isSuccess()) {
+				throw new \LogicException(
+					"Сущность изображения квартиры не сохранена. " . join(", ", $result->getErrorMessages())
+				);
 			}
+			$this->imagesInsertedCount++;
 		}
 	}
 
@@ -170,7 +179,9 @@ class Installer
 	{
 		$imagesPath = $_SERVER['DOCUMENT_ROOT'] . '/bitrix/modules/modulecode.lsrapartments/install/demoimages/houses';
 		$imageService = new FileService();
-		for ($i = 1; $i <= 4; $i++) {
+		$i = rand(1,4);
+		$max = $i+1;
+		for (; $i < $max; $i++) {
 			$image = HouseImageTable::getEntity()->createObject();
 			$image->set(HouseImageTable::ENTITY, $house);
 
@@ -184,6 +195,17 @@ class Installer
 					"Сущность изображения дома не сохранена. " . join(", ", $result->getErrorMessages())
 				);
 			}
+			$this->imagesInsertedCount++;
 		}
+	}
+
+	/**
+	 * Операция вставки изображений в b_file очень долгая. Поэтому, чтобы не ждать долго загрузки демо-данных,
+	 * мы добавляем немного изображений для первых записей. А остальные записи оставляем без изображений.
+	 * @return bool
+	 */
+	private function isMaxImagesInserted(): bool
+	{
+		return $this->imagesInsertedCount > 200;
 	}
 }
