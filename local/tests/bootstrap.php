@@ -32,5 +32,10 @@ global $DBPassword;
 
 require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/modules/main/include/prolog_before.php");
 
+if(!CModule::IncludeModule('modulecode.lsrapartments')) {
+	throw new \LogicException("Модуль modulecode.lsrapartments не подключен");
+}
+echo 1; exit;
+
 @set_time_limit(0);
 @ignore_user_abort(true);
