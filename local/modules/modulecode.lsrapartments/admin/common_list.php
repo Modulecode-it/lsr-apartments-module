@@ -104,11 +104,18 @@ if ($usePageNavigation) {
 
 
 $headers = [];
+$translationMaps = [];
 foreach ($classToList::getMap() as $tableField) {
 	if ($tableField::class == 'Bitrix\Main\ORM\Fields\Relations\Reference'
 		|| $tableField::class == 'Bitrix\Main\ORM\Fields\Relations\OneToMany'
 	) {
 		continue;
+	}
+	if ($tableField::class == 'Bitrix\Main\ORM\Fields\EnumField'
+		|| $tableField::class == 'Bitrix\Main\ORM\Fields\BooleanField'
+	) {
+		$valuesMap = $tableField->getValues();
+		$translationMaps[$tableField->getColumnName()] = array_flip($valuesMap);
 	}
 	$columName = $tableField->getColumnName();
 	$title = $tableField->getTitle();
@@ -127,17 +134,10 @@ $lAdmin->AddHeaders($headers);
 $visibleHeaders = $lAdmin->GetVisibleHeaderColumns();
 
 while ($cursor = $dbResultList->Fetch()) {
-	if($cursor['ACTIVE'] == 'Y') {
-		$cursor['ACTIVE'] = 'Да';
-	}
-	if($cursor['ACTIVE'] == 'N') {
-		$cursor['ACTIVE'] = 'Нет';
-	}
-	if($cursor['STATUS'] == 'S') {
-		$cursor['STATUS'] = 'Продано';
-	}
-	if($cursor['STATUS'] == 'N') {
-		$cursor['STATUS'] = 'Не продано';
+	foreach ($translationMaps as $translationKey => $translationValue) {
+		if ($cursor[$translationKey]) {
+			$cursor[$translationKey] = $translationValue[$cursor[$translationKey]];
+		}
 	}
 
 	$row =& $lAdmin->AddRow($cursor['ID'], $cursor, $editPhpUrl."?ID=".$cursor['ID']."&lang=".LANG, 'Изменить параметры');

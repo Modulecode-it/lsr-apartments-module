@@ -50,7 +50,10 @@ class ApartmentTable extends DataManager
 			new Entity\BooleanField(
 				self::ACTIVE,
 				[
-					'values' => ['N', 'Y'],
+					'values' => [
+						'Нет'=>'N',
+						'Да'=>'Y'
+					],
 					'default_value' => 'Y',
 					'title' => 'Активность'
 				]

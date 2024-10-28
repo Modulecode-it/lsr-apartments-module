@@ -37,7 +37,10 @@ class HouseTable extends DataManager
 			new Entity\IntegerField('ID', ['primary' => true, 'autocomplete' => true]),
 			new Entity\BooleanField('ACTIVE',
 				[
-					'values' => ['N', 'Y'],
+					'values' => [
+						'Нет'=>'N',
+						'Да'=>'Y'
+					],
 					'default_value' => 'Y',
 					'title' => 'Активность'
 				]
