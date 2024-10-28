@@ -1,5 +1,6 @@
 <?php
 
+use Bitrix\Main\Loader;
 use Modulecode\Lsrapartments\Installer;
 
 Class modulecode_lsrapartments extends CModule
@@ -41,10 +42,8 @@ Class modulecode_lsrapartments extends CModule
 	{
 		if (!IsModuleInstalled(self::MODULE_NAME)) {
 			$this->InstallFiles();
-			RegisterModule(self::MODULE_NAME);
 			$this->InstallDB();
-			global $APPLICATION;
-//			$APPLICATION->IncludeAdminFile("Установка модуля modulecode.lsrapartments", $_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/modulecode.lsrapartments/install/step.php");
+			RegisterModule(self::MODULE_NAME);
 		}
 	}
 	function DoUninstall()
@@ -73,9 +72,7 @@ Class modulecode_lsrapartments extends CModule
 
 	function InstallDB()
 	{
-		if(!CModule::IncludeModule('modulecode.lsrapartments')) {
-			throw new \LogicException("Модуль modulecode.lsrapartments не подключен");
-		}
+		$this->enableAutoloadClasses();
 		$installer = new Installer();
 		$installer->createTablesIfNotExists();
 		$installer->insertDemoData(50, 20);
@@ -83,9 +80,16 @@ Class modulecode_lsrapartments extends CModule
 
 	function UnInstallDB()
 	{
-		if(!CModule::IncludeModule('modulecode.lsrapartments')) {
-			throw new \LogicException("Модуль modulecode.lsrapartments не подключен");
-		}
+		$this->enableAutoloadClasses();
 		(new Installer())->dropTables();
+	}
+
+	/**
+	 * В момент установки/удаления модуля автозагрузка классов модуля недоступна. Сделаем ее вручную.
+	 * @return void
+	 */
+	private function enableAutoloadClasses(): void
+	{
+		Loader::registerNamespace('\Modulecode\Lsrapartments', $_SERVER['DOCUMENT_ROOT'].'/bitrix/modules/modulecode.lsrapartments/lib');
 	}
 }
