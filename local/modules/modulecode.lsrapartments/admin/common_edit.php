@@ -160,6 +160,8 @@ if ($server->getRequestMethod() == "POST"
 	} else {
 		if ($request->get('save') !== null) {
 			LocalRedirect($backurl);
+		} else {
+			LocalRedirect($_SERVER['REQUEST_URI']);
 		}
 	}
 }
