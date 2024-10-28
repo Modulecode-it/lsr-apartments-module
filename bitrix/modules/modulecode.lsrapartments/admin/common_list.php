@@ -248,7 +248,7 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_admin_aft
 			<tr>
 				<td><?=GetMessage("HOUSE")?></td>
 				<td>
-					<input name="HOUSE_ID" type="text" value="<?=(int)$_GET['HOUSE_ID']?>">
+					<input name="HOUSE_ID" type="text" value="<?=(int)$_GET['HOUSE_ID'] ?: ''?>">
 				</td>
 			</tr>
 			<?
