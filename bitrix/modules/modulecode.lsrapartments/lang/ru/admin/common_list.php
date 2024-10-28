@@ -11,4 +11,6 @@ $MESS["MARKED_TITLE"] = "Отмечено:";
 $MESS["ADD_TEXT"] = "Добавить";
 $MESS["ADD_TITLE"] = "Создать новый элемент";
 $MESS["ACTIVE"] = "Активность:";
+$MESS["FIND_LINKED_APARTMENTS_TEXT"] = "Найти квартиры";
+$MESS["FIND_LINKED_APARTMENTS_TITLE"] = "Найти квартиры в этом доме";
 ?>

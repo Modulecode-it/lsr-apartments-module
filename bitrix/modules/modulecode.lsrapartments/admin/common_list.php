@@ -170,6 +170,14 @@ while ($cursor = $dbResultList->Fetch()) {
 		],
 	];
 
+	if ($classToList == 'Modulecode\Lsrapartments\Model\HouseTable') {
+		$urlToLinkedApartments = "/bitrix/admin/lsr_apartments_list.php?HOUSE_ID=".$cursor['ID'];
+		$arActions[] = [
+			"TEXT" => GetMessage("FIND_LINKED_APARTMENTS_TEXT"),
+			"TITLE" => GetMessage("FIND_LINKED_APARTMENTS_TITLE"),
+			"LINK" => $urlToLinkedApartments,
+		];
+	}
 	$arActions[] = ["SEPARATOR" => true];
 	$arActions[] = [
 		"ICON" => "delete",
