@@ -11,15 +11,15 @@ use Bitrix\Main\ORM\Event;
 use Bitrix\Main\ORM\EventResult;
 use Bitrix\Main\ORM\Fields\Relations\OneToMany;
 
-if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
-	die();
-}
-
 /**
  * Created by PhpStorm.
  * User: Alexey
  * Date: 22.10.2024
  * Time: 11:25
+ */
+
+/**
+ * Сущность - дом
  */
 class HouseTable extends DataManager
 {

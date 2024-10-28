@@ -4,10 +4,6 @@ declare(strict_types=1);
 
 namespace Modulecode\Lsrapartments\Model;
 
-if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
-	die();
-}
-
 /**
  * Created by PhpStorm.
  * User: Alexey
@@ -16,7 +12,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
  */
 
 /**
- * Изображения домов
+ * Сущность - изображения домов
  */
 class HouseImageTable extends AbstractImageTable
 {

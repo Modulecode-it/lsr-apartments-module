@@ -12,10 +12,6 @@ use Bitrix\Main\ORM\EventResult;
 use Bitrix\Main\ORM\Fields\Relations\Reference;
 use Bitrix\Main\ORM\Query\Join;
 
-if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
-	die();
-}
-
 /**
  * Created by PhpStorm.
  * User: Alexey
@@ -45,7 +41,8 @@ abstract class AbstractImageTable extends DataManager
 	{
 		return [
 			// Поле для хранения ID файла изображения
-			new Entity\IntegerField(self::FILE_ID,
+			new Entity\IntegerField(
+				self::FILE_ID,
 				[
 					'primary' => true,
 					'autocomplete' => false,
@@ -58,7 +55,7 @@ abstract class AbstractImageTable extends DataManager
 			new Reference(
 				self::ENTITY,
 				static::getEntityTableClassName(),
-				Join::on('this.'.self::ENTITY_ID, 'ref.ID')
+				Join::on('this.' . self::ENTITY_ID, 'ref.ID')
 			),
 		];
 	}

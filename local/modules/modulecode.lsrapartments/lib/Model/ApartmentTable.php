@@ -14,15 +14,15 @@ use Bitrix\Main\ORM\Fields\Relations\OneToMany;
 use Bitrix\Main\ORM\Fields\Relations\Reference;
 use Bitrix\Main\ORM\Query\Join;
 
-if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
-	die();
-}
-
 /**
  * Created by PhpStorm.
  * User: Alexey
  * Date: 22.10.2024
  * Time: 11:31
+ */
+
+/**
+ * Сущность квартиры
  */
 class ApartmentTable extends DataManager
 {

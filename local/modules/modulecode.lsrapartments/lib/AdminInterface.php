@@ -10,7 +10,6 @@ namespace Modulecode\Lsrapartments;
  * Date: 22.10.2024
  * Time: 9:53
  */
-
 class AdminInterface
 {
 	public static function getLinkToElementEditByClassString($clsString): string

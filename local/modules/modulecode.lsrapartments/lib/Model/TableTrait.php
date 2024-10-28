@@ -2,13 +2,8 @@
 
 declare(strict_types=1);
 
-
 namespace Modulecode\Lsrapartments\Model;
 
-
-if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
-	die();
-}
 
 /**
  * Created by PhpStorm.
@@ -16,10 +11,14 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
  * Date: 23.10.2024
  * Time: 16:52
  */
+
+/**
+ * Дополнительные операции с сущностями
+ */
 trait TableTrait
 {
 	/**
-	 * Удаляет все элементы таблицы, которые будут найдены по фильтру
+	 * Удаляет все элементы сущности, которые будут найдены по фильтру
 	 * Если ошибка - выбросит исключение
 	 * @param array $filter
 	 * @param string $primaryKey
@@ -31,7 +30,7 @@ trait TableTrait
 		while ($item = $list->fetch()) {
 			$result = static::delete($item[$primaryKey]);
 			if (!$result->isSuccess()) {
-				throw new \LogicException("Не удален объект: " . join(", ",$result->getErrorMessages()));
+				throw new \LogicException("Не удален объект: " . join(", ", $result->getErrorMessages()));
 			}
 		}
 	}

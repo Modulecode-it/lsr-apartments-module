@@ -2,13 +2,7 @@
 
 declare(strict_types=1);
 
-
 namespace Modulecode\Lsrapartments\Service;
-
-
-if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
-	die();
-}
 
 /**
  * Created by PhpStorm.
@@ -26,7 +20,7 @@ class FileService
 	 * @param string|null $fileName - если требуется выставить особое имя для файла
 	 * @return int ID сохраненного файла в таблице b_file
 	 */
-	public function saveExistingFileToBFile(string $filePath, string $savePath, string $fileName=null): int
+	public function saveExistingFileToBFile(string $filePath, string $savePath, string $fileName = null): int
 	{
 		// Проверяем, существует ли файл по указанному пути
 		if (!file_exists($filePath)) {

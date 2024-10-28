@@ -2,9 +2,7 @@
 
 declare(strict_types=1);
 
-
 namespace Modulecode\Lsrapartments;
-
 
 use Bitrix\Main\Application;
 use Bitrix\Main\ArgumentException;
@@ -18,10 +16,9 @@ use Modulecode\Lsrapartments\Model\HouseImageTable;
 use Modulecode\Lsrapartments\Model\HouseTable;
 use Modulecode\Lsrapartments\Service\FileService;
 
-if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
-	die();
-}
-
+/**
+ * Позволяет провести установку БД и наполнить модуль тестыми данными
+ */
 class Installer
 {
 	const HOUSES_COUNT = 100;
@@ -68,8 +65,8 @@ class Installer
 	{
 		$connection = Application::getConnection();
 		$connection->startTransaction();
-		try{
-			for ($i = 0; $i < self::HOUSES_COUNT; $i++ ) {
+		try {
+			for ($i = 0; $i < self::HOUSES_COUNT; $i++) {
 				$this->insertHouse($i);
 			}
 			$connection->commitTransaction();
@@ -142,7 +139,9 @@ class Installer
 
 				$result = $image->save();
 				if (!$result->isSuccess()) {
-					throw new \LogicException("Сущность изображения квартиры не сохранена. " . join(", ", $result->getErrorMessages()));
+					throw new \LogicException(
+						"Сущность изображения квартиры не сохранена. " . join(", ", $result->getErrorMessages())
+					);
 				}
 			}
 		}
@@ -162,7 +161,9 @@ class Installer
 
 			$result = $image->save();
 			if (!$result->isSuccess()) {
-				throw new \LogicException("Сущность изображения дома не сохранена. " . join(", ", $result->getErrorMessages()));
+				throw new \LogicException(
+					"Сущность изображения дома не сохранена. " . join(", ", $result->getErrorMessages())
+				);
 			}
 		}
 	}
