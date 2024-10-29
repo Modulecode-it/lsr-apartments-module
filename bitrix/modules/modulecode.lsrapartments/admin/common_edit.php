@@ -1,6 +1,7 @@
 <?php
 
 use Bitrix\Main\Application;
+use Bitrix\Main\Web\MimeType;
 use Modulecode\Lsrapartments\AdminInterface;
 use Modulecode\Lsrapartments\Model\AbstractImageTable;
 use Modulecode\Lsrapartments\Service\FileService;
@@ -118,6 +119,15 @@ if ($server->getRequestMethod() == "POST"
 		} else {
 			$elementToEdit[$structureElement['CODE']] = $request->getPost($structureElement['CODE']);
 		}
+
+		//но если поле не обязательное, и не было заполнено, то при сохранении его не надо подавать на сохранение
+		if (
+			$structureElement['CODE'] == 'SALE_PRICE'   //стоимость со скидкой
+			&& !$structureElement['IS_REQUIRED']
+			&& $request->getPost($structureElement['CODE']) === ''
+		) {
+			unset($elementToEdit[$structureElement['CODE']]);
+		}
 	}
 
 	if ($id > 0) {
@@ -147,6 +157,14 @@ if ($server->getRequestMethod() == "POST"
 
 					$image = $imagesClass::getEntity()->createObject();
 					$image->set($imagesClass::ENTITY_ID, $id);
+
+					if (!$fileName) {
+						//а если вдруг имени не пришло, то будет default. чтобы картинка отобразилась нужно расширение
+						$uploadedImageArray = \CFile::MakeFileArray(
+							BX_TEMPORARY_FILES_DIRECTORY . $fileEntry['tmp_name']
+						);
+						$fileName = 'default.' . array_flip(MimeType::getMimeTypeList())[$uploadedImageArray['type']];
+					}
 
 					$filePath = BX_TEMPORARY_FILES_DIRECTORY . $fileEntry['tmp_name'];
 					$fileId = $imageService->saveExistingFileToBFile(
@@ -360,7 +378,14 @@ $tabControl->Buttons(
 						"TO_LINKED_ELEMENT"
 					)?></a></div>');
 				}
-				document.querySelector('#linkToLinkedElement').href = '<?=$externalLinkToPassForJs?>?ID=' + document.querySelector('[onchange="showLinkToLinkedElement()"]').value;
+                var linkToLinkedElementVar = document.querySelector('#linkToLinkedElement');
+                if (document.querySelector('[onchange="showLinkToLinkedElement()"]').value) {
+                    linkToLinkedElementVar.href = '<?=$externalLinkToPassForJs?>?ID='
+	                    + document.querySelector('[onchange="showLinkToLinkedElement()"]').value;
+                    linkToLinkedElementVar.style.display = '';
+                } else {
+                    linkToLinkedElementVar.style.display = 'none';
+                }
 			}
 		}
 
