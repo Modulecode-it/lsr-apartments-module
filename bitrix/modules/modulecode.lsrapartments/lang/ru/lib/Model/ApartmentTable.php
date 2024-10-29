@@ -9,3 +9,4 @@ $MESS['MODULECODE_LSRAPARTMENTS_APARTMENTTABLE_SALE_PRICE'] = 'Стоимост�
 $MESS['MODULECODE_LSRAPARTMENTS_APARTMENTTABLE_HOUSE'] = 'Дом';
 $MESS['MODULECODE_LSRAPARTMENTS_YES'] = 'Да';
 $MESS['MODULECODE_LSRAPARTMENTS_NO'] = 'Нет';
+$MESS['MODULECODE_LSRAPARTMENTS_APARTMENT_EXISTS'] = 'В доме уже существует квартира с указанным номером';

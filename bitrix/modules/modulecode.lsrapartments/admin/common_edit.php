@@ -129,7 +129,7 @@ if ($server->getRequestMethod() == "POST"
 		$elementToEdit['ID'] = $id;
 	}
 
-	if ($_POST['FILE_ID']) {
+	if ($result->isSuccess() && $_POST['FILE_ID']) {
 		if ($_POST['FILE_ID_del']) {
 			foreach ($_POST['FILE_ID_del'] as $keyToDel => $FILE_ID_delValue) {
 				$imagesClass::delete($_POST['FILE_ID'][$keyToDel]);

@@ -13,6 +13,8 @@ use Bitrix\Main\ORM\EventResult;
 use Bitrix\Main\ORM\Fields\Relations\OneToMany;
 use Bitrix\Main\ORM\Fields\Relations\Reference;
 use Bitrix\Main\ORM\Query\Join;
+use Bitrix\Main\Result;
+use Bitrix\Main\Error;
 
 /**
  * Created by PhpStorm.
@@ -60,7 +62,8 @@ class ApartmentTable extends DataManager
 				self::NUMBER,
 				[
 					'required' => true,
-					'title' => Loc::getMessage("MODULECODE_LSRAPARTMENTS_APARTMENTTABLE_NUMBER")
+					'title' => Loc::getMessage("MODULECODE_LSRAPARTMENTS_APARTMENTTABLE_NUMBER"),
+					'validation' => function(){return [[self::class, 'uniqueApartmentInHouseValidator']];}
 				]
 			),
 			new Entity\EnumField(self::STATUS, [
@@ -113,5 +116,22 @@ class ApartmentTable extends DataManager
 		// Удаляем связанные изображения
 		ApartmentImageTable::deleteByEntity($id);
 		return new EventResult();
+	}
+
+	public static function uniqueApartmentInHouseValidator($value, $primary, $row, $field)
+	{
+		$existingRecord = static::getList([
+			'select' => ['ID'],
+			'filter' => [
+				self::NUMBER => $row[self::NUMBER],
+				self::HOUSE_ID => $row[self::HOUSE_ID]
+			],
+			'limit' => 1,
+		])->fetch();
+
+		if ($existingRecord && $existingRecord['ID'] != $primary['ID']) {
+			return new Entity\FieldError($field, Loc::getMessage("MODULECODE_LSRAPARTMENTS_APARTMENT_EXISTS"));
+		}
+		return true;
 	}
 }
