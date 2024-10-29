@@ -1,5 +1,6 @@
 <?php
-$MESS["TITLE_REDACT"] = "Редактирование элемента: ";
+$MESS["TITLE_REDACT"] = "Редактирование";
+$MESS["TITLE_ADD"] = "Добавление";
 $MESS["IMAGE_SAVE_FAILED"] = "Сущность изображения не сохранена. ";
 $MESS["BACK"] = "Назад";
 $MESS["DELETE_TEXT"] = "Удалить";
