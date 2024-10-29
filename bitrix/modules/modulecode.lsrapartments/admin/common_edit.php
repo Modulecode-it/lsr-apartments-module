@@ -369,7 +369,14 @@ $tabControl->Buttons(
 						"TO_LINKED_ELEMENT"
 					)?></a></div>');
 				}
-				document.querySelector('#linkToLinkedElement').href = '<?=$externalLinkToPassForJs?>?ID=' + document.querySelector('[onchange="showLinkToLinkedElement()"]').value;
+                var linkToLinkedElementVar = document.querySelector('#linkToLinkedElement');
+                if (document.querySelector('[onchange="showLinkToLinkedElement()"]').value) {
+                    linkToLinkedElementVar.href = '<?=$externalLinkToPassForJs?>?ID='
+	                    + document.querySelector('[onchange="showLinkToLinkedElement()"]').value;
+                    linkToLinkedElementVar.style.display = '';
+                } else {
+                    linkToLinkedElementVar.style.display = 'none';
+                }
 			}
 		}
 
