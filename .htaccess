@@ -25,16 +25,8 @@ ErrorDocument 404 /404.php
   ExpiresByType application/javascript "access plus 3 day"  
 </IfModule>
 
-# Закрываем доступ к файлам composer.json и composer.lock
-<FilesMatch "(composer\.json|composer\.lock)">
-    Order allow,deny
-    Deny from all
-</FilesMatch>
 
-# Закрываем доступ ко всей папке vendor
-# Альтернативный способ запрета доступа к папке vendor (если не поддерживается <Directory>)
+# Закрываем доступ к некоторым папкам
 RewriteEngine On
-RewriteRule ^local/vendor/ - [F,L]
-RewriteRule ^local/lib/ - [F,L]
 RewriteRule ^local/tests/ - [F,L]
 RewriteRule ^.git/ - [F,L]

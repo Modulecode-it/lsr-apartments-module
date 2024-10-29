@@ -11,7 +11,6 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
 /**
  * Базовый класс, от которого нужно наследовать phpunit тесты, если мы хотим тестировать БД с откатом изменений в БД
  * после каждого теста через механизм транзакций
- * Class CC_Debug_PhpUnit_TestCaseDbRollback
  */
 class TestCaseDbRollback extends TestCase
 {
