@@ -10,8 +10,16 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
 	die();
 }
 
-if (!$classToEdit || !$backurl || !$tabName || !$tabName || !$imagesClass) {
-	throw new \Exception('предполагается, что для вызова должны быть заданы переменные');
+/**
+ * @var string $classToEdit
+ * @var string $backurl
+ * @var string $tabName
+ * @var string $tabTitle
+ * @var string $imagesClass
+ * @var string $editPhpUrl
+ */
+if (!$classToEdit || !$backurl || !$tabName || !$tabTitle || !$imagesClass || !$editPhpUrl) {
+	throw new \LogicException('Предполагается, что для вызова должны быть заданы переменные');
 }
 
 //проверка доступа. кому можно? только админам? не сказано
@@ -236,6 +244,12 @@ if ($id > 0) {
 		"LINK" => "javascript:if(confirm('" . GetMessage(
 				"DELETE_CONFIRM"
 			) . "'))window.location=window.location.origin + window.location.pathname + '?ID=" . $id . "&delete=Y'"
+	);
+	$aMenu[] = array(
+		"TEXT" => GetMessage("ADD_TEXT"),
+		"TITLE" => GetMessage("ADD_TITLE"),
+		"ICON" => "btn_new",
+		"LINK" => $editPhpUrl
 	);
 
 	if ($classToEdit == 'Modulecode\Lsrapartments\Model\HouseTable') {
