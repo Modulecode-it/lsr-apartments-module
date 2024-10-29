@@ -102,23 +102,28 @@ if ($server->getRequestMethod() == "GET"
 }
 
 $elementToEdit = [];
+//Значение по умолчанию
 foreach ($structureToEdit as $structureElement) {
-	if ($structureElement['CODE'] == 'ID' && !$id) {
-		continue;
-	} else {
-		$elementToEdit[$structureElement['CODE']] = $request->getPost(
-			$structureElement['CODE']
-		) ?? $structureElement['DEFAULT_VALUE'];
-	}
+	$elementToEdit[$structureElement['CODE']] = $structureElement['DEFAULT_VALUE'];
 }
 
 if ($server->getRequestMethod() == "POST"
 	&& ($request->get('save') !== null || $request->get('apply') !== null)
 	&& check_bitrix_sessid()
 ) {
+	//Значения из формы
+	foreach ($structureToEdit as $structureElement) {
+		if ($structureElement['CODE'] == 'ACTIVE') {
+			$elementToEdit[$structureElement['CODE']] = (isset($_POST['ACTIVE']) && 'Y' == $_POST['ACTIVE'] ? 'Y' : 'N');
+		} else {
+			$elementToEdit[$structureElement['CODE']] = $request->getPost($structureElement['CODE']);
+		}
+	}
+
 	if ($id > 0) {
 		$result = $classToEdit::update($id, $elementToEdit);
 	} else {
+		unset($elementToEdit['ID']);
 		$result = $classToEdit::add($elementToEdit);
 		$id = $result->getId();
 		$elementToEdit['ID'] = $id;
