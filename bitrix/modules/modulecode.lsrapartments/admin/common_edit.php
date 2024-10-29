@@ -120,13 +120,13 @@ if ($server->getRequestMethod() == "POST"
 			$elementToEdit[$structureElement['CODE']] = $request->getPost($structureElement['CODE']);
 		}
 
-		//но если поле не обязательное, и не было заполнено, то при сохранении его не надо подавать на сохранение
+		//но если поле не обязательное, и не заполнено, то null
 		if (
 			$structureElement['CODE'] == 'SALE_PRICE'   //стоимость со скидкой
 			&& !$structureElement['IS_REQUIRED']
 			&& $request->getPost($structureElement['CODE']) === ''
 		) {
-			unset($elementToEdit[$structureElement['CODE']]);
+			$elementToEdit[$structureElement['CODE']] = null;
 		}
 	}
 
