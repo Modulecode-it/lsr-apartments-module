@@ -137,7 +137,7 @@ class Installer
 			$price = rand(6, 60) * 1000000;
 			$apartment->set(ApartmentTable::PRICE, $price);
 
-			$salePrice = $price - (int)(rand(0, 10) * 0.1 * $price);
+			$salePrice = $price - (int)(rand(1, 10) * 0.1 * $price);
 			if ($salePrice > 0) {
 				$apartment->set(ApartmentTable::SALE_PRICE, $salePrice);
 			}
