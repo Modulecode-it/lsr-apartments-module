@@ -26,6 +26,12 @@ class Installer
 	private int $imagesInsertedCount = 0;
 
 	/**
+	 * Флаг, что сейчас происходит вставка демо-данных
+	 * @var bool
+	 */
+	public static bool $isDemoDataInserting = false;
+
+	/**
 	 * @throws SqlQueryException
 	 * @throws SystemException
 	 * @throws ArgumentException
@@ -88,11 +94,13 @@ class Installer
 		$connection = Application::getConnection();
 		$connection->startTransaction();
 		try {
+			self::$isDemoDataInserting = true;
 			$this->imagesInsertedCount = 0;
 			$limit = min($lastInsertedHouseNumber + self::HOUSES_IN_STEP, self::MAX_HOUSES);
 			for ($i = $lastInsertedHouseNumber + 1; $i <= $limit; $i++) {
 				$this->insertHouse($i, $apartmentsCountInHouse);
 			}
+			self::$isDemoDataInserting = false;
 			$connection->commitTransaction();
 		} catch (\Exception $e) {
 			$connection->rollbackTransaction();

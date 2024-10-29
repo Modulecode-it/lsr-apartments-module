@@ -15,6 +15,7 @@ use Bitrix\Main\ORM\Fields\Relations\Reference;
 use Bitrix\Main\ORM\Query\Join;
 use Bitrix\Main\Result;
 use Bitrix\Main\Error;
+use Modulecode\Lsrapartments\Installer;
 
 /**
  * Created by PhpStorm.
@@ -63,7 +64,14 @@ class ApartmentTable extends DataManager
 				[
 					'required' => true,
 					'title' => Loc::getMessage("MODULECODE_LSRAPARTMENTS_APARTMENTTABLE_NUMBER"),
-					'validation' => function(){return [[self::class, 'uniqueApartmentInHouseValidator']];}
+					'validation' => function () {
+						//Во время вставки демо-данных происходит 100 тысяч операций вставки. Валидатор сильно тормозит их.
+						//Демо-данные корректны, поэтому валидатор может быть выключен.
+						if (Installer::$isDemoDataInserting) {
+							return [];
+						}
+						return [[self::class, 'uniqueApartmentInHouseValidator']];
+					}
 				]
 			),
 			new Entity\EnumField(self::STATUS, [
