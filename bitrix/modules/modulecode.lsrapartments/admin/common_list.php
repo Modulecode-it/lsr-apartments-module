@@ -32,11 +32,13 @@ $lAdmin->InitFilter($arFilterFields);
 
 $filter = array();
 
-if (strlen($filter_active) > 0 && $filter_active != "NOT_REF") {
-	$filter["ACTIVE"] = trim($filter_active);
-}
-if ($classToList == 'Modulecode\Lsrapartments\Model\ApartmentTable' && $_GET['HOUSE_ID']) {
-	$filter["HOUSE_ID"] = (int)$_GET['HOUSE_ID'];
+if (!$_GET['del_filter'] || $_GET['del_filter'] != 'Y') {
+	if (strlen($filter_active) > 0 && $filter_active != "NOT_REF") {
+		$filter["ACTIVE"] = trim($filter_active);
+	}
+	if ($classToList == 'Modulecode\Lsrapartments\Model\ApartmentTable' && $_GET['HOUSE_ID']) {
+		$filter["HOUSE_ID"] = (int)$_GET['HOUSE_ID'];
+	}
 }
 
 if ($request->get('action_button') == 'delete' && $request->get('ID')) {
