@@ -1,6 +1,7 @@
 <?php
 
 use Bitrix\Main\Application;
+use Bitrix\Main\Web\MimeType;
 use Modulecode\Lsrapartments\AdminInterface;
 use Modulecode\Lsrapartments\Model\AbstractImageTable;
 use Modulecode\Lsrapartments\Service\FileService;
@@ -147,6 +148,14 @@ if ($server->getRequestMethod() == "POST"
 
 					$image = $imagesClass::getEntity()->createObject();
 					$image->set($imagesClass::ENTITY_ID, $id);
+
+					if (!$fileName) {
+						//а если вдруг имени не пришло, то будет default. чтобы картинка отобразилась нужно расширение
+						$uploadedImageArray = \CFile::MakeFileArray(
+							BX_TEMPORARY_FILES_DIRECTORY . $fileEntry['tmp_name']
+						);
+						$fileName = 'default.' . array_flip(MimeType::getMimeTypeList())[$uploadedImageArray['type']];
+					}
 
 					$filePath = BX_TEMPORARY_FILES_DIRECTORY . $fileEntry['tmp_name'];
 					$fileId = $imageService->saveExistingFileToBFile(
