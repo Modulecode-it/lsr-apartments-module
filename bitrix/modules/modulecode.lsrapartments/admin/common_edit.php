@@ -32,7 +32,6 @@ $context = $instance->getContext();
 $request = $context->getRequest();
 $server = $context->getServer();
 $lang = $context->getLanguage();
-$pageTitle = GetMessage("TITLE_REDACT") . $tabName;
 
 $id = (int)$request->get('ID');
 
@@ -211,7 +210,7 @@ if ($server->getRequestMethod() == "POST"
 
 require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/modules/main/include/prolog_admin_after.php");
 
-$APPLICATION->SetTitle(($id > 0) ? $pageTitle . ' № ' . $id : $pageTitle);
+$APPLICATION->SetTitle(($id > 0) ? $tabName . ' № ' . $id . ': ' . GetMessage("TITLE_REDACT") : $tabName . ': ' . GetMessage("TITLE_ADD"));
 
 $aTabs = array(
 	array(
