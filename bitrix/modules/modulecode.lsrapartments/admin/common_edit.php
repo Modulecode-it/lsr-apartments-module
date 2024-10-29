@@ -119,6 +119,15 @@ if ($server->getRequestMethod() == "POST"
 		} else {
 			$elementToEdit[$structureElement['CODE']] = $request->getPost($structureElement['CODE']);
 		}
+
+		//но если поле не обязательное, и не было заполнено, то при сохранении его не надо подавать на сохранение
+		if (
+			$structureElement['CODE'] == 'SALE_PRICE'   //стоимость со скидкой
+			&& !$structureElement['IS_REQUIRED']
+			&& $request->getPost($structureElement['CODE']) === ''
+		) {
+			unset($elementToEdit[$structureElement['CODE']]);
+		}
 	}
 
 	if ($id > 0) {
